@@ -29,3 +29,17 @@ mission.md mit Zielgruppe = Modulbetreuung, Mehrwert = Interaktivität, Erfolgsm
 
 **KI-Synthese:**
 roadmap.md mit drei Iterationen: (1) Grundgerüst inkl. DVC-E1-Inhalt, (2) RE-Tool, (3) REQ-E1 komplett.
+
+---
+
+## Schritt 3 — Techstack
+
+**Prompt (KI):**
+> a) Styling: vanilla CSS oder schlankes Class-less-Framework wie Pico.css/Simple.css?
+> b) RE-Tool-Persistenz: LocalStorage + JSON-Export/Import — OK?
+
+**Antwort (Nutzer):**
+> Ja OK.
+
+**KI-Synthese:**
+techstack.md mit HTML5, Pico.css, Vanilla JS, GitHub Pages aus `main/docs`, LocalStorage + JSON-Export.
