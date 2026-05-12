@@ -7,10 +7,10 @@ REQ-E1-Reiter zeigt alle Abgabe-Artefakte (Teile A, B, C) übersichtlich und abg
 ## Features
 
 - F3.1 Reiter **REQ-E1** mit drei Sektionen: Teil A, Teil B, Teil C
-- F3.2 Teil A: eingebettete Markdown-Tabelle mit 5–10 Requirements und vielen Attributen
-- F3.3 Teil B: Verweis auf den RE-Tool-Reiter mit Beispiel-Screenshots
+- F3.2 Teil A: Link auf `req-e1/requirements-table.md` (7 Requirements, 15 Attribute)
+- F3.3 Teil B: Link auf den RE-Tool-Reiter (Demo-Daten = Abgabe-Requirements)
 - F3.4 Teil C: Links auf `mission.md`, `roadmap.md`, `techstack.md` sowie die drei Iter-Files
-- F3.5 Download-Link für `REQ-E1.pdf` (Querformat, identisch mit Moodle-Abgabe)
+- F3.5 Permalink auf den Reiter für die Moodle-Abgabe: `https://rdbht.github.io/SWT/req-e1.html`
 
 ## Validierungen
 
@@ -29,10 +29,10 @@ REQ-E1-Reiter zeigt alle Abgabe-Artefakte (Teile A, B, C) übersichtlich und abg
 - When der Nutzer auf "mission.md" klickt
 - Then öffnet sich die entsprechende Datei im Repo (oder ein HTML-Renderer)
 
-**V3.4 — PDF-Download**
-- Given der Download-Link ist sichtbar
-- When der Nutzer ihn klickt
-- Then wird `REQ-E1.pdf` heruntergeladen und ist im Querformat lesbar
+**V3.4 — Direktlink für Moodle**
+- Given der REQ-E1-Reiter ist deployed
+- When die Modulbetreuung den Moodle-Link öffnet
+- Then erscheint `https://rdbht.github.io/SWT/req-e1.html` direkt mit allen Inhalten
 
 ## Out of Scope
 

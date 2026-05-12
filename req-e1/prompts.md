@@ -75,3 +75,20 @@ Given/When/Then gewählt (methodisch sauberer, didaktisch wertvoll). Drei Featur
 
 **KI-Synthese:**
 `docs/re-tool.html` (semantisches Pico-HTML, Form + Tabelle + IO-Sektion) und `docs/re-tool.js` (~140 Zeilen Vanilla JS) angelegt. Navigation in `index.html` und `dvc-e1.html` um "RE-Tool"-Reiter erweitert.
+
+---
+
+## Schritt 6 — Compliance-Pass für REQ-E1-Aufgabentext
+
+**Prompt (KI):**
+> Erweitere RE-Tool um 3 weitere Attribute (Abnehmer, Referenz, Historie) für maximale Attribut-Vielfalt. Demo-Daten auf 7 Requirements aufstocken. Lege Teil A als Markdown-Tabelle an (selbe Requirements). REQ-E1-Reiter `req-e1.html` mit Sektionen A/B/C anlegen.
+
+**Antwort (Nutzer):**
+> Lets go.
+
+**KI-Synthese:**
+- `re-tool.html`: 3 neue Formularfelder (Abnehmer, Historie, Referenz), 3 neue Tabellen-Spalten
+- `re-tool.js`: DEMO_DATA von 5 auf 7 Requirements erweitert, alle 15 Attribute befüllt, `render()` zeigt 15 Spalten
+- `req-e1/requirements-table.md`: Übersichts-Tabelle + 7 Detail-Tabellen (jeweils 14 Key-Value-Zeilen plus Lange Beschreibung) für Teil A
+- `docs/req-e1.html`: Reiter mit Sektionen Teil A / Teil B / Teil C / Attribut-Liste
+- Navigation in `index.html`, `dvc-e1.html` und `re-tool.html` um REQ-E1-Reiter erweitert
