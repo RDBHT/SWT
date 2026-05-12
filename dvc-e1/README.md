@@ -52,3 +52,4 @@ Kleine Änderung in bestehender Datei im Student-Verzeichnis (kein neuer Ordner)
 ---
 
 **Hinweis:** Diese README dient als Abgabe-Dokument. Hash-Platzhalter werden nach Ausführung der Workflow-Schritte eingetragen.
+feature B line
