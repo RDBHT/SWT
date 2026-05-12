@@ -23,7 +23,7 @@ Projekt: **SWT-Portfolio** — die GitHub-Pages-Site dieses Repos.
 - [x] Iter 1 — Pages-Grundgerüst + DVC-E1-Reiter
 - [x] Iter 2 — RE-Tool (Teil B) live, 7 Demo-Requirements
 - [x] Iter 3 — REQ-E1-Reiter mit Verlinkungen zu Teil A, Teil B, Constitution
-- [ ] Moodle-Abgabe als Link
+- [x] Moodle-Abgabe als Link
 
 ## Abgabeform
 
