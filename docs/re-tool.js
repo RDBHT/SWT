@@ -1,78 +1,128 @@
 // SWT-Portfolio — RE-Tool
-// Vanilla JS, persists in localStorage, JSON export/import.
+// Vanilla JS, 15 Attribute, LocalStorage-Persistenz, JSON-Export/Import.
 
 const STORAGE_KEY = "swt-re-tool";
 
+// Demo-Daten = Abgabe-Requirements (identisch zur Markdown-Tabelle in req-e1/requirements-table.md).
 const DEMO_DATA = [
   {
     id: "REQ-001",
     datum: "2026-05-12",
     autor: "RD",
+    historie: "v1.0 (2026-05-12)",
     kurz: "Nutzer kann zwischen Reitern navigieren",
-    lang: "Die Top-Navigation der SWT-Portfolio-Site erlaubt das Wechseln zwischen Home, DVC-E1, RE-Tool und REQ-E1.",
+    lang: "Die Top-Navigation der SWT-Portfolio-Site erlaubt das Wechseln zwischen Home, DVC-E1, REQ-E1 und RE-Tool von jeder Unterseite aus.",
     status: "Erledigt",
     prio: "A",
     kategorie: "Funktional",
-    abnahme: "Jeder Reiter ist von jedem anderen Reiter aus per Klick erreichbar.",
+    abnehmer: "Modulbetreuung",
+    abnahme: "Jeder Reiter ist von jedem anderen Reiter aus per Klick erreichbar; der aktive Reiter wird visuell markiert.",
     abhaengig: "",
+    referenz: "iter-01.md / F1.1",
     jur: "nein",
-    anmerkung: "Iter 1"
+    anmerkung: "Iter 1, abgeschlossen"
   },
   {
     id: "REQ-002",
     datum: "2026-05-12",
     autor: "RD",
+    historie: "v1.0 (2026-05-12)",
     kurz: "Site ist über GitHub Pages erreichbar",
     lang: "Die Site wird aus dem main-Branch, Ordner /docs deployed.",
     status: "Erledigt",
     prio: "A",
     kategorie: "Funktional",
-    abnahme: "URL https://rdbht.github.io/SWT/ liefert HTTP 200 und rendert die Landing.",
+    abnehmer: "Modulbetreuung",
+    abnahme: "URL https://rdbht.github.io/SWT/ liefert HTTP 200 und rendert die Landing innerhalb von 2 Sekunden.",
     abhaengig: "",
+    referenz: "iter-01.md / F1.4",
     jur: "nein",
-    anmerkung: "Iter 1"
+    anmerkung: "Iter 1, abgeschlossen"
   },
   {
     id: "REQ-003",
     datum: "2026-05-12",
     autor: "RD",
+    historie: "v1.0 (2026-05-12)",
     kurz: "RE-Tool persistiert Eingaben im Browser",
-    lang: "Nach einem Reload sind angelegte Requirements weiterhin sichtbar.",
+    lang: "Eingegebene Requirements werden im LocalStorage unter Key 'swt-re-tool' gehalten und überleben einen Page-Reload.",
     status: "Erledigt",
     prio: "A",
     kategorie: "Funktional",
+    abnehmer: "Tech-Lead",
     abnahme: "Nach Reload zeigt die Tabelle dieselben Einträge wie vor dem Reload.",
     abhaengig: "REQ-002",
+    referenz: "iter-02.md / F2.4",
     jur: "nein",
-    anmerkung: "Iter 2"
+    anmerkung: "Iter 2, abgeschlossen"
   },
   {
     id: "REQ-004",
     datum: "2026-05-12",
     autor: "RD",
+    historie: "v1.0 (2026-05-12)",
     kurz: "JSON-Export und -Import",
-    lang: "Alle Requirements können als JSON-Datei heruntergeladen und wieder importiert werden.",
+    lang: "Alle Requirements können als JSON-Datei heruntergeladen werden; eine valide JSON-Datei kann den Datenstand wiederherstellen.",
     status: "Erledigt",
     prio: "B",
     kategorie: "Funktional",
-    abnahme: "Export erzeugt eine Datei; deren Import stellt den gleichen Datenstand wieder her.",
+    abnehmer: "Modulbetreuung",
+    abnahme: "Export erzeugt swt-requirements.json; deren Import stellt den identischen Datenstand wieder her.",
     abhaengig: "REQ-003",
+    referenz: "iter-02.md / F2.5 + F2.6",
     jur: "nein",
-    anmerkung: "Iter 2"
+    anmerkung: "Iter 2, abgeschlossen"
   },
   {
     id: "REQ-005",
     datum: "2026-05-12",
     autor: "RD",
+    historie: "v1.0 (2026-05-12)",
     kurz: "Keine personenbezogenen Daten verarbeitet",
-    lang: "Das Tool läuft rein im Browser, kein Backend, kein Tracking.",
+    lang: "Das Tool läuft rein im Browser. Es gibt kein Backend, kein Tracking und keine Analytics.",
     status: "Erledigt",
     prio: "A",
     kategorie: "Sicherheit",
-    abnahme: "Keine Netz-Requests an Dritte beim Anlegen oder Speichern eines Requirements (außer Pico.css CDN beim ersten Seitenaufruf).",
+    abnehmer: "Datenschutz / Legal",
+    abnahme: "Keine Netz-Requests an Dritte beim Anlegen, Speichern oder Löschen eines Requirements (Pico.css wird ausschließlich beim ersten Seitenaufruf vom CDN geladen).",
     abhaengig: "",
+    referenz: "DSGVO Art. 5 (Datenminimierung)",
     jur: "ja",
     anmerkung: "DSGVO-relevant"
+  },
+  {
+    id: "REQ-006",
+    datum: "2026-05-12",
+    autor: "RD",
+    historie: "v1.0 (2026-05-12)",
+    kurz: "Site ist mobil bedienbar",
+    lang: "Layout und Tabellen passen sich Viewport-Breiten ab 320 px an; breite Tabellen sind horizontal scrollbar.",
+    status: "Erledigt",
+    prio: "B",
+    kategorie: "UX",
+    abnehmer: "Modulbetreuung",
+    abnahme: "Alle Reiter sind auf 320 px Viewport-Breite lesbar; die Requirements-Tabelle erhält horizontalen Scrollbar bei Bedarf.",
+    abhaengig: "REQ-002",
+    referenz: "Pico.css responsive defaults",
+    jur: "nein",
+    anmerkung: "automatisch via Pico.css"
+  },
+  {
+    id: "REQ-007",
+    datum: "2026-05-12",
+    autor: "RD",
+    historie: "v1.0 (2026-05-12)",
+    kurz: "Constitution ist vom REQ-E1-Reiter aus erreichbar",
+    lang: "Im REQ-E1-Reiter sind mission.md, roadmap.md, techstack.md und die drei Iterations-Feature-Specs verlinkt.",
+    status: "Erledigt",
+    prio: "B",
+    kategorie: "Funktional",
+    abnehmer: "Modulbetreuung",
+    abnahme: "Alle sieben Constitution-Dateien sind aus dem REQ-E1-Reiter mit einem Klick erreichbar (Repo-Links).",
+    abhaengig: "REQ-001",
+    referenz: "iter-03.md / F3.4",
+    jur: "nein",
+    anmerkung: "Iter 3"
   }
 ];
 
@@ -109,12 +159,16 @@ function render() {
       <td><code>${esc(r.id)}</code></td>
       <td>${esc(r.datum)}</td>
       <td>${esc(r.autor)}</td>
+      <td>${esc(r.historie)}</td>
       <td>${esc(r.kurz)}</td>
+      <td>${esc(r.lang)}</td>
       <td>${esc(r.status)}</td>
       <td>${esc(r.prio)}</td>
       <td>${esc(r.kategorie)}</td>
+      <td>${esc(r.abnehmer)}</td>
       <td>${esc(r.abnahme)}</td>
       <td>${esc(r.abhaengig)}</td>
+      <td>${esc(r.referenz)}</td>
       <td>${esc(r.jur)}</td>
       <td>${esc(r.anmerkung)}</td>
       <td><button class="secondary outline" data-del="${esc(r.id)}">&times;</button></td>

@@ -20,6 +20,7 @@
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
         <li><a href="re-tool.html" aria-current="page">RE-Tool</a></li>
       </ul>
     </nav>
@@ -32,7 +33,7 @@
         <p>AI-built Requirements-Management-Werkzeug &middot; Teil B der Einsendeaufgabe REQ-E1</p>
       </hgroup>
       <p>
-        Dieses Tool erfasst Requirements mit allen wichtigen Attributen aus der Lerneinheit.
+        Dieses Tool erfasst Requirements mit 15 Beschreibungsattributen aus der Lerneinheit.
         Daten werden im Browser (LocalStorage) persistiert und können als JSON exportiert/importiert werden.
         Die Konstruktion erfolgte im Frage-Antwort-Verfahren mit Claude (Anthropic);
         Prompts sind im Repo unter <code>req-e1/prompts.md</code> dokumentiert.
@@ -54,7 +55,7 @@
         <fieldset>
           <label>
             ID
-            <input type="text" name="id" placeholder="z. B. REQ-006" required>
+            <input type="text" name="id" placeholder="REQ-008" required>
           </label>
           <label>
             Datum
@@ -62,7 +63,11 @@
           </label>
           <label>
             Autor
-            <input type="text" name="autor" placeholder="z. B. RD" required>
+            <input type="text" name="autor" placeholder="RD" required>
+          </label>
+          <label>
+            Historie
+            <input type="text" name="historie" placeholder="v1.0 (2026-05-12)">
           </label>
         </fieldset>
 
@@ -73,7 +78,7 @@
 
         <label>
           Lange Beschreibung
-          <textarea name="lang" rows="3" placeholder="Optional, ausführlicher Kontext"></textarea>
+          <textarea name="lang" rows="3" placeholder="Ausführlicher Kontext"></textarea>
         </label>
 
         <fieldset>
@@ -105,6 +110,20 @@
           </label>
         </fieldset>
 
+        <fieldset>
+          <label>
+            Abnehmer
+            <input type="text" name="abnehmer" placeholder="Modulbetreuung / Tech-Lead">
+          </label>
+          <label>
+            Juristische Relevanz
+            <select name="jur">
+              <option value="nein">nein</option>
+              <option value="ja">ja</option>
+            </select>
+          </label>
+        </fieldset>
+
         <label>
           Abnahmekriterium
           <textarea name="abnahme" rows="2" placeholder="Wann gilt das Requirement als erfüllt?"></textarea>
@@ -113,14 +132,11 @@
         <fieldset>
           <label>
             Abhängigkeiten
-            <input type="text" name="abhaengig" placeholder="z. B. REQ-001, REQ-002">
+            <input type="text" name="abhaengig" placeholder="REQ-001, REQ-002">
           </label>
           <label>
-            Juristische Relevanz
-            <select name="jur">
-              <option value="nein">nein</option>
-              <option value="ja">ja</option>
-            </select>
+            Referenz
+            <input type="text" name="referenz" placeholder="Use Case / Doc / Norm">
           </label>
         </fieldset>
 
@@ -146,12 +162,16 @@
               <th>ID</th>
               <th>Datum</th>
               <th>Autor</th>
+              <th>Historie</th>
               <th>Kurz</th>
+              <th>Lang</th>
               <th>Status</th>
               <th>Prio</th>
               <th>Kategorie</th>
+              <th>Abnehmer</th>
               <th>Abnahme</th>
               <th>Abh.</th>
+              <th>Referenz</th>
               <th>Jur.</th>
               <th>Anm.</th>
               <th></th>
