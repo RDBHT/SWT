@@ -46,6 +46,6 @@ Zwei Branches mit Änderungen an unterschiedlichen Dateien (kein Konflikt):
 
 ## 6. Pull-Request auf edlich/education
 
-Pull-Request: `#<NUMMER>` — <LINK>
+Pull-Request: [#615 — Update Grundgesetz Artikel 1.txt](https://github.com/edlich/education/pull/615)
 
-Kleine Änderung in bestehender Datei im Student-Verzeichnis (kein neuer Ordner), erstellt via GitHub-Web-UI.
+Kleine Änderung in der bestehenden Datei `Student/Grundgesetz Artikel 1.txt` (Hinweis auf Artikel 2 GG ergänzt). Erstellt via GitHub-Web-UI, kein neuer Ordner, kein Shell-Push.
