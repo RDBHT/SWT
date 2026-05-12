@@ -19,10 +19,12 @@ Projekt: **SWT-Portfolio** — die GitHub-Pages-Site dieses Repos.
 
 ## Bearbeitungsstand
 
+Die Roadmap wurde nicht nur geplant, sondern alle Iterationen wurden umgesetzt und sind auf GitHub Pages live.
+
 - [x] Constitution (Teil C) fertig
-- [x] Iter 1 — Pages-Grundgerüst + DVC-E1-Reiter
-- [x] Iter 2 — RE-Tool (Teil B) live, 7 Demo-Requirements
-- [x] Iter 3 — REQ-E1-Reiter mit Verlinkungen zu Teil A, Teil B, Constitution
+- [x] Iter 1 — Pages-Grundgerüst + DVC-E1-Reiter **umgesetzt und live**
+- [x] Iter 2 — RE-Tool (Teil B) **umgesetzt und live**, 7 Demo-Requirements, 15 Attribute
+- [x] Iter 3 — REQ-E1-Reiter **umgesetzt und live** mit Verlinkungen zu Teil A, Teil B, Constitution
 - [x] Moodle-Abgabe als Link
 
 ## Abgabeform
