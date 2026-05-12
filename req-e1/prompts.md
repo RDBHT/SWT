@@ -43,3 +43,16 @@ roadmap.md mit drei Iterationen: (1) Grundgerüst inkl. DVC-E1-Inhalt, (2) RE-To
 
 **KI-Synthese:**
 techstack.md mit HTML5, Pico.css, Vanilla JS, GitHub Pages aus `main/docs`, LocalStorage + JSON-Export.
+
+---
+
+## Schritt 4 — Feature-Specs (3 Iterationen)
+
+**Prompt (KI):**
+> Sollen die Validierungen manuell formuliert sein oder formaler im Given/When/Then-Stil?
+
+**Antwort (Nutzer):**
+> Deine Empfehlung.
+
+**KI-Synthese:**
+Given/When/Then gewählt (methodisch sauberer, didaktisch wertvoll). Drei Feature-Files angelegt: iter-01.md (Grundgerüst + DVC-E1), iter-02.md (RE-Tool), iter-03.md (REQ-E1 komplett). Jedes File enthält Ziel, Features, Validierungen, Out of Scope.
