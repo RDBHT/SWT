@@ -1,5 +1,7 @@
 # Iteration 3 — REQ-E1 komplett
 
+**Status:** umgesetzt am 2026-05-12. Reiter live unter `https://rdbht.github.io/SWT/req-e1.html`. Alle Features (F3.1–F3.5) implementiert; Validierungen (V3.1–V3.4) bestätigt.
+
 ## Ziel
 
 REQ-E1-Reiter zeigt alle Abgabe-Artefakte (Teile A, B, C) übersichtlich und abgabefertig.

@@ -1,5 +1,7 @@
 # Iteration 1 — Grundgerüst + DVC-E1
 
+**Status:** umgesetzt am 2026-05-12. Alle Features (F1.1–F1.4) sind auf der Pages-Site live; alle Validierungen (V1.1–V1.3) wurden manuell bestätigt.
+
 ## Ziel
 
 Lauffähige Site mit Navigation auf GitHub Pages, DVC-E1 nach-dokumentiert.

@@ -1,5 +1,7 @@
 # Iteration 2 — RE-Tool (AI-built)
 
+**Status:** umgesetzt am 2026-05-12. Tool ist live unter `https://rdbht.github.io/SWT/re-tool.html`. Alle Features (F2.1–F2.7) implementiert; Validierungen (V2.1–V2.4) bestätigt.
+
 ## Ziel
 
 Interaktives Requirements-Engineering-Tool als eigener Reiter, gebaut mit Vanilla JS, dokumentierte KI-Prompts.

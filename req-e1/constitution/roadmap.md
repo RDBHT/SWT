@@ -1,8 +1,8 @@
 # Roadmap
 
-Drei Iterationen, die aufeinander aufbauen.
+Drei Iterationen, die aufeinander aufbauen. Alle drei wurden im Rahmen der Bearbeitung von REQ-E1 vollständig **umgesetzt und auf GitHub Pages deployed** (Stand 2026-05-12).
 
-## Iteration 1 — Grundgerüst + DVC-E1
+## Iteration 1 — Grundgerüst + DVC-E1 &mdash; umgesetzt
 
 **Ziel:** Lauffähige Site mit Navigation, GitHub Pages live, DVC-E1 nach-dokumentiert.
 
@@ -11,7 +11,7 @@ Drei Iterationen, die aufeinander aufbauen.
 - `style.css` (Basis-Layout, Navigation, Typografie)
 - GitHub Pages aktiviert, Source = `main/docs`
 
-## Iteration 2 — RE-Tool (Tool B, AI-built)
+## Iteration 2 — RE-Tool (Tool B, AI-built) &mdash; umgesetzt
 
 **Ziel:** Interaktives Requirements-Tool als eigener Reiter.
 
@@ -20,7 +20,7 @@ Drei Iterationen, die aufeinander aufbauen.
 - Persistenz im Browser (LocalStorage), Export/Import als JSON
 - Dokumentation der KI-Prompts in `req-e1/prompts.md`
 
-## Iteration 3 — REQ-E1 komplett
+## Iteration 3 — REQ-E1 komplett &mdash; umgesetzt
 
 **Ziel:** REQ-E1-Reiter mit allen Artefakten, abgabefertig.
 
