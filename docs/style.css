@@ -10,6 +10,17 @@ header nav a[aria-current="page"] {
   text-decoration: underline;
 }
 
+header nav .subtab {
+  opacity: 0.85;
+  font-size: 0.95em;
+}
+
+header nav .subtab-arrow {
+  margin-right: 0.25rem;
+  color: var(--pico-muted-color);
+  user-select: none;
+}
+
 main section {
   margin-bottom: 1.5rem;
 }
