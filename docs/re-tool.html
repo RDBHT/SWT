@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RE-Tool &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="re-tool.html" aria-current="page">RE-Tool</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <hgroup>
+        <h2>RE-Tool</h2>
+        <p>AI-built Requirements-Management-Werkzeug &middot; Teil B der Einsendeaufgabe REQ-E1</p>
+      </hgroup>
+      <p>
+        Dieses Tool erfasst Requirements mit allen wichtigen Attributen aus der Lerneinheit.
+        Daten werden im Browser (LocalStorage) persistiert und können als JSON exportiert/importiert werden.
+        Die Konstruktion erfolgte im Frage-Antwort-Verfahren mit Claude (Anthropic);
+        Prompts sind im Repo unter <code>req-e1/prompts.md</code> dokumentiert.
+      </p>
+    </section>
+
+    <section>
+      <h3>Requirement anlegen</h3>
+      <form id="reqForm">
+        <fieldset>
+          <label>
+            ID
+            <input type="text" name="id" placeholder="z. B. REQ-006" required>
+          </label>
+          <label>
+            Datum
+            <input type="date" name="datum" required>
+          </label>
+          <label>
+            Autor
+            <input type="text" name="autor" placeholder="z. B. RD" required>
+          </label>
+        </fieldset>
+
+        <label>
+          Kurzbeschreibung
+          <input type="text" name="kurz" placeholder="Ein-Satz-Zusammenfassung" required>
+        </label>
+
+        <label>
+          Lange Beschreibung
+          <textarea name="lang" rows="3" placeholder="Optional, ausführlicher Kontext"></textarea>
+        </label>
+
+        <fieldset>
+          <label>
+            Status
+            <select name="status" required>
+              <option value="Entwurf">Entwurf</option>
+              <option value="In Bearbeitung">In Bearbeitung</option>
+              <option value="Erledigt">Erledigt</option>
+              <option value="Verworfen">Verworfen</option>
+            </select>
+          </label>
+          <label>
+            Priorität
+            <select name="prio" required>
+              <option value="A">A &mdash; Muss</option>
+              <option value="B">B &mdash; Soll</option>
+              <option value="C">C &mdash; Kann</option>
+            </select>
+          </label>
+          <label>
+            Kategorie
+            <select name="kategorie" required>
+              <option value="Funktional">Funktional</option>
+              <option value="Nicht-Funktional">Nicht-Funktional</option>
+              <option value="Sicherheit">Sicherheit</option>
+              <option value="UX">UX</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <label>
+          Abnahmekriterium
+          <textarea name="abnahme" rows="2" placeholder="Wann gilt das Requirement als erfüllt?"></textarea>
+        </label>
+
+        <fieldset>
+          <label>
+            Abhängigkeiten
+            <input type="text" name="abhaengig" placeholder="z. B. REQ-001, REQ-002">
+          </label>
+          <label>
+            Juristische Relevanz
+            <select name="jur">
+              <option value="nein">nein</option>
+              <option value="ja">ja</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <label>
+          Anmerkungen
+          <textarea name="anmerkung" rows="2"></textarea>
+        </label>
+
+        <button type="submit">Speichern</button>
+        <button type="reset" class="secondary">Zurücksetzen</button>
+      </form>
+    </section>
+
+    <section>
+      <hgroup>
+        <h3>Requirements</h3>
+        <p id="counter">0 Requirements</p>
+      </hgroup>
+      <figure>
+        <table id="reqTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Datum</th>
+              <th>Autor</th>
+              <th>Kurz</th>
+              <th>Status</th>
+              <th>Prio</th>
+              <th>Kategorie</th>
+              <th>Abnahme</th>
+              <th>Abh.</th>
+              <th>Jur.</th>
+              <th>Anm.</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </figure>
+    </section>
+
+    <section>
+      <h3>Import / Export</h3>
+      <p>
+        <button id="exportBtn" class="secondary">Als JSON exportieren</button>
+        <button id="importBtn" class="secondary">Aus JSON importieren</button>
+        <input type="file" id="importInput" accept="application/json" hidden>
+      </p>
+      <p>
+        <button id="seedBtn" class="contrast">Demo-Daten laden</button>
+        <button id="clearBtn" class="contrast">Alle löschen</button>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+
+  <script src="re-tool.js"></script>
+</body>
+</html>
