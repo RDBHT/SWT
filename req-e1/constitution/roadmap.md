@@ -27,4 +27,3 @@ Drei Iterationen, die aufeinander aufbauen.
 - `req-e1.html` (Übersicht der Aufgabenteile A/B/C)
 - Markdown-Tabelle mit 5–10 Requirements (Teil A)
 - Constitution-Links (Teil C)
-- PDF-Download für Moodle-Abgabe
