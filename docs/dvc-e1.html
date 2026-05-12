@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DVC-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dvc-e1.html" aria-current="page">DVC-E1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>DVC-E1 &mdash; Versionsverwaltung mit Git</h2>
+      <p>
+        Abgabe zur Einsendeaufgabe DVC-E1 (Softwaretechnik, Kapitel 11).
+        Repository:
+        <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a>.
+      </p>
+    </section>
+
+    <section>
+      <h3>1. Repository anlegen</h3>
+      <p>Repository auf GitHub erstellt: <code>RDBHT/SWT</code> (public).</p>
+    </section>
+
+    <section>
+      <h3>2. Projekt hochpushen</h3>
+      <p>
+        Initialer Commit:
+        <a href="https://github.com/RDBHT/SWT/commit/117a7bd"><code>117a7bd</code></a>
+        &mdash; <em>chore: initial commit with DVC-E1</em>.
+      </p>
+    </section>
+
+    <section>
+      <h3>3. Git-Methoden beweisbar angewendet</h3>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>Befehl</th><th>Commit / Nachweis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>add</code></td><td><a href="https://github.com/RDBHT/SWT/commit/7ecafef"><code>7ecafef</code></a> (tmp.txt hinzugefügt)</td></tr>
+            <tr><td><code>commit</code></td><td>jeder Commit in der History</td></tr>
+            <tr><td><code>status</code></td><td>Workflow-Log</td></tr>
+            <tr><td><code>diff</code></td><td>Workflow-Log (vor <code>32f7789</code>)</td></tr>
+            <tr><td><code>push</code></td><td>sichtbar an allen <code>origin/main</code>-Aktualisierungen</td></tr>
+            <tr><td><code>pull</code></td><td><a href="https://github.com/RDBHT/SWT/commit/babf08e"><code>babf08e</code></a> (Änderung via Web-UI eingespielt)</td></tr>
+            <tr><td><code>mv</code></td><td><a href="https://github.com/RDBHT/SWT/commit/2efd9da"><code>2efd9da</code></a> (Rename <code>notes.md</code> &rarr; <code>notizen.md</code>)</td></tr>
+            <tr><td><code>rm</code></td><td><a href="https://github.com/RDBHT/SWT/commit/0f4607f"><code>0f4607f</code></a> (Entfernen <code>tmp.txt</code>)</td></tr>
+            <tr><td><code>log</code></td><td><code>git log --oneline --graph --all</code></td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </section>
+
+    <section>
+      <h3>4. Zeitreisen</h3>
+      <ul>
+        <li><code>git checkout 117a7bd</code> &mdash; detached HEAD im Initial-Zustand, anschließend <code>git checkout main</code></li>
+        <li>Demo-Commit <a href="https://github.com/RDBHT/SWT/commit/f3780bb"><code>f3780bb</code></a> (<em>chore: demo line for revert</em>)</li>
+        <li><code>git revert</code> davon: <a href="https://github.com/RDBHT/SWT/commit/e7ed216"><code>e7ed216</code></a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>5. Branches</h3>
+      <p>Zwei Branches mit Änderungen an unterschiedlichen Dateien (kein Konflikt):</p>
+      <ul>
+        <li><code>feature/a</code> &mdash; Zeile in <code>notizen.md</code>: Commit <a href="https://github.com/RDBHT/SWT/commit/928a851"><code>928a851</code></a></li>
+        <li><code>feature/b</code> &mdash; Zeile in <code>README.md</code>: Commit <a href="https://github.com/RDBHT/SWT/commit/a54b9f0"><code>a54b9f0</code></a></li>
+        <li>Merge <code>feature/a</code> &rarr; <code>main</code>: <a href="https://github.com/RDBHT/SWT/commit/ad4a2e7"><code>ad4a2e7</code></a></li>
+        <li>Merge <code>feature/b</code> &rarr; <code>main</code>: <a href="https://github.com/RDBHT/SWT/commit/3d7013e"><code>3d7013e</code></a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>6. Pull-Request auf edlich/education</h3>
+      <p>
+        Pull-Request:
+        <a href="https://github.com/edlich/education/pull/615">#615 &mdash; Update Grundgesetz Artikel 1.txt</a>.
+        Kleine Änderung in der bestehenden Datei <code>Student/Grundgesetz Artikel 1.txt</code>,
+        erstellt via GitHub-Web-UI &mdash; kein neuer Ordner, kein Shell-Push.
+      </p>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+</body>
+</html>

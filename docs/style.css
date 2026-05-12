@@ -1,0 +1,19 @@
+/* SWT-Portfolio — minimale Ergänzungen zu Pico.css */
+
+header nav {
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  padding-bottom: 0.5rem;
+}
+
+header nav a[aria-current="page"] {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+main section {
+  margin-bottom: 1.5rem;
+}
+
+table code {
+  white-space: nowrap;
+}
