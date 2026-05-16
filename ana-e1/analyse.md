@@ -6,60 +6,134 @@ Konzeptueller Prototyp eines **internen AI-Wissensportals** für eine mittelstä
 
 ## 3.5 Vision und Systemidee
 
-Die WBG steht vor der Herausforderung, dass die Einarbeitung neuer Mitarbeiter überdurchschnittlich lange dauert. Das organisatorische Wissen über interne Prozesse liegt weitgehend in den Köpfen erfahrener Kollegen oder verteilt in einzelnen Ablageorten; eine konsolidierte und durchsuchbare Darstellung der Prozesslandschaft existiert nicht. Hinzu kommt, dass mittelfristig der Aufbau einer SharePoint-basierten Stammdatenverwaltung angedacht ist, für die heute jedoch noch kein konsolidiertes Konzept vorliegt, welche Listen als Single Source of Truth angelegt werden sollten.
+Die WBG erlebt überdurchschnittlich lange Einarbeitungszeiten neuer Mitarbeiter. Organisatorisches Wissen liegt verteilt in Abteilungsordnern und in den Köpfen erfahrener Kollegen; eine konsolidierte, durchsuchbare Prozesslandschaft existiert nicht. Mittelfristig ist zudem der Aufbau einer SharePoint-basierten Stammdatenverwaltung angedacht, für die noch kein Konzept vorliegt.
 
-Vision ist ein **AI-gestützter Onboarding-Assistent**, der neuen Mitarbeitern Fragen zur WBG-Prozesslandschaft natürlichsprachlich beantwortet (Retrieval-Augmented Generation über die intern gepflegte Prozessdokumentation). Der erste Prototyp fokussiert ausschließlich auf den Onboarding-Use-Case. Das hinterlegte Prozess- und Stammdatenmodell entsteht dabei als Nebeneffekt zugleich als Entwurfsgrundlage für die spätere SharePoint-Listenstruktur. Eine spätere Ausbaustufe ist die Erweiterung um eine Konzept-Workbench für das Organisations-/IT-Team, die das hinterlegte Modell aktiv editierbar macht und Listen-Schemas exportieren kann. Primärnutzergruppe des Prototyps sind neue Mitarbeiter in den ersten Wochen nach Eintritt; Erfolgsindikator ist eine spürbare Verkürzung der Einarbeitungszeit sowie weniger Folgefragen bei erfahrenen Kollegen.
+Vision ist ein **AI-gestützter Onboarding-Assistent**, der Fragen zur Prozesslandschaft per RAG aus der internen Dokumentation beantwortet. Das hinterlegte Wissensmodell entsteht zugleich als Entwurfsgrundlage für die spätere SharePoint-Listenstruktur. Eine Ausbaustufe sieht eine Konzept-Workbench für das Organisations-/IT-Team vor. Erfolgsindikator: kürzere Einarbeitungszeit, weniger Folgefragen bei erfahrenen Kollegen.
 
 ## 3.6 Vorstudie und Marktanalyse
 
-Der Ist-Zustand bei der WBG entspricht der typischen Ausgangslage eines mittelständischen Unternehmens ohne dedizierte Wissensmanagement-Strategie: Es existiert kein zentrales System für strukturiertes organisatorisches Wissen. Prozessdokumentation, Anleitungen, Vorlagen und tacit knowledge sind über Abteilungsordner auf gemeinsamen Laufwerken verstreut, ergänzt durch E-Mail-Verläufe und individuelles Wissen einzelner Kollegen. Eine AI-gestützte Suche oder Q&A-Funktion ist weder vorhanden noch lizenziert. Das Vorhaben ist damit ein klassisches Greenfield-Projekt.
+Ist-Zustand entspricht einem klassischen **Greenfield-Projekt**: kein dediziertes Wissensmanagement, kein AI-Tooling, Inhalte verstreut auf Abteilungsordner.
 
-Marktseitig stehen mehrere Alternativen zur Verfügung, die in der Vorstudie kurz bewertet werden. **Microsoft Copilot for M365 / SharePoint Premium** wäre die naheliegende Wahl, falls die WBG zukünftig in den M365-Stack investiert, ist aber an entsprechende Lizenzkosten und SharePoint-Ausbau gebunden. **Spezialisierte Enterprise-Knowledge-Tools** wie Glean oder Notion AI bieten gute Out-of-the-box-Funktionen, sind für eine mittelständische WBG jedoch sowohl wirtschaftlich als auch hinsichtlich Datenhoheit kritisch zu prüfen. **Klassische Onboarding-Systeme** (Bitrix24, Personio, HiBob) decken den HR-Prozess ab, aber nicht das hier zentrale Q&A über fachliche Prozessdokumentation. Als pragmatischer Einstieg bietet sich ein **selbst gebauter Prototyp auf Open-Source-Basis** (LangChain/LlamaIndex + lokales oder über RunPod betriebenes LLM) an: niedrige initiale Investition, volle Kontrolle über die Daten, klare Erweiterungspfade in Richtung SharePoint-Integration.
+| Alternative | Stärke | Schwäche | Bewertung WBG |
+|---|---|---|---|
+| Microsoft Copilot for M365 | nahtlose Integration | erfordert M365-Stack + Lizenzkosten | später denkbar |
+| Glean / Notion AI | Out-of-the-box, gute UX | Datenhoheit, Kosten | wirtschaftlich kritisch |
+| Bitrix24 / Personio | HR-Onboarding | kein fachliches Q&A über Prozessdoku | passt nicht |
+| **Self-built (OSS + RunPod)** | volle Datenhoheit, niedrige Initialkosten, klare Erweiterung | Eigenleistung in Aufbau | **Empfehlung Pilot** |
 
 ## 3.9 Durchführbarkeitsstudie und Risikoanalyse
 
-Technisch ist das Vorhaben gut durchführbar. Retrieval-Augmented Generation ist seit 2023 ein etablierter Architekturansatz mit reifen Open-Source-Bausteinen, und die Inferenz-Infrastruktur ist über GPU-Cloud-Anbieter wie RunPod skalierbar und für eine mittelständische WBG wirtschaftlich tragbar. Die wesentlichen Risiken liegen daher nicht in der Technologie, sondern in der Datenbasis und den organisatorischen Rahmenbedingungen.
+Technisch ist das Vorhaben gut durchführbar — RAG-Architekturen sind seit 2023 ausgereift, GPU-Inferenz über RunPod wirtschaftlich tragbar. Die wesentlichen Risiken liegen in Datenbasis und Organisation:
 
-Vier Risiken werden als prioritär eingestuft. (1) **Halluzinationen mit rechtlicher Wirkung**: Falsche Antworten zu WEG- oder mietrechtlichen Themen können bei naiver Übernahme durch neue Mitarbeiter Folgefehler erzeugen — Mitigation durch verpflichtende Quellen-Zitate in jeder Antwort und sichtbare Disclaimer bei rechtlich bindenden Themen. (2) **Dokumentenqualität ("Garbage-in")**: Aus inkonsistenten, verstreuten Quellen entstehen "selbstbewusste" Fehlantworten — Mitigation durch einen kuratierten Initial-Korpus und schrittweise Erweiterung erst nach Qualitätsprüfung. (3) **Datenschutz und Datenhoheit**: Personenbezogene Daten in Vorlagen sowie potenziell Anbieter-Hosting in Drittstaaten — Mitigation durch lokales bzw. europäisches LLM-Hosting (z. B. RunPod EU-Region), ADV-Verträge und strikte Trennung zwischen Mitarbeiter-Wissen und Mieter-/Eigentümerdaten. (4) **Organisatorische Akzeptanz und Mitbestimmung**: In mittelständischen Strukturen ist die Adoption neuer Tools nicht selbstverständlich, und der Betriebsrat ist bei Mitarbeiter-bezogenen Systemen frühzeitig einzubeziehen — Mitigation durch einen Pilot mit motivierter Kleingruppe sowie formale Einbindung der Mitbestimmung von Beginn an.
+| # | Risiko | Mitigation |
+|---|---|---|
+| R1 | Halluzinationen mit rechtlicher Wirkung (WEG, Mietrecht) | Pflicht-Quellenzitate, Disclaimer bei rechtlich bindenden Themen |
+| R2 | Dokumentenqualität ("Garbage-in") | kuratierter Initial-Korpus, Erweiterung erst nach QS |
+| R3 | Datenschutz / Datenhoheit | EU-Hosting (RunPod EU), ADV-Vertrag, strikte Datentrennung |
+| R4 | Akzeptanz und Mitbestimmung | Pilot mit Kleingruppe, frühzeitige BR-Einbindung |
 
 ## 3.10 Konzept der Qualitätssicherung
 
-Die QS orientiert sich am tatsächlichen organisatorischen Spielraum einer mittelständischen WBG: kein dediziertes ML-Team, ein kleines IT-Team, das den Prototyp nebenbei betreut. Die Qualität wird daher mit minimalem, aber nachvollziehbarem Aufwand gesichert. Kern ist ein **Eval-Set von 30–50 Goldstandard-Fragen** mit jeweils einer von einem Fachkollegen geprüften Referenzantwort und der erwarteten Quelle aus der Prozessdokumentation. Dieses Set wird vor jedem Release (Modellwechsel, Korpus-Erweiterung, Prompt-Änderung) manuell oder mit einem einfachen Skript wiederholt und drei Metriken festgehalten: Anteil korrekter Antworten, Anteil korrekt zitierter Quellen und Anteil von Antworten ohne unbegründete Behauptungen.
-
-Ergänzend dazu wird in der produktiven UI ein **Feedback-Button** (Daumen hoch/runter mit optionalem Freitext) angeboten, der niederschwellig Auffälligkeiten meldet, sowie ein einfaches Anfragen-Logging zur Erkennung systematischer Lücken im Korpus. Drift-Beobachtung erfolgt durch periodische Wiederholung des Eval-Sets — eine vollautomatische Continuous Evaluation oder LLM-as-a-Judge-Pipeline ist im Prototyp bewusst nicht vorgesehen, kann jedoch in einer späteren Ausbaustufe ergänzt werden.
+Pragmatisches QS-Konzept für mittelständische Strukturen ohne dediziertes ML-Team: ein **Eval-Set von 30–50 Goldstandard-Fragen** mit Referenzantwort und erwarteter Quelle, das vor jedem Release wiederholt wird. Drei Metriken: Korrektheit, Zitations-Genauigkeit, Halluzinationsfreiheit. Ergänzend ein Feedback-Button (👍/👎) im UI und ein einfaches Anfragen-Logging zur Erkennung systematischer Korpus-Lücken. LLM-as-a-Judge ist bewusst kein Bestandteil des Pilots.
 
 ## 3.11 Technischer Prototyp / Durchstich (Spike)
 
-Ziel des Spikes ist ein Ende-zu-Ende lauffähiger Durchstich, der die technische Machbarkeit belegt, bevor in Breite investiert wird. Der Spike umfasst einen minimalen, aber vollständigen Stack: ein kuratierter Korpus von 10–20 ausgewählten PDFs und Markdown-Dateien aus den Abteilungsordnern, ein multilinguales Embedding-Modell (z. B. `intfloat/multilingual-e5-large`) auf einer RunPod-GPU-Instanz, ein lokal betriebener Vektor-Store (Chroma oder Qdrant ohne Cloud-Service), ein Open-Source-LLM (Llama 3.x 8B oder Mistral) ebenfalls auf RunPod sowie ein schlankes Frontend in Streamlit oder Plain-HTML. Bewusst wird kein Cloud-LLM (OpenAI, Anthropic) eingebunden, um die Datenhoheits-Diskussion bereits im Spike sauber zu führen.
+Ende-zu-Ende lauffähiger Durchstich vor Investition in Breite; bewusst ohne Cloud-LLM (Datenhoheit).
 
-Erfolgskriterium des Spikes ist konkret: eine Frage zur Prozesslandschaft führt zu einer fachlich korrekten Antwort mit klickbarer Quellenangabe in unter fünf Sekunden Antwortzeit. Der Spike beweist damit die zentralen technischen Annahmen — Datenaufbereitung, Embedding-Generierung, Retrieval-Qualität, LLM-Antwortqualität in deutscher Sprache, RunPod-Deployment — bevor Authentifizierung, Multi-User-Betrieb, SharePoint-Anbindung oder produktive Skalierung adressiert werden. Diese Aspekte sind explizit nicht Teil des Durchstichs.
+```mermaid
+flowchart LR
+    User([Neuer<br>Mitarbeiter]) -->|Frage| UI[Web-UI<br>Streamlit]
+    UI -->|Query| Embed[Embedding<br>e5-large @ RunPod]
+    Embed -->|Vektor| Vec[(Vector-Store<br>Chroma/Qdrant)]
+    Vec -->|Top-k Chunks| LLM[LLM<br>Llama 3.x @ RunPod]
+    LLM -->|Antwort + Quellen| UI
+    Docs[(Korpus<br>10–20 PDFs/MD)] -.->|Indexing| Vec
+```
+
+**Erfolgskriterium:** fachlich korrekte Antwort mit klickbarer Quelle in ≤ 5 Sekunden. Authentifizierung, Multi-User, SharePoint-Anbindung sind explizit nicht Teil des Spikes.
 
 ## 3.13 Vorgehens- und Prozessmodell
 
-Aus den im Skript als "heute relevant" genannten Vorgehensmodellen (RUP, XP, Scrum, Crystal Clear) eignen sich für das WBG-Onboarding-Vorhaben am ehesten **Scrum-Light bzw. Kanban**. Die Wahl orientiert sich an den im Skript genannten drei Auswahlkriterien: (1) **Größe und Art** — das Projekt ist klein, im Spike Solo-Entwicklung mit anschließender kleiner Pilotgruppe; schwergewichtige Modelle wie RUP oder klassisches V-Modell wären unverhältnismäßiger Overhead. (2) **Kultur und Bereitschaft des Unternehmens** — eine mittelständische WBG ohne ML-Erfahrung profitiert von früh sichtbaren Inkrementen und iterativer Anforderungsanpassung; ein wasserfallartiges Vorgehen würde Fehlannahmen erst spät aufdecken. (3) **Wissen und Bereitschaft der Beteiligten** — Fachexperten in den Abteilungen sind keine ausgebildeten Product Owner, ein leichtgewichtiger Rhythmus mit kurzen Reviews ist passender als formale Scrum-Zeremonien.
+Aus den im Skript als heute relevant genannten Modellen (RUP, XP, Scrum, Crystal Clear) wird **Scrum-Light / Kanban** gewählt — passend zu den drei Skript-Auswahlkriterien Größe (klein), Kultur (kein agiles Reifegrad-Modell vorausgesetzt) und Bereitschaft der Beteiligten (Fachexperten ohne PO-Rolle).
 
-Konkret wird in drei Iterationen vorgegangen: **Phase 1 — Spike (2–3 Wochen)** zur technischen Machbarkeit gemäß 3.11; **Phase 2 — Pilot (4–8 Wochen)** mit Erweiterung des Korpus, Aufbau des in 3.10 beschriebenen Eval-Sets und Pilotgruppe aus drei bis fünf neuen Mitarbeitenden; **Phase 3 — Rollout** mit Aufnahme in den regulären Onboarding-Prozess, formaler Einbindung des Betriebsrats sowie ggf. Start der in 3.5 skizzierten Konzept-Workbench für das IT-/Organisationsteam.
+| Phase | Ziel | Dauer | Hauptergebnis |
+|---|---|---|---|
+| 1 — Spike | technische Machbarkeit (siehe 3.11) | 2–3 Wochen | Architektur-Durchstich, erstes Demo |
+| 2 — Pilot | Korpus + UI + Eval-Set, Pilotgruppe 3–5 Personen | 4–8 Wochen | belastbare Pilot-Erfahrungen |
+| 3 — Rollout | Aufnahme in Onboarding-Prozess, BR-Vereinbarung | offen | Regelbetrieb, Roadmap Konzept-Workbench |
 
 ## 3.15 Stakeholder und deren Interessen
 
-Im Sinne des Skripts werden Stakeholder als Anteilseigner verstanden, "für die etwas auf dem Spiel steht". Für das WBG-Onboarding-Tool sind folgende Anspruchsgruppen zentral: Die **Geschäftsleitung** als Auftraggeber mit Interesse an Kosten/Nutzen, Risiko und Außenwirkung. Die **IT-Leitung** als technisch Verantwortlicher mit Fokus auf Wartbarkeit, Sicherheit und Integrationsfähigkeit (perspektivisch Anbindung an SharePoint). Die **Abteilungsleiter und Fachexperten**, die Inhalte beitragen müssen — ihre Sichtweise bestimmt, welche Prozessdokumentation qualifiziert in den Korpus fließt. Die **neuen Mitarbeitenden** als Endnutzer, deren Akzeptanz die Schlüsselgröße für den Projekterfolg ist. Der **Betriebsrat** als gesetzlich vorgeschriebener Mitbestimmungspartner bei mitarbeiter-bezogenen Systemen. Der **Datenschutzbeauftragte** wegen der DSGVO-Implikationen.
+Stakeholder im Sinne des Skripts: Anteilseigner, "für die etwas auf dem Spiel steht".
 
-Wie das Skript ausdrücklich hervorhebt, sind auch **politische und egoistische Interessen** zu adressieren: Erfahrene Mitarbeitende können das Tool als Bedrohung ihrer Expertenrolle empfinden; Abteilungsleiter sehen Wissensteilung gelegentlich als Machtverlust; die Geschäftsleitung erwartet schnelle, sichtbare Erfolge; die IT-Seite hat Sorge vor Wartungslast. Eine konsequente Kommunikation des Einsatzzwecks ("AI als Hilfe, nicht als Ersatz"), die frühzeitige Einbindung des Betriebsrats sowie die aktive Beteiligung kritischer Stakeholder im Pilot reduzieren diese Reibungen erfahrungsgemäß deutlich.
+| Stakeholder | Primäres Interesse | Politische / egoistische Sicht |
+|---|---|---|
+| Geschäftsleitung | Kosten/Nutzen, Risiko, Außenwirkung | will schnelle sichtbare Erfolge |
+| IT-Leitung | Wartbarkeit, Sicherheit, Integration | Sorge vor Wartungslast |
+| Abteilungsleiter / Fachexperten | Qualität der eigenen Doku | Wissen als Macht — teilen ungerne |
+| Erfahrene Mitarbeitende | Entlastung von Standardfragen | Sorge um Expertenrolle |
+| Neue Mitarbeitende (Endnutzer) | schnelle Einarbeitung | — |
+| Betriebsrat | Mitbestimmung, Datenschutz | gesetzliche Pflicht, frühzeitig einbinden |
+| Datenschutzbeauftragter | DSGVO-Konformität | — |
+
+Mitigationen: Kommunikation "AI als Hilfe, nicht als Ersatz"; BR früh involvieren; kritische Stakeholder im Pilot aktiv beteiligen.
 
 ## 3.17 Requirements und Use Cases
 
-Gemäß Skript überdecken Use Cases die funktionalen Anforderungen ("Was tut das System?"), während sonstige Requirements zusätzlich die nicht-funktionalen Anforderungen — Benutzbarkeit, Performance, Reliability, Supportability — adressieren. Für das WBG-Onboarding-Tool werden drei Kern-Use-Cases identifiziert: **UC-1 "Frage stellen"** — ein neuer Mitarbeiter formuliert eine Frage zur Prozesslandschaft, das System gibt eine natürlichsprachliche Antwort inklusive klickbarer Quellenangabe. **UC-2 "Korpus pflegen"** — ein Mitglied des IT-/Organisationsteams lädt ein neues Dokument hoch oder ersetzt ein bestehendes; das System indexiert es und zeigt im UI die aktualisierte Korpusliste an. **UC-3 "Antwort melden"** — ein Pilotnutzer markiert eine falsche oder unklare Antwort über einen Feedback-Button; die Meldung landet im QS-Log gemäß 3.10.
+Skript: Use Cases adressieren funktionale Anforderungen, Requirements zusätzlich nicht-funktionale.
 
-Ergänzend werden die wesentlichen nicht-funktionalen Anforderungen entlang der Skript-Kategorien festgehalten. **Performance** (REQ-P1): 95% der Antworten innerhalb von ≤ 5 Sekunden bei einem Korpus bis 200 Dokumenten. **Reliability/Sicherheit** (REQ-R1): Quellenangabe ist Pflichtbestandteil jeder Antwort, damit Nutzer Aussagen unmittelbar verifizieren können; Zugriff nur durch authentifizierte WBG-Mitarbeiter. **Supportability** (REQ-S1): Korpus-Änderungen über eine UI-gestützte Routine ohne Code-Deploy; Modell- und Embedding-Komponenten sind über Konfiguration austauschbar (siehe 3.20). **Benutzbarkeit** (REQ-U1): Interaktion in deutscher Sprache; Eingabe ohne Schulung, Antwort in geschäftsüblichem Wortlaut.
+**Use Cases**
+
+| ID | Akteur | Beschreibung |
+|---|---|---|
+| UC-1 | neuer Mitarbeiter | Frage zur Prozesslandschaft → Antwort mit Quellenzitat |
+| UC-2 | IT/Org-Team | neues Dokument hochladen → Indexierung, Korpus aktualisiert |
+| UC-3 | Pilotnutzer | falsche Antwort markieren → Logging gemäß 3.10 |
+
+**Nicht-funktionale Anforderungen** (nach Skript-Kategorien)
+
+| Kategorie | ID | Anforderung |
+|---|---|---|
+| Performance | P1 | 95 % der Antworten in ≤ 5 s (Korpus bis 200 Dokumente) |
+| Reliability / Sicherheit | R1 | Quellenangabe ist Pflichtbestandteil jeder Antwort; Zugriff nur authentifiziert |
+| Supportability | S1 | Korpus-Änderungen ohne Code-Deploy; Modelle über Konfiguration austauschbar |
+| Benutzbarkeit | U1 | deutsche Interaktion, ohne Schulung bedienbar |
 
 ## 3.20 Systemschnittstellen
 
-Das Skript ordnet Systemschnittstellen vier Kategorien zu: Dialogschnittstellen, Ausgabeerzeugnisse, Datenschnittstellen sowie rein funktionale Schnittstellen. In der Spike-Phase ist die Anzahl bewusst minimal gehalten — eine **Dialogschnittstelle** (schlankes Web-UI für Frage und Antwort, siehe 3.21), eine **Datenschnittstelle** zur RunPod-Inferenz-API für Embedding- und LLM-Aufrufe sowie ein lokaler Vektor-Store als interne Komponente, der ebenfalls als Datenschnittstelle zu betrachten ist. Ausgabeerzeugnisse im klassischen Sinne (Reports, Briefe) entfallen; die Antwort wird im UI dargestellt.
+Skript-Kategorien: Dialog, Ausgabe, Daten, funktional.
 
-Für die Pilot- und Rollout-Phasen werden zwei weitere Datenschnittstellen relevant. **Microsoft Graph API (SharePoint)** zur automatischen Synchronisation des Korpus, sobald die WBG ihre Stammdaten und Prozessdokumentation in SharePoint führt — dies vermeidet manuelle Re-Uploads und korreliert mit dem in 3.5 skizzierten Roadmap-Ziel. **Active Directory bzw. Entra ID** für die Authentifizierung, damit Zugriff ausschließlich registrierten WBG-Mitarbeitenden möglich ist (vgl. nicht-funktionale Anforderung REQ-R1 in 3.17). Ergänzend wird eine einfache funktionale Schnittstelle zur lokalen Log-Datei bzw. einer kleinen Datenbank für das in 3.10 beschriebene Feedback- und Anfragen-Logging vorgesehen. Externe Observability-Tools (z. B. Prometheus, Datadog) sind im Pilot bewusst nicht eingebunden.
+| Phase | Schnittstelle | Skript-Kategorie | Zweck |
+|---|---|---|---|
+| Spike | Web-UI (Streamlit) | Dialog | Frage/Antwort |
+| Spike | RunPod-Inferenz-API | Daten | Embedding + LLM |
+| Spike | Vektor-Store (lokal) | Daten | Retrieval |
+| Pilot/Rollout | Microsoft Graph (SharePoint) | Daten | automatische Korpus-Sync |
+| Pilot/Rollout | Active Directory / Entra ID | Daten | Authentifizierung |
+| alle | Log-Datei / kleine DB | funktional | Feedback und Anfragen-Log (siehe 3.10) |
+
+Klassische Ausgabeerzeugnisse (Reports, Briefe) entfallen — die Antwort wird im UI dargestellt. Externe Observability-Tools sind im Pilot nicht eingebunden.
 
 ## 3.21 Explorativer Schnittstellenprototyp / GUI
 
-Wie im Skript empfohlen wird in der Analysephase ein **grober GUI-Entwurf** skizziert, eine detaillierte Ausarbeitung erfolgt erst in der Designphase. Das Layout ist als schlankes, dialogorientiertes Chat-Interface angedacht und folgt dem Look-and-Feel der bereits in REQ-E1 dieser SWT-Portfolio-Site eingesetzten Pico.css-Bibliothek (semantisches HTML, class-less, mobile-first). Kernkomponenten sind ein zentrales Frage-Feld im oberen Drittel, darunter die generierte Antwort mit einem aufklappbaren Quellen-Block ("Aus diesen Dokumenten") sowie ein Feedback-Element (👍/👎 mit optionalem Freitext) zur Anbindung an das in 3.10 beschriebene Logging. Für Power-User (IT-/Organisationsteam) wird eine ergänzende Seitenleiste mit der aktuellen Korpus-Übersicht vorgesehen. Mobile-Tauglichkeit ist gefordert, da Hausmeister und Außendienst das Tool auch unterwegs nutzen sollen.
+Schlankes, dialogorientiertes Chat-Layout im bewährten Pico.css-Look (analog zum RE-Tool dieses Portfolios), mobile-tauglich für Außendienst.
 
-Das Skript hebt explizit hervor, dass insbesondere bei agilen Vorgehensmodellen "ein frühzeitiges Feedback hilft, Designfehler zu vermeiden, die später teuer werden können". Diese Empfehlung wird operationalisiert, indem der Schnittstellenprototyp bereits in Phase 2 (Pilot, vgl. 3.13) der Pilotgruppe aus drei bis fünf neuen Mitarbeitenden für regelmäßige kurze Reviews vorgelegt wird. Hieraus gespeiste Designanpassungen fließen in die Designphase ein, bevor das endgültige UI entsteht.
+```
+┌────────────────────────────────────────────┐
+│  WBG-Onboarding-Assistent                  │
+├────────────────────────────────────────────┤
+│  ┌──────────────────────────────────────┐  │
+│  │  Wie melde ich eine Krankmeldung?    │  │
+│  └──────────────────────────────────────┘  │
+│                                            │
+│  Antwort:                                  │
+│  Eine Krankmeldung wird per E-Mail an …    │
+│  ▾ Quellen (2)                             │
+│    • personalhandbuch.pdf, S. 14           │
+│    • krankmeldung-prozess.md               │
+│                                            │
+│  Bewerten: 👍   👎                          │
+└────────────────────────────────────────────┘
+```
+
+Skript-konform wird der Prototyp bereits in Phase 2 (Pilot) der Pilotgruppe vorgelegt — frühes Feedback verhindert teure Designkorrekturen in späteren Phasen. Detailliertes GUI-Design erfolgt erst in der Designphase.

@@ -153,3 +153,16 @@ Vorgehen: pro Checklistenpunkt 1–2 fokussierte KI-Fragen → Nutzer antwortet 
 
 **KI-Synthese:**
 ai-erweiterung.md mit je einem prägnanten Absatz pro Punkt: (1) Datenanforderungen (Format/Sprache/Kuratierung/Datenminimierung), (2) Modellrisiken (Halluzinationen, Bias, Prompt-Injection) mit jeweiliger Mitigation, (3) Akzeptanzkriterien mit konkreten Schwellen (≥80% Korrektheit, ≥90% Citation, ≤5% Halluzination, ≥70% Daumen-hoch), (4) AI-Validierung (Eval-Set, A/B, Citation-Accuracy, LLM-Judge als Roadmap), (5) Regulatorik (DSGVO, EU AI Act, BetrVG, Transparenzpflicht).
+
+---
+
+## Refactor — analyse.md kompakter
+
+**Prompt (KI):**
+> analyse.md ist zu textlastig — wo möglich Tabellen oder Grafiken nutzen, sonst kürzen.
+
+**Antwort (Nutzer):**
+> Kürzer, mit Tabelle/Grafik wo nötig.
+
+**KI-Synthese:**
+analyse.md neu strukturiert. Mehrheit der Punkte in Tabellenform (3.6 Marktalternativen, 3.9 Risiken+Mitigation, 3.13 Phasen, 3.15 Stakeholder, 3.17 UCs + nicht-funktionale Anforderungen, 3.20 Schnittstellen). 3.11 mit Mermaid-Architekturdiagramm (RunPod-Pods sichtbar). 3.21 mit ASCII-Mockup des Chat-Layouts. 3.5 und 3.10 narrativ aber gekürzt. Skript-Bezug bleibt in jedem Punkt erhalten.
