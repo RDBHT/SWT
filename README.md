@@ -10,6 +10,7 @@ Begleitende GitHub-Pages-Site: **https://rdbht.github.io/SWT/**
 |---|---|---|---|
 | DVC-E1 — Versionsverwaltung mit Git | [`dvc-e1/`](./dvc-e1) | [DVC-E1](https://rdbht.github.io/SWT/dvc-e1.html) | abgegeben |
 | REQ-E1 — Projektaufgabe Requirements | [`req-e1/`](./req-e1) | [REQ-E1](https://rdbht.github.io/SWT/req-e1.html) | abgegeben |
+| ANA-E1 — Checkliste und Analyse | [`ana-e1/`](./ana-e1) | [ANA-E1](https://rdbht.github.io/SWT/ana-e1.html) | in Bearbeitung |
 
 ## Konventionen
 
