@@ -140,3 +140,16 @@ Vorgehen: pro Checklistenpunkt 1–2 fokussierte KI-Fragen → Nutzer antwortet 
 
 **KI-Synthese:**
 3.21 mit zwei Absätzen, Skript-konform: (1) Grobentwurf der Komponenten und Verweis auf den bewährten Pico.css-Look des SWT-Portfolios, (2) operative Umsetzung der Skript-Empfehlung "frühzeitiges Feedback" via Pilotgruppe in Phase 2, Designdetails bewusst auf die Designphase verschoben.
+
+---
+
+## Teil 2 — 5 AI-Punkte (Erweiterung)
+
+**Prompt (KI):**
+> Detailtiefe für Teil 2: gleich detailliert wie Teil 1, etwas kürzer (je ein Absatz), oder selbst bewerten?
+
+**Antwort (Nutzer):**
+> Kürzer.
+
+**KI-Synthese:**
+ai-erweiterung.md mit je einem prägnanten Absatz pro Punkt: (1) Datenanforderungen (Format/Sprache/Kuratierung/Datenminimierung), (2) Modellrisiken (Halluzinationen, Bias, Prompt-Injection) mit jeweiliger Mitigation, (3) Akzeptanzkriterien mit konkreten Schwellen (≥80% Korrektheit, ≥90% Citation, ≤5% Halluzination, ≥70% Daumen-hoch), (4) AI-Validierung (Eval-Set, A/B, Citation-Accuracy, LLM-Judge als Roadmap), (5) Regulatorik (DSGVO, EU AI Act, BetrVG, Transparenzpflicht).

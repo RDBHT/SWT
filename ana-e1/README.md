@@ -8,11 +8,11 @@ Konzeptueller Prototyp eines **internen AI-Wissensportals** für eine mittelstä
 
 ## Aufgabe-Artefakte
 
-| Teil | Inhalt | Ort |
-|---|---|---|
-| Teil 1 — Analyse | 10 Checklistenpunkte aus Kap. 3, je 1–2 Absätze | [`analyse.md`](./analyse.md) |
-| Teil 2 — AI-Erweiterung | 5 Punkte aus Requirements/Analyse zum AI-Anteil | [`ai-erweiterung.md`](./ai-erweiterung.md) |
-| KI-Prompts | Gezielte Mini-Prompts, dokumentiert nach Skript-Vorgabe | [`prompts.md`](./prompts.md) |
+| Teil | Inhalt | Status | Ort |
+|---|---|---|---|
+| Teil 1 — Analyse | 10 Checklistenpunkte aus Kap. 3, je 1–2 Absätze | fertig | [`analyse.md`](./analyse.md) |
+| Teil 2 — AI-Erweiterung | 5 Punkte aus Requirements/Analyse zum AI-Anteil | fertig | [`ai-erweiterung.md`](./ai-erweiterung.md) |
+| KI-Prompts | Gezielte Mini-Prompts, dokumentiert nach Skript-Vorgabe | fertig | [`prompts.md`](./prompts.md) |
 
 ## Verwendete Checklistenpunkte (10 von 24)
 
