@@ -166,3 +166,16 @@ ai-erweiterung.md mit je einem prägnanten Absatz pro Punkt: (1) Datenanforderun
 
 **KI-Synthese:**
 analyse.md neu strukturiert. Mehrheit der Punkte in Tabellenform (3.6 Marktalternativen, 3.9 Risiken+Mitigation, 3.13 Phasen, 3.15 Stakeholder, 3.17 UCs + nicht-funktionale Anforderungen, 3.20 Schnittstellen). 3.11 mit Mermaid-Architekturdiagramm (RunPod-Pods sichtbar). 3.21 mit ASCII-Mockup des Chat-Layouts. 3.5 und 3.10 narrativ aber gekürzt. Skript-Bezug bleibt in jedem Punkt erhalten.
+
+---
+
+## Refactor — ai-erweiterung.md kompakter
+
+**Prompt (KI):**
+> ai-erweiterung.md ebenfalls kürzer, mit Tabellen/Diagramm wo angebracht.
+
+**Antwort (Nutzer):**
+> Bitte überarbeiten, kürzer + Grafik/Tabelle wo passt.
+
+**KI-Synthese:**
+ai-erweiterung.md auf Tabellen-First umgestellt. (1) Datenanforderungen als Aspekt/Anforderungs-Tabelle, (2) Modellrisiken als Risiko/Charakteristik/Mitigation-Tabelle, (3) Akzeptanzkriterien als Metrik/Schwelle/Bezug-Tabelle, (4) AI-Validierung mit Mermaid-Loop-Diagramm (Release → Eval → Drift-Gate → Live → Feedback → zurück) und einem ergänzenden Absatz, (5) Regulatorik als Norm/Anker/Maßnahme-Tabelle.
