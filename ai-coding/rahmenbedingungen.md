@@ -4,8 +4,8 @@ Verbindliche Referenz, zusammengetragen aus Aufgabentext, Videoaufzeichnung und 
 
 ## Formales
 
-- Vibe & AI Coding — Präsenz 1, 24 Punkte, Frist 12. Juli 2026
-- Teil A + B einfach, zügig schaffbar (Exercise); Teil C schwer, Zeit bis Semesterende
+- Vibe & AI Coding — Präsenz 1
+- Teil A + B einfach und zügig schaffbar; Teil C ist der umfangreiche, anspruchsvolle Teil
 - Durchgängiges Projekt: **IT-Service-Monitor** (A = UI, B = Vibe-Version, C = modulare Version)
 
 ---

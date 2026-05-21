@@ -1,6 +1,6 @@
 # Vibe & AI Coding — Präsenz 1
 
-Präsenzaufgabe "Vibe & AI Coding" · 24 Punkte · Frist 12. Juli 2026.
+Präsenzaufgabe "Vibe & AI Coding".
 
 ## Durchgängiges Projekt: IT-Service-Monitor
 

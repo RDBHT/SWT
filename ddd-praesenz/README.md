@@ -20,4 +20,4 @@ Event Storming, Core Domain Chart und Bounded Context Canvas wurden in Miro gest
 
 ## Abgabe
 
-Link auf den DDD-Reiter: `https://rdbht.github.io/SWT/ddd.html` — Frist 24.05.2026.
+Link auf den DDD-Reiter: `https://rdbht.github.io/SWT/ddd.html`
