@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Coding &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html" aria-current="page">AI-Coding</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <hgroup>
+        <h2>Vibe &amp; AI Coding</h2>
+        <p>Präsenzaufgabe 1 &middot; 24 Punkte &middot; Frist 12. Juli 2026</p>
+      </hgroup>
+      <p>
+        Durchgängiges Projekt: ein <strong>IT-Service-Monitor</strong> — ein Tool,
+        das Services per Health-Check überwacht (HTTP, TCP-Port, DNS), den Verlauf
+        speichert und bei Ausfällen alarmiert. Dasselbe Konzept in drei Stufen:
+        vom schnellen Vibe-Coding bis zur modular gebauten, vollständig
+        verstandenen App.
+      </p>
+      <p>
+        <a href="#teil-a">Teil A</a> &middot;
+        <a href="#teil-b">Teil B</a> &middot;
+        <a href="#teil-c">Teil C</a>
+      </p>
+    </section>
+
+    <section id="teil-a">
+      <h3>Teil A &mdash; UI vibe-coden</h3>
+      <p>
+        UI-Entwurf für den Service-Monitor mit Google Stitch. Überlegte Prompts
+        in mehreren Iterationen, dokumentiert im Repo.
+      </p>
+      <p><kbd>in Bearbeitung</kbd></p>
+    </section>
+
+    <section id="teil-b">
+      <h3>Teil B &mdash; Pet-Project vibe-coden</h3>
+      <p>
+        Lauffähige Vibe-Coding-Version des Monitors mit Lovable — funktional,
+        aber bewusst noch nicht modular geschnitten.
+      </p>
+      <p><kbd>in Bearbeitung</kbd></p>
+    </section>
+
+    <section id="teil-c">
+      <h3>Teil C &mdash; Modulare, verteilte App</h3>
+      <p>
+        Dasselbe Konzept "richtig" gebaut: sechs separate Module
+        (<code>checker</code>, <code>scheduler</code>, <code>store</code>,
+        <code>alerting</code>, <code>dashboard-ui</code>, <code>mock-service</code>),
+        entwickelt mit Claude Code (CLI), step-by-step über
+        Spezifikations-MD-Files. Drei Check-Typen via Strategy Pattern:
+        HTTP, TCP-Port, DNS.
+      </p>
+      <p><kbd>in Bearbeitung</kbd></p>
+    </section>
+
+    <section>
+      <h3>Repository</h3>
+      <p>
+        Arbeitsstand und Dokumentation:
+        <a href="https://github.com/RDBHT/SWT/tree/main/ai-coding"><code>ai-coding/</code></a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>
