@@ -17,9 +17,9 @@ Verbindliche Referenz, zusammengetragen aus Aufgabentext, Videoaufzeichnung und 
 | A | Claude Design | KI-UI-Tool | UI-Mockup, Screenshots |
 | B | bolt.new | Vibe-Coding-Plattform | App-Code → GitHub Pages |
 | C | Claude Code | CLI (Agentic Coding) | lokaler Betrieb / kleiner Server |
-| C — Werkzeug-Nachweis | Cline | VS-Code-Plugin (Anthropic-API) | kleines Nachweis-Projekt |
+| C — Werkzeug-Nachweis | Cline | VS-Code-Plugin (Anthropic-API) | baut das Modul `mock-service` |
 
-Vier verschiedene Werkzeuge — erfüllt die Vorgabe "mindestens drei ausprobieren". Claude Code und Cline decken die geforderten zwei Werkzeug-Arten (CLI + VS-Code-Plugin) ab.
+Vier verschiedene Werkzeuge — erfüllt die Vorgabe "mindestens drei ausprobieren". Claude Code und Cline decken die geforderten zwei Werkzeug-Arten (CLI + VS-Code-Plugin) ab. Der Cline-Nachweis erfolgt nicht über ein Wegwerf-Projekt, sondern über ein echtes Modul von Teil C (`mock-service`) — beide Werkzeuge sind damit im selben Projekt belegt.
 
 ---
 
@@ -74,7 +74,7 @@ Vier verschiedene Werkzeuge — erfüllt die Vorgabe "mindestens drei ausprobier
 
 **Konkrete Anforderungen:**
 - [ ] verteilte App aus **separaten Modulen** (`checker`, `scheduler`, `store`, `alerting`, `dashboard-ui`, `mock-service`)
-- [ ] Werkzeug: eine CLI **oder** ein VS-Code-Clone — und das **andere** nachweislich installiert/benutzt (CLI = Claude Code, Nachweis = Cline)
+- [ ] Werkzeug: Claude Code (CLI) als Hauptwerkzeug für fünf Module; Cline (VS-Code-Plugin) nachweislich installiert/benutzt — baut das Modul `mock-service` (belegt mit Screenshots + Prompts)
 - [ ] Entwicklung **step-by-step über Spezifikations-MD-Files** (Specification-Driven Development)
 - [ ] Planning Mode vor Write Mode
 - [ ] Tests vorhanden (Unit bis Abnahmetests)

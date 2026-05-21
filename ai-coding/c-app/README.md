@@ -17,6 +17,10 @@ Die "richtige" Umsetzung des IT-Service-Monitors: modular geschnitten, verteilt,
 | `dashboard-ui` | Anzeige von Status und Verlauf |
 | `mock-service` | kontrollierbares Test-Target (HTTP-Status + offener/geschlossener Port) |
 
+## Werkzeuge
+
+Die Module `checker`, `scheduler`, `store`, `alerting` und `dashboard-ui` werden mit **Claude Code (CLI)** entwickelt. Das Modul `mock-service` wird mit **Cline** (VS-Code-Plugin) gebaut — damit ist die zweite geforderte Werkzeug-Art nachgewiesen.
+
 ## Verteilter Charakter
 
 Check-Agent (checker + scheduler) und Dashboard (dashboard-ui) sind getrennte Komponenten mit klar definierter Schnittstelle über das `store`-Modul.

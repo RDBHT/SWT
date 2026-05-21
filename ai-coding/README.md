@@ -18,7 +18,7 @@ Dasselbe Projektkonzept zieht sich durch alle drei Aufgabenteile — vom schnell
 
 ## Werkzeug-Nachweis
 
-Teil C wird mit **Claude Code (CLI)** umgesetzt. Zusätzlich wird **Cline** (VS-Code-Plugin, Anthropic-API) installiert und ausprobiert — die Aufgabe verlangt, beide Werkzeug-Arten angefasst zu haben.
+Teil C wird überwiegend mit **Claude Code (CLI)** umgesetzt. Das Modul `mock-service` wird stattdessen mit **Cline** (VS-Code-Plugin, Anthropic-API) gebaut. Damit ist die geforderte zweite Werkzeug-Art (VS-Code-Plugin) im selben Projekt nachgewiesen — belegt über Commit-Historie, Screenshots und Prompts.
 
 ## Kern-Regeln (Aufgabentext)
 
