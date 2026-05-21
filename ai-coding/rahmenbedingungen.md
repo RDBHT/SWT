@@ -1,92 +1,82 @@
-# Rahmenbedingungen — Vibe & AI Coding (Präsenz 1)
+# Rahmenbedingungen & Anforderungen — Vibe & AI Coding
 
-Zusammengetragen aus Aufgabentext, Videoaufzeichnung und Miro-Board des Dozenten.
-Dient als verbindliche Referenz für die Bearbeitung.
+Verbindliche Referenz, zusammengetragen aus Aufgabentext, Videoaufzeichnung und Miro-Board des Dozenten. Wird vor jedem Push und bei jedem Meilenstein gegen den Arbeitsstand abgeglichen.
 
 ## Formales
 
-- **Titel:** Vibe & AI Coding — Präsenz 1
-- **Punkte:** 24 gesamt (Teil A ≈ 5)
-- **Frist:** 12. Juli 2026
-- **Aufwand:** Teil A + B einfach, zügig schaffbar, zählen als Exercise; Teil C schwer, Zeit bis Semesterende
-
-## Abgabeform
-
-- **Public** GitHub-Repository (keine privaten Einladungen)
-- `README.md` auf Titelseite: einige Absätze Prosa + Pointer in die Ordner / auf Screenshots / auf konkrete Codezeilen
-- Prompts zeigen ("Show your prompts")
-- Alternativ PDF erlaubt
-- Umsetzung hier: Reiter auf der GitHub-Pages-Site + Repo-Ordner `ai-coding/`
-
-## Teil A — UI vibe-coden
-
-- GUI für eine Projektidee erzeugen; Werkzeug ideal Google Stitch (Alternativen erlaubt)
-- Überlegte Prompts in mehreren Iterationen — kein spontanes "Reinquatschen"
-- Abgabe: Prompts + Screenshots + 1–2 Absätze Prosa
-
-## Teil B — Pet-Project vibe-coden
-
-- Mittelgroßes "Pet-Project" mit echten Vibe-Coding-Tools (Lovable empfohlen)
-- Datenhaltung möglichst lokal; Cloud nur wo nötig (Datenschutz bewusst abwägen)
-
-## Teil C — Modulare, verteilte App
-
-- Werkzeug: **eine CLI oder ein VS-Code-Clone** — und nachweisen, dass das **andere** ebenfalls installiert und benutzt wurde
-- Größere **verteilte** App, die **vollständig verstanden** ist
-- App **muss aus separaten Modulen** bestehen
-- Entwicklung **step-by-step über MD-Files** (Specification-Driven Development)
-- Planning Mode zuerst, dann Write Mode
-- Tests (Unit bis Abnahmetests), Deployment-Fähigkeit
-- **Ownership:** echter, eigener, verstandener Code — kein "Prompt rein, Ergebnis raus"
-
-## Übergreifende Prinzipien (aus Video & Board)
-
-- **"PRÜFUNG = jeden Code verstehen!"** — mündliche Prüfung über den eigenen Code
-- Mindestens drei Werkzeuge ausprobieren
-- Mensch bleibt in der Loop; Schuld lässt sich nicht auf die AI schieben
-- One feature at a time
-
-## Umsetzungsentscheidungen für dieses Projekt
-
+- Vibe & AI Coding — Präsenz 1, 24 Punkte, Frist 12. Juli 2026
+- Teil A + B einfach, zügig schaffbar (Exercise); Teil C schwer, Zeit bis Semesterende
 - Durchgängiges Projekt: **IT-Service-Monitor** (A = UI, B = Vibe-Version, C = modulare Version)
-- Teil C mit **Claude Code (CLI)**; Nachweis des zweiten Werkzeugs über **Cline** (VS-Code-Plugin)
-- Werkzeuge insgesamt: Google Stitch, Lovable, Claude Code, Cline (= vier, erfüllt "mindestens drei")
-
-## Offene Punkte — vor Teil C zu klären
-
-1. **CLI vs. VS-Code-Derivat für C:** Der Aufgabentext erlaubt beides. Das Workflow-Bild des Dozenten ordnet "medium distributed project" allerdings dem VS-Code-Derivat zu und "small, lokal lauffähig" der CLI. → Mit der Modulbetreuung abklären, ob Claude Code (CLI) als Hauptwerkzeug für C akzeptiert ist.
-2. **Punkteverteilung** über A / B / C im Detail (nur Teil A ≈ 5 bekannt).
-3. **Mindestumfang von C** ("ein bisschen verteilt" — konkrete Erwartung an Modulzahl/Größe).
 
 ---
 
-## Anforderungs-Check (laufende Prüfung)
+## Übergreifende Anforderungen (alle Teile)
 
-Diese Checkliste wird vor jedem Push und bei jedem Meilenstein durchgegangen — abgleichen, ob der Arbeitsstand die Vorgaben erfüllt.
-
-### Übergreifend
 - [ ] Public GitHub-Repository
 - [ ] README mit Prosa-Absätzen + Pointern auf Ordner / Screenshots / Codezeilen
 - [ ] Prompts dokumentiert ("Show your prompts")
 - [ ] mindestens drei Werkzeuge ausprobiert
+- [ ] Eigenleistung erkennbar, Mensch in der Loop
 
-### Teil A — UI vibe-coden
-- [ ] GUI mit UI-Designer erzeugt (Google Stitch o. ä.)
-- [ ] mehrere überlegte Prompt-Iterationen (kein spontanes "Reinquatschen")
-- [ ] Screenshots vorhanden
+---
+
+## Teil A — UI vibe-coden
+
+**Definition:** Nur das **UI/GUI** — Aussehen, Layout, Screens. Kein funktionierender Code, keine Logik.
+
+**Konkrete Anforderungen:**
+- [ ] GUI für den IT-Service-Monitor mit einem KI-UI-Tool erzeugt (hier: Claude Design)
+- [ ] überlegte Prompts in **mehreren Iterationen** (kein spontanes Reinquatschen)
+- [ ] Screens abgedeckt: Dashboard, Service-Detail, Service-Formular, Empty State
+- [ ] Screenshots der Ergebnisse
 - [ ] 1–2 Absätze Prosa zur Vorgehensweise
 
-### Teil B — Pet-Project vibe-coden
-- [ ] mittelgroßes Pet-Project mit Vibe-Coding-Tool
-- [ ] lauffähig, Live-Link vorhanden
-- [ ] Prompts dokumentiert
-- [ ] Datenhaltung bewusst gewählt (lokal vs. Cloud)
+**Abgrenzung:** kein lauffähiger Code, kein Datenmodell, keine Module — das gehört zu C.
 
-### Teil C — Modulare, verteilte App
-- [ ] verteilte App aus separaten Modulen
-- [ ] CLI **oder** VS-Code-Clone genutzt; das andere Werkzeug nachweislich installiert/benutzt
-- [ ] Entwicklung step-by-step über Spezifikations-MD-Files (SDD)
+**Abgabe-Artefakte:** Prompts (in `prompts.md`), Screenshots, Prosa — dargestellt im Reiter.
+
+---
+
+## Teil B — Pet-Project vibe-coden
+
+**Definition:** Eine **funktionierende**, mittelgroße App, vibe-coded. Läuft, ist aber bewusst "Vibe-Qualität" — nicht sauber modular.
+
+**Konkrete Anforderungen:**
+- [ ] lauffähige Vibe-Version des IT-Service-Monitors mit einem Vibe-Coding-Tool (hier: Lovable)
+- [ ] überlegte Prompts dokumentiert
+- [ ] Live-Link zur App
+- [ ] Screenshots
+- [ ] Datenhaltung bewusst gewählt (lokal vs. Cloud)
+- [ ] 1–2 Absätze Prosa
+
+**Abgrenzung:** muss **nicht** modular oder sauber strukturiert sein — der Kontrast zu C ist gewollt.
+
+**Abgabe-Artefakte:** Live-Link, Prompts, Screenshots, Prosa.
+
+---
+
+## Teil C — Modulare, verteilte App
+
+**Definition:** Dasselbe Projekt **richtig** gebaut — modular, verteilt, schrittweise spezifiziert, vollständig verstanden.
+
+**Konkrete Anforderungen:**
+- [ ] verteilte App aus **separaten Modulen** (`checker`, `scheduler`, `store`, `alerting`, `dashboard-ui`, `mock-service`)
+- [ ] Werkzeug: eine CLI **oder** ein VS-Code-Clone — und das **andere** nachweislich installiert/benutzt (CLI = Claude Code, Nachweis = Cline)
+- [ ] Entwicklung **step-by-step über Spezifikations-MD-Files** (Specification-Driven Development)
+- [ ] Planning Mode vor Write Mode
 - [ ] Tests vorhanden (Unit bis Abnahmetests)
 - [ ] App ist deploybar
-- [ ] Code vollständig verstanden — prüfungsfähig
-- [ ] eigener Code, Ownership belegt (Commit-Historie, Prompts, Spezifikationen)
+- [ ] Code **vollständig verstanden** — prüfungsfähig (mündliche Prüfung)
+- [ ] eigener Code, Ownership belegt (Commit-Historie, Specs, Prompts)
+
+**Abgrenzung:** kein Vibe-Wegwerf-Code; jeder Modul-Schnitt und jede Codezeile muss erklärbar sein.
+
+**Abgabe-Artefakte:** modulares Repo (`ai-coding/c-app/`), Spezifikations-MD-Files, Tests, README mit Pointern.
+
+---
+
+## Offene Punkte — vor Teil C zu klären
+
+1. **CLI vs. VS-Code-Derivat für C:** Aufgabentext erlaubt beides; das Workflow-Bild ordnet "medium distributed project" dem VS-Code-Derivat zu. → mit Modulbetreuung klären, ob Claude Code (CLI) als Hauptwerkzeug akzeptiert ist.
+2. **Punkteverteilung** über A / B / C (nur Teil A ≈ 5 bekannt).
+3. **Mindestumfang von C** (konkrete Erwartung an Modulzahl/Größe).
