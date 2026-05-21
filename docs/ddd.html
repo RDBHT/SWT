@@ -69,12 +69,66 @@
 
     <section>
       <h3>2. Core Domain Chart</h3>
-      <p><kbd>folgt</kbd></p>
+      <p>
+        Die neun Domains wurden nach Business Differentiation (X) und Model
+        Complexity (Y) eingeordnet. Kerngeschäft einer Wissensplattform ist die
+        intelligente Suche und der AI-Assistent &mdash; diese gehören in den Core
+        und sind selbst zu bauen; Standardfunktionen gehören in den Generic-Bereich.
+      </p>
+      <figure>
+        <img src="img/ddd-core-domain-chart.png" alt="Core Domain Chart mit neun Domains in den Zonen Core, Supporting und Generic">
+        <figcaption>Core Domain Chart: 2 Core, 4 Supporting, 3 Generic.</figcaption>
+      </figure>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>Domain</th><th>Zone</th><th>Begründung</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Wissenssuche &amp; Retrieval</td><td><strong>Core</strong></td><td>Alleinstellungsmerkmal — semantische Suche, Ranking</td></tr>
+            <tr><td>AI-Assistent</td><td><strong>Core</strong></td><td>RAG und Antwortgenerierung; "High AI Field"</td></tr>
+            <tr><td>Dokumentenmanagement</td><td>Supporting</td><td>notwendig, kein Differenzierungsmerkmal</td></tr>
+            <tr><td>Community &amp; Q&amp;A</td><td>Supporting</td><td>organisationsspezifisch, kein USP</td></tr>
+            <tr><td>Mitarbeiterverzeichnis</td><td>Supporting</td><td>Experten-Matching mit fachlicher Tiefe</td></tr>
+            <tr><td>Onboarding</td><td>Supporting</td><td>firmenspezifisch, aber simpel</td></tr>
+            <tr><td>Identitäts- &amp; Zugriffsverwaltung</td><td>Generic</td><td>Standardproblem — Entra ID / Keycloak</td></tr>
+            <tr><td>News &amp; Kommunikation</td><td>Generic</td><td>Standard-Feed</td></tr>
+            <tr><td>Learning &amp; Schulung</td><td>Generic</td><td>LMS als fertiges Produkt verfügbar</td></tr>
+          </tbody>
+        </table>
+      </figure>
     </section>
 
     <section>
       <h3>3. Domain Mapping</h3>
-      <p><kbd>folgt</kbd></p>
+      <p>
+        Beziehungen zwischen den neun Domains, benannt mit den
+        DDD-Context-Mapping-Patterns. Die Auswahl deckt sieben Pattern-Typen ab:
+        Open Host Service, Published Language, Conformist, Customer/Supplier,
+        Anticorruption Layer, Shared Kernel und Partnership.
+      </p>
+      <figure>
+        <img src="img/ddd-domain-mapping.png" alt="Domain-Mapping-Diagramm mit neun Domains und benannten Beziehungen">
+        <figcaption>Domain Mapping: neun Domains, Beziehungen mit DDD-Patterns benannt.</figcaption>
+      </figure>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>Beziehung</th><th>Pattern</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Identitäts- &amp; Zugriffsverwaltung &rarr; alle</td><td>Open Host Service + Published Language</td></tr>
+            <tr><td>Onboarding &rarr; IAM</td><td>Conformist</td></tr>
+            <tr><td>Dokumentenmanagement &rarr; Wissenssuche</td><td>Customer/Supplier + Anticorruption Layer</td></tr>
+            <tr><td>Wissenssuche &harr; AI-Assistent</td><td>Shared Kernel</td></tr>
+            <tr><td>Community &amp; Q&amp;A &rarr; Wissenssuche</td><td>Customer/Supplier</td></tr>
+            <tr><td>Mitarbeiterverzeichnis &rarr; Wissenssuche</td><td>Customer/Supplier</td></tr>
+            <tr><td>Onboarding &harr; Learning &amp; Schulung</td><td>Partnership</td></tr>
+            <tr><td>Onboarding &rarr; Mitarbeiterverzeichnis</td><td>Customer/Supplier</td></tr>
+            <tr><td>alle &rarr; News &amp; Kommunikation</td><td>Open Host Service</td></tr>
+          </tbody>
+        </table>
+      </figure>
     </section>
 
     <section>
