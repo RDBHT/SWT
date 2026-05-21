@@ -8,17 +8,15 @@ Präsenzaufgabe zur Lerneinheit OOD / Kapitel 6.5 Domain-Driven Design.
 
 ## Aufgabe-Artefakte
 
-| # | Aufgabe | Inhalt |
-|---|---|---|
-| 1 | Event Storming | Domain-Events sammeln, zeitlich sortieren, Pivotal Events, Domains durch Clustern finden |
-| 2 | Core Domain Chart | Domains nach Business Differentiation x Model Complexity einordnen (Core/Supporting/Generic) |
-| 3 | Domain Mapping | Beziehungen zwischen Domains benennen (Shared Kernel, Customer/Supplier, Conformist, ...) |
-| 4 | Bounded Context Canvas | Eine Domain detailliert beschreiben (ddd-crew Canvas v4) |
+| # | Aufgabe | Datei | Status |
+|---|---|---|---|
+| 1 | Event Storming | [`event-storming.md`](./event-storming.md) | fertig |
+| 2 | Core Domain Chart | [`core-domain-chart.md`](./core-domain-chart.md) | fertig |
+| 3 | Domain Mapping | [`domain-mapping.md`](./domain-mapping.md) | fertig |
+| 4 | Bounded Context Canvas | [`bounded-context-canvas.md`](./bounded-context-canvas.md) | fertig |
+| – | KI-Prompts | [`prompts.md`](./prompts.md) | fertig |
 
-## Bearbeitung
-
-Erarbeitung im KI-gestützten Frage-Antwort-Verfahren; Dokumentation der Prompts in [`prompts.md`](./prompts.md).
-Darstellung als interaktiver Reiter der GitHub-Pages-Site (HTML/SVG).
+Event Storming, Core Domain Chart und Bounded Context Canvas wurden in Miro gestaltet; das Domain Mapping als SVG-Context-Map erstellt. Darstellung auf dem DDD-Reiter der GitHub-Pages-Site.
 
 ## Abgabe
 

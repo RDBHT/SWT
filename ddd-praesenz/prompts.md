@@ -44,3 +44,19 @@ Vorgehen: pro Teilaufgabe fokussierte Fragen, eigene fachliche Entscheidung, dan
 
 **Resultat:**
 Neun Beziehungen, sieben Pattern-Typen (Open Host Service, Published Language, Conformist, Customer/Supplier, Anticorruption Layer, Shared Kernel, Partnership). Erstellt als SVG-Context-Map (`docs/img/ddd-domain-mapping.svg`), dokumentiert in domain-mapping.md.
+
+**Nachträgliche Korrektur (Korrektheitsprüfung):**
+Beziehung Dokumentenmanagement → Wissenssuche von "Customer/Supplier + ACL" auf "Conformist + ACL" geändert — methodisch sauberer, da ein ACL die fehlende Verhandlungsmacht (Conformist) kapselt, während Customer/Supplier eigentlich Einfluss des Customers impliziert.
+
+---
+
+## Aufgabe 4 — Bounded Context Canvas
+
+**Anweisung an die KI:**
+> Beschreibe eine Domain detailliert mit der ddd-crew Bounded Context Canvas.
+
+**Eigene Vorgabe:**
+> Domain AI-Assistent (Core-Domain). Ausfüllen des ddd-crew-Templates (v4) in Miro.
+
+**Resultat:**
+Canvas der Domain AI-Assistent: Strategic Classification (core / engagement / custom built), Domain Role "Execution Context", Inbound 2 Commands (Frage stellen, Antwort als falsch melden), Outbound Query (Chunks abrufen → Wissenssuche) und Event (Antwort generiert → Frontend/QS), 10 Ubiquitous-Language-Begriffe, 5 Business Decisions. Dokumentiert in bounded-context-canvas.md.
