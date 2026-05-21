@@ -51,40 +51,57 @@
 
     <section id="teil-a">
       <h3>Teil A &mdash; UI vibe-coden</h3>
-      <p>
-        UI-Entwurf für den Service-Monitor mit Google Stitch. Überlegte Prompts
-        in mehreren Iterationen, dokumentiert im Repo.
-      </p>
-      <p><kbd>in Bearbeitung</kbd></p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Ziel</th><td>UI/GUI für den IT-Service-Monitor entwerfen — reine Optik, kein funktionaler Code</td></tr>
+            <tr><th scope="row">Werkzeug</th><td>Claude Design (KI-UI-Tool)</td></tr>
+            <tr><th scope="row">Anforderungen</th><td>Überlegte Prompts in mehreren Iterationen; Screens Dashboard, Service-Detail, Service-Formular, Empty State</td></tr>
+            <tr><th scope="row">Abgabe</th><td>Prompts, Screenshots, 1–2 Absätze Prosa</td></tr>
+            <tr><th scope="row">Status</th><td><kbd>in Bearbeitung</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
     </section>
 
     <section id="teil-b">
       <h3>Teil B &mdash; Pet-Project vibe-coden</h3>
-      <p>
-        Lauffähige Vibe-Coding-Version des Monitors mit Lovable — funktional,
-        aber bewusst noch nicht modular geschnitten.
-      </p>
-      <p><kbd>in Bearbeitung</kbd></p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Ziel</th><td>Funktionierende Vibe-Version des Monitors — lauffähig, bewusst "Vibe-Qualität"</td></tr>
+            <tr><th scope="row">Werkzeug</th><td>Lovable (Vibe-Coding-Plattform)</td></tr>
+            <tr><th scope="row">Anforderungen</th><td>Lauffähige App; überlegte Prompts; bewusst gewählte Datenhaltung (lokal/Cloud)</td></tr>
+            <tr><th scope="row">Abgabe</th><td>Live-Link, Prompts, Screenshots, 1–2 Absätze Prosa</td></tr>
+            <tr><th scope="row">Status</th><td><kbd>offen</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
     </section>
 
     <section id="teil-c">
       <h3>Teil C &mdash; Modulare, verteilte App</h3>
-      <p>
-        Dasselbe Konzept "richtig" gebaut: sechs separate Module
-        (<code>checker</code>, <code>scheduler</code>, <code>store</code>,
-        <code>alerting</code>, <code>dashboard-ui</code>, <code>mock-service</code>),
-        entwickelt mit Claude Code (CLI), step-by-step über
-        Spezifikations-MD-Files. Drei Check-Typen via Strategy Pattern:
-        HTTP, TCP-Port, DNS.
-      </p>
-      <p><kbd>in Bearbeitung</kbd></p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Ziel</th><td>Dasselbe Konzept "richtig" — modular, verteilt, vollständig verstanden</td></tr>
+            <tr><th scope="row">Werkzeug</th><td>Claude Code (CLI); Cline (VS-Code-Plugin) als Werkzeug-Nachweis</td></tr>
+            <tr><th scope="row">Module</th><td><code>checker</code>, <code>scheduler</code>, <code>store</code>, <code>alerting</code>, <code>dashboard-ui</code>, <code>mock-service</code></td></tr>
+            <tr><th scope="row">Anforderungen</th><td>Separate Module; Entwicklung step-by-step über Spezifikations-MD-Files; Tests; deploybar; Code vollständig verstanden</td></tr>
+            <tr><th scope="row">Abgabe</th><td>Modulares Repo, Spezifikations-MD-Files, Tests, README mit Pointern</td></tr>
+            <tr><th scope="row">Status</th><td><kbd>offen</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
     </section>
 
     <section>
-      <h3>Repository</h3>
+      <h3>Repository &amp; Anforderungen</h3>
       <p>
         Arbeitsstand und Dokumentation:
-        <a href="https://github.com/RDBHT/SWT/tree/main/ai-coding"><code>ai-coding/</code></a>
+        <a href="https://github.com/RDBHT/SWT/tree/main/ai-coding"><code>ai-coding/</code></a> &mdash;
+        die vollständigen Anforderungen je Teil:
+        <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/rahmenbedingungen.md"><code>rahmenbedingungen.md</code></a>
       </p>
     </section>
   </main>
