@@ -10,6 +10,19 @@ Verbindliche Referenz, zusammengetragen aus Aufgabentext, Videoaufzeichnung und 
 
 ---
 
+## Werkzeuge (festgelegt)
+
+| Teil | Werkzeug | Art | Hosting / Ablage |
+|---|---|---|---|
+| A | Claude Design | KI-UI-Tool | UI-Mockup, Screenshots |
+| B | bolt.new | Vibe-Coding-Plattform | App-Code → GitHub Pages |
+| C | Claude Code | CLI (Agentic Coding) | lokaler Betrieb / kleiner Server |
+| C — Werkzeug-Nachweis | Cline | VS-Code-Plugin (Anthropic-API) | kleines Nachweis-Projekt |
+
+Vier verschiedene Werkzeuge — erfüllt die Vorgabe "mindestens drei ausprobieren". Claude Code und Cline decken die geforderten zwei Werkzeug-Arten (CLI + VS-Code-Plugin) ab.
+
+---
+
 ## Übergreifende Anforderungen (alle Teile)
 
 - [ ] Public GitHub-Repository
@@ -42,7 +55,7 @@ Verbindliche Referenz, zusammengetragen aus Aufgabentext, Videoaufzeichnung und 
 **Definition:** Eine **funktionierende**, mittelgroße App, vibe-coded. Läuft, ist aber bewusst "Vibe-Qualität" — nicht sauber modular.
 
 **Konkrete Anforderungen:**
-- [ ] lauffähige Vibe-Version des IT-Service-Monitors mit einem Vibe-Coding-Tool (hier: Lovable)
+- [ ] lauffähige Vibe-Version des IT-Service-Monitors mit einem Vibe-Coding-Tool (hier: bolt.new), gehostet über GitHub Pages
 - [ ] überlegte Prompts dokumentiert
 - [ ] Live-Link zur App
 - [ ] Screenshots

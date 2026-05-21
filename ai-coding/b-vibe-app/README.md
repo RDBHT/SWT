@@ -1,6 +1,6 @@
 # Teil B — Pet-Project vibe-coden
 
-Lauffähige Vibe-Coding-Version des IT-Service-Monitors, erstellt mit Lovable.
+Lauffähige Vibe-Coding-Version des IT-Service-Monitors, erstellt mit bolt.new, gehostet über GitHub Pages.
 
 ## Aufgabe
 
@@ -8,7 +8,7 @@ Lauffähige Vibe-Coding-Version des IT-Service-Monitors, erstellt mit Lovable.
 
 ## Inhalt
 
-- Live-Link zur Lovable-App
+- Live-Link zur App (GitHub Pages)
 - Überlegte Prompts (siehe [`../prompts.md`](../prompts.md))
 - Screenshots
 - 1–2 Absätze Prosa
