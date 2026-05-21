@@ -1,94 +1,103 @@
-# AI-Prompts zur Constitution-Erstellung
+# AI-Prompts zur Constitution- und Tool-Erstellung
 
-Dokumentation der Frage-Antwort-Iterationen mit Claude (Anthropic).
+Dokumentation der Frage-Antwort-Iterationen mit Claude (Anthropic) gemäß Aufgabenvorgabe: *"Falls sie hier eine AI / LLM verwendet haben, beschreiben sie unbedingt an welcher Stelle und wie. Notieren Sie sich die Prompts!"*
+
+**Vorgehen:** Die KI stellt gezielte Klärungsfragen, die fachlichen Entscheidungen (Projektwahl, Werkzeuge, Tiefe, Abgabeform) trifft der Nutzer mit Begründung, anschließend setzt die KI auf dieser Basis um. Kein "ein Prompt, viele Seiten".
+
+---
+
+## Schritt 0 — Projektwahl
+
+**Eigene Vorgabe:**
+> Als Projekt für REQ-E1 möchte ich das Aufsetzen einer **GitHub-Pages-Site** nehmen. Die Site soll nicht nur diese eine Abgabe tragen, sondern zur dauerhaften Plattform für alle Einsendeaufgaben des Moduls werden — jede Abgabe bekommt einen eigenen Reiter. Das ist ein echtes "Greenfield"-Projekt, an dem sich Requirements Engineering sauber durchspielen lässt, und es hat über die Abgabe hinaus Nutzen.
+
+**KI-Beitrag:**
+Bestätigung der Eignung, Vorschlag der Repo-Struktur (`docs/` für Pages, ein Ordner je Abgabe) und der Constitution-Gliederung gemäß Aufgabentext (mission/roadmap/techstack + Feature-Specs).
 
 ---
 
 ## Schritt 1 — Mission
 
-**Prompt (KI):**
-> a) Wer ist die Hauptzielgruppe der Site? Nur die Modulbetreuung, oder auch Bewerbungs-/Portfolio-Zwecken?
-> b) Was ist der Mehrwert der Site gegenüber dem reinen Repo? (Interaktive Demos? Didaktischer Anspruch? Lernfortschritt sichtbar?)
+**Klärungsfrage der KI:**
+> a) Wer ist die Hauptzielgruppe der Site — nur die Modulbetreuung oder auch Bewerbungs-/Portfoliozwecke?
+> b) Worin liegt der Mehrwert gegenüber einem reinen Repository?
 
-**Antwort (Nutzer):**
-> a) Modulbetreuung.
-> b) Interaktiver, mehr Möglichkeiten visuell/interaktiv etwas darzustellen.
+**Eigene Vorgabe:**
+> Zielgruppe ist ausschließlich die Modulbetreuung — es ist eine Abgabe, kein Bewerbungsportfolio, das hält den Fokus klar. Der Mehrwert gegenüber einem reinen Repo ist die Interaktivität: Sachverhalte lassen sich visuell und interaktiv darstellen statt nur als statische Markdown-Dateien. Ein lauffähiges Tool ist aussagekräftiger als ein Screenshot.
 
-**KI-Synthese:**
-mission.md mit Zielgruppe = Modulbetreuung, Mehrwert = Interaktivität, Erfolgsmerkmal = schnelle Prüfung in <1 Min.
+**Resultat:**
+mission.md — Zielgruppe Modulbetreuung, Mehrwert Interaktivität, Erfolgsmerkmal: jede Abgabe in unter einer Minute prüf- und nachvollziehbar.
 
 ---
 
 ## Schritt 2 — Roadmap
 
-**Prompt (KI):**
-> Soll Iteration 1 schon Inhalt für den dvc-e1.html-Reiter mitbringen (also DVC-E1-Doku nach-dokumentieren), oder nur das Skelett des Reiters mit "Siehe Repo-Ordner"-Verweis?
+**Klärungsfrage der KI:**
+> Soll Iteration 1 bereits Inhalt für den DVC-E1-Reiter mitbringen (die abgeschlossene DVC-E1-Aufgabe nach-dokumentieren), oder zunächst nur ein Reiter-Skelett mit Repo-Verweis?
 
-**Antwort (Nutzer):**
-> Ja, nach-dokumentieren.
+**Eigene Vorgabe:**
+> Nach-dokumentieren. Wenn der DVC-E1-Reiter von Anfang an die echten Inhalte trägt (die sechs Aufgabenpunkte, Commit-Hashes, PR-Link), wirkt die Site rund und der Aufwand ist gering, weil die Aufgabe bereits abgeschlossen ist. Drei Iterationen halte ich für richtig: Grundgerüst, dann das RE-Tool, dann der REQ-E1-Reiter.
 
-**KI-Synthese:**
-roadmap.md mit drei Iterationen: (1) Grundgerüst inkl. DVC-E1-Inhalt, (2) RE-Tool, (3) REQ-E1 komplett.
+**Resultat:**
+roadmap.md — drei Iterationen: (1) Grundgerüst inkl. DVC-E1-Inhalt, (2) RE-Tool, (3) REQ-E1 komplett.
 
 ---
 
 ## Schritt 3 — Techstack
 
-**Prompt (KI):**
-> a) Styling: vanilla CSS oder schlankes Class-less-Framework wie Pico.css/Simple.css?
-> b) RE-Tool-Persistenz: LocalStorage + JSON-Export/Import — OK?
+**Klärungsfrage der KI:**
+> a) Styling per vanilla CSS oder mit einem schlanken Class-less-Framework (Pico.css / Simple.css)?
+> b) Persistenz des RE-Tools über LocalStorage plus JSON-Export/Import?
 
-**Antwort (Nutzer):**
-> Ja OK.
+**Eigene Vorgabe:**
+> Pico.css — class-less bedeutet wenig Schreibarbeit, semantisches HTML genügt, und das Ergebnis sieht ohne weiteres Zutun anständig aus. Kein Build-Tooling, die Site soll direkt aus dem Repo laufen. Für das RE-Tool genügt LocalStorage für die Single-User-Demo; der JSON-Export ist mir wichtig, damit die Modulbetreuung Demo-Daten importieren kann. Insgesamt soll der Stack bewusst minimal bleiben.
 
-**KI-Synthese:**
-techstack.md mit HTML5, Pico.css, Vanilla JS, GitHub Pages aus `main/docs`, LocalStorage + JSON-Export.
+**Resultat:**
+techstack.md — HTML5, Pico.css, Vanilla JS, GitHub Pages aus `main/docs`, LocalStorage + JSON-Export.
 
 ---
 
 ## Schritt 4 — Feature-Specs (3 Iterationen)
 
-**Prompt (KI):**
-> Sollen die Validierungen manuell formuliert sein oder formaler im Given/When/Then-Stil?
+**Klärungsfrage der KI:**
+> Sollen die Validierungen je Iteration manuell-prosaisch formuliert sein oder formaler im Given/When/Then-Stil?
 
-**Antwort (Nutzer):**
-> Deine Empfehlung.
+**Eigene Vorgabe:**
+> Given/When/Then. Im Softwaretechnik-Kontext ist das didaktisch wertvoller und macht die Validierung überprüfbar, ohne nennenswert mehr Schreibaufwand zu verursachen. Pro Iteration ein File mit Ziel, Features, Validierungen und einem klaren "Out of Scope".
 
-**KI-Synthese:**
-Given/When/Then gewählt (methodisch sauberer, didaktisch wertvoll). Drei Feature-Files angelegt: iter-01.md (Grundgerüst + DVC-E1), iter-02.md (RE-Tool), iter-03.md (REQ-E1 komplett). Jedes File enthält Ziel, Features, Validierungen, Out of Scope.
+**Resultat:**
+Drei Feature-Files (iter-01 Grundgerüst + DVC-E1, iter-02 RE-Tool, iter-03 REQ-E1 komplett), jeweils mit Given/When/Then-Validierungen.
 
 ---
 
-## Schritt 5 — RE-Tool bauen (Iter 2)
+## Schritt 5 — RE-Tool (Teil B, AI-built)
 
-**Prompt-Kette an die KI:**
+**Eigene Vorgabe:**
+> Statt eines kommerziellen Tools baue ich Teil B selbst mit KI-Unterstützung — das deckt die Aufgaben-Option "AI-built tool" ab und passt zur Interaktivitäts-Idee der Site. Das RE-Tool soll ein **eigenständiger Reiter** sein, kein versteckter Unterbereich: das Highlight-Artefakt muss klar erkennbar sein. Anforderungen: Vanilla JS, Pico.css, Pflichtfelder und Auswahllisten für die Requirement-Attribute, Persistenz im Browser, JSON-Export/Import. Demo-Daten beim ersten Aufruf, damit sofort etwas sichtbar ist.
+
+**Prompt-Kette an die KI (Umsetzungsdetails):**
 
 1. *"Baue ein Requirements-Tool mit Vanilla JS und Pico.css. Pflichtfelder ID, Datum, Autor, Kurz; Selects für Status, Priorität, Kategorie, juristische Relevanz; Textareas für lange Beschreibung, Abnahmekriterium, Anmerkungen."*
-2. *"Persistiere in LocalStorage unter Key `swt-re-tool`. Beim ersten Aufruf, wenn leer, lade 5 Demo-Requirements zum Projekt SWT-Portfolio."*
-3. *"Verhindere doppelte IDs mit Alert. Löschen pro Zeile via Button mit ×."*
-4. *"Export als JSON-Datei (`swt-requirements.json`), Import aus JSON-Datei mit Validierung (muss Array sein)."*
+2. *"Persistiere in LocalStorage unter Key `swt-re-tool`. Beim ersten Aufruf, wenn leer, lade Demo-Requirements zum Projekt SWT-Portfolio."*
+3. *"Verhindere doppelte IDs mit Alert. Löschen pro Zeile via Button."*
+4. *"Export als JSON-Datei, Import aus JSON-Datei mit Validierung (muss Array sein)."*
 5. *"Escape alle Tabellen-Inhalte gegen XSS, da Nutzer-Input direkt gerendert wird."*
-6. *"Zwei zusätzliche Buttons: 'Demo-Daten laden' (mit Confirm-Dialog) und 'Alle löschen' (mit Confirm-Dialog)."*
 
-**Nutzer-Entscheidung:**
-> Demo-Daten ja, alle Vorschläge übernommen.
+**Eigene Entscheidung:**
+> Demo-Daten ja — sie repräsentieren zugleich die Abgabe-Requirements. Alle Umsetzungsvorschläge übernommen.
 
-**KI-Synthese:**
-`docs/re-tool.html` (semantisches Pico-HTML, Form + Tabelle + IO-Sektion) und `docs/re-tool.js` (~140 Zeilen Vanilla JS) angelegt. Navigation in `index.html` und `dvc-e1.html` um "RE-Tool"-Reiter erweitert.
+**Resultat:**
+`docs/re-tool.html` (semantisches Pico-HTML: Formular, Tabelle, Import/Export-Sektion) und `docs/re-tool.js` (~140 Zeilen Vanilla JS). RE-Tool als eigener Reiter in der Navigation.
 
 ---
 
-## Schritt 6 — Compliance-Pass für REQ-E1-Aufgabentext
+## Schritt 6 — Vollständigkeitsabgleich mit dem Aufgabentext
 
-**Prompt (KI):**
-> Erweitere RE-Tool um 3 weitere Attribute (Abnehmer, Referenz, Historie) für maximale Attribut-Vielfalt. Demo-Daten auf 7 Requirements aufstocken. Lege Teil A als Markdown-Tabelle an (selbe Requirements). REQ-E1-Reiter `req-e1.html` mit Sektionen A/B/C anlegen.
+**Eigene Vorgabe:**
+> Bevor wir abschließen: bitte den Stand strikt gegen den Original-Aufgabentext prüfen. Die Aufgabe verlangt zwei Werkzeuge mit *jeweils* 5–10 Requirements und ausdrücklich *viele verschiedene* Attribute. Aktuell fehlt Teil A (Self-made-Tool) noch ganz, und die Attributzahl ist mir zu knapp. Mein Wunsch: dieselben Requirements in beiden Werkzeugen abbilden (sauberer Werkzeugvergleich), auf 7 Requirements gehen und die Attributliste deutlich erweitern.
 
-**Antwort (Nutzer):**
-> Lets go.
-
-**KI-Synthese:**
-- `re-tool.html`: 3 neue Formularfelder (Abnehmer, Historie, Referenz), 3 neue Tabellen-Spalten
-- `re-tool.js`: DEMO_DATA von 5 auf 7 Requirements erweitert, alle 15 Attribute befüllt, `render()` zeigt 15 Spalten
-- `req-e1/requirements-table.md`: Übersichts-Tabelle + 7 Detail-Tabellen (jeweils 14 Key-Value-Zeilen plus Lange Beschreibung) für Teil A
-- `docs/req-e1.html`: Reiter mit Sektionen Teil A / Teil B / Teil C / Attribut-Liste
-- Navigation in `index.html`, `dvc-e1.html` und `re-tool.html` um REQ-E1-Reiter erweitert
+**Resultat:**
+- `re-tool.html` / `re-tool.js`: 3 weitere Attribute (Abnehmer, Referenz, Historie) → 15 Attribute, Demo-Daten von 5 auf 7 Requirements erweitert
+- `req-e1/requirements-table.md`: Teil A als Markdown-Tabelle (Self-made-Tool) mit denselben 7 Requirements
+- `docs/req-e1.html`: Reiter mit Sektionen Teil A / Teil B / Teil C
+- Damit alle Vorgaben des Aufgabentexts nachweisbar erfüllt.
