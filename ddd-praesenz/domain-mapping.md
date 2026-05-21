@@ -7,7 +7,7 @@ Die Auswahl deckt bewusst sieben verschiedene Pattern-Typen ab.
 |---|---|---|---|
 | 1 | Identitäts- & Zugriffsverwaltung → alle | Open Host Service + Published Language | IAM stellt Authentifizierung als standardisierten Dienst bereit (OIDC-Token als publizierte Sprache) |
 | 2 | Onboarding → IAM | Conformist | Onboarding übernimmt das Benutzer-/Rollenmodell von IAM unverändert |
-| 3 | Dokumentenmanagement → Wissenssuche & Retrieval | Customer/Supplier + Anticorruption Layer | DMS liefert Dokumente (Supplier); die Suche kapselt sich mit ACL gegen heterogene Dokumentformate ab |
+| 3 | Dokumentenmanagement → Wissenssuche & Retrieval | Conformist + Anticorruption Layer | Das DMS-Dokumentmodell wird nicht verhandelt; die Suche übernimmt es nicht direkt, sondern kapselt sich mit einem ACL ab und übersetzt heterogene Dokumentformate in ihr einheitliches Chunk-Modell |
 | 4 | Wissenssuche & Retrieval ↔ AI-Assistent | Shared Kernel | Beide Core-Domains teilen das Embedding-/Chunk-Modell als gemeinsamen Kern (RAG) |
 | 5 | Community & Q&A → Wissenssuche & Retrieval | Customer/Supplier | Beantwortete Fragen werden als Wissensquelle indexiert |
 | 6 | Mitarbeiterverzeichnis → Wissenssuche & Retrieval | Customer/Supplier | Profile und Experten sind durchsuchbar |

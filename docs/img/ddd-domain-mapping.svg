@@ -72,9 +72,9 @@
     <!-- A Conformist -->
     <rect x="648" y="96" width="74" height="18" fill="#ffffff" stroke="#9aafc7" stroke-width="0.8"/>
     <text x="685" y="109" text-anchor="middle">Conformist</text>
-    <!-- B Customer/Supplier + ACL -->
-    <rect x="236" y="206" width="150" height="18" fill="#ffffff" stroke="#9aafc7" stroke-width="0.8"/>
-    <text x="311" y="219" text-anchor="middle">Customer/Supplier + ACL</text>
+    <!-- B Conformist + ACL -->
+    <rect x="244" y="206" width="112" height="18" fill="#ffffff" stroke="#9aafc7" stroke-width="0.8"/>
+    <text x="300" y="219" text-anchor="middle">Conformist + ACL</text>
     <!-- C Customer/Supplier -->
     <rect x="240" y="296" width="116" height="18" fill="#ffffff" stroke="#9aafc7" stroke-width="0.8"/>
     <text x="298" y="309" text-anchor="middle">Customer/Supplier</text>
