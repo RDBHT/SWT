@@ -28,27 +28,3 @@ main section {
 table code {
   white-space: nowrap;
 }
-
-/* Dokumente-Blöcke (docs.js) */
-.doc-list {
-  margin-top: 0.5rem;
-}
-
-details.doc {
-  margin-bottom: 0.5rem;
-}
-
-details.doc > summary {
-  font-weight: 600;
-}
-
-details.doc .doc-body {
-  margin-top: 0.5rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--pico-muted-border-color);
-}
-
-details.doc .doc-source {
-  font-size: 0.9em;
-  margin-bottom: 0.75rem;
-}
