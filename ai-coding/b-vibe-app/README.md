@@ -9,7 +9,7 @@ Lauffähige Vibe-Coding-Version des IT-Service-Monitors, erstellt mit bolt.new, 
 ## Inhalt
 
 - Live-Link zur App (GitHub Pages)
-- Überlegte Prompts (siehe [`../prompts.md`](../prompts.md))
+- Überlegte Prompts (siehe [`prompts.md`](./prompts.md))
 - Screenshots
 - 1–2 Absätze Prosa
 

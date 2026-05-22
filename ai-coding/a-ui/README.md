@@ -8,7 +8,7 @@ UI-Entwurf für den IT-Service-Monitor, erstellt mit einem KI-UI-Tool (Claude De
 
 ## Inhalt
 
-- Überlegte Prompts in mehreren Iterationen (siehe [`../prompts.md`](../prompts.md))
+- Überlegte Prompts in mehreren Iterationen (siehe [`prompts.md`](./prompts.md))
 - Screens: Dashboard, Service-Detail, Service-Formular, Empty State
 - Screenshots des erzeugten UI
 - 1–2 Absätze Prosa zur Vorgehensweise
