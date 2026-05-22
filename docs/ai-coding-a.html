@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Coding · Teil A &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html" aria-current="page">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <hgroup>
+        <h2>Teil A &mdash; UI vibe-coden</h2>
+        <p>Vibe &amp; AI Coding &middot; Teil A von drei</p>
+      </hgroup>
+      <p><a href="ai-coding.html">&lsaquo; Zurück zur AI-Coding-Übersicht</a></p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Ziel</th><td>UI/GUI für den IT-Service-Monitor entwerfen — reine Optik, kein funktionaler Code</td></tr>
+            <tr><th scope="row">Werkzeug</th><td>Claude Design (KI-UI-Tool)</td></tr>
+            <tr><th scope="row">Anforderungen</th><td>Überlegte Prompts in mehreren Iterationen; Screens Dashboard, Service-Detail, Service-Formular, Empty State</td></tr>
+            <tr><th scope="row">Abgabe</th><td>Prompts, Screenshots, 1–2 Absätze Prosa</td></tr>
+            <tr><th scope="row">Status</th><td><kbd>abgeschlossen</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </section>
+
+    <section>
+      <h3>Vorgehensweise</h3>
+      <p>
+        Teil A entstand in fünf bewusst aufeinander aufbauenden Prompts mit Claude Design.
+        Der erste Prompt legte ausschließlich die Design-Sprache fest — Typografie
+        (IBM Plex Sans/Mono), eine in OKLCH definierte Status-Farbskala und die Bausteine
+        Status-Badge, Service-Karte und Tabelle. Erst auf dieser gemeinsamen Grundlage
+        wurden in den Prompts zwei bis fünf die einzelnen Screens gebaut: Dashboard,
+        Service-Detail, Service-Formular und Empty State. Das Vorgehen — erst das
+        Fundament, dann die Screens — hielt die vier Oberflächen visuell konsistent,
+        statt sie einzeln und uneinheitlich zu entwerfen.
+      </p>
+      <p>
+        Der Mensch blieb in der Schleife: Jeder Prompt war gezielt formuliert und
+        benannte konkrete Inhalte und Felder, statt das Werkzeug frei assoziieren zu
+        lassen. Der fünfte Prompt enthielt zusätzlich einen expliziten Konsistenz-Check
+        über alle Screens, der eine reale Abweichung aufdeckte und korrigieren ließ.
+        Jede Iteration wurde als eigenständige HTML-Datei exportiert und ist unten live
+        eingebettet.
+      </p>
+    </section>
+
+    <section>
+      <h3>Ergebnisse je Iteration</h3>
+      <p>
+        Fünf aufeinander aufbauende Prompts in Claude Design — jede Version als
+        eigenständige HTML-Datei exportiert und hier live eingebettet. Prompt-Wortlaute
+        je Iteration in
+        <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/a-ui/prompts.md">prompts.md</a>.
+      </p>
+
+      <article>
+        <h4>Iteration 1 &mdash; Design-Sprache</h4>
+        <p>
+          Layout, Typografie, Status-Farbskala (OK / degraded / down / unbekannt) und
+          Basis-Bausteine (Status-Badge, Service-Karte, Tabelle) — noch keine einzelnen Screens.
+        </p>
+        <iframe class="iter-preview" src="a-ui/iter-1.html" title="Iteration 1 — Design-Sprache" loading="lazy"></iframe>
+        <p><a href="a-ui/iter-1.html" target="_blank" rel="noopener noreferrer">Version in neuem Tab öffnen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>Iteration 2 &mdash; Dashboard</h4>
+        <p>
+          Hauptscreen mit Service-Liste, Statusübersicht (OK / degraded / down) und
+          Filter nach Status.
+        </p>
+        <iframe class="iter-preview" src="a-ui/iter-2.html" title="Iteration 2 — Dashboard" loading="lazy"></iframe>
+        <p><a href="a-ui/iter-2.html" target="_blank" rel="noopener noreferrer">Version in neuem Tab öffnen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>Iteration 3 &mdash; Service-Detail</h4>
+        <p>
+          Detailansicht eines Service mit Konfiguration (URL/Host/Port, Check-Typ,
+          Intervall), hervorgehobenem Status und Verlauf der letzten Checks.
+        </p>
+        <iframe class="iter-preview" src="a-ui/iter-3.html" title="Iteration 3 — Service-Detail" loading="lazy"></iframe>
+        <p><a href="a-ui/iter-3.html" target="_blank" rel="noopener noreferrer">Version in neuem Tab öffnen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>Iteration 4 &mdash; Service-Formular</h4>
+        <p>
+          Anlegen/Bearbeiten eines Service mit typabhängigen Feldern (HTTP / TCP-Port /
+          DNS), Prüfintervall und sichtbarer Validierung.
+        </p>
+        <iframe class="iter-preview" src="a-ui/iter-4.html" title="Iteration 4 — Service-Formular" loading="lazy"></iframe>
+        <p><a href="a-ui/iter-4.html" target="_blank" rel="noopener noreferrer">Version in neuem Tab öffnen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>Iteration 5 &mdash; Empty State + Politur</h4>
+        <p>
+          Leerzustand des Dashboards (noch kein Service angelegt) mit Erklärung und
+          Call-to-Action, dazu abschließende Konsistenz-Runde über alle Screens.
+        </p>
+        <iframe class="iter-preview" src="a-ui/iter-5.html" title="Iteration 5 — Empty State" loading="lazy"></iframe>
+        <p><a href="a-ui/iter-5.html" target="_blank" rel="noopener noreferrer">Version in neuem Tab öffnen &rsaquo;</a></p>
+      </article>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/a-ui/README.md">README — Teil A</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/a-ui/prompts.md">Prompts — Teil A (5 Iterationen)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>
