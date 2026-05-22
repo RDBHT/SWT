@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>IT Service Monitor — Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --surface-2: #fbfbfc;
+    --surface-hover: #f3f4f6;
+    --line: #e6e8ec;
+    --line-strong: #d3d7de;
+    --ink: #0f1216;
+    --ink-2: #353a42;
+    --ink-3: #6b727c;
+    --ink-4: #9aa0aa;
+
+    --ok:        oklch(62% 0.14 145);
+    --ok-bg:     oklch(96% 0.04 145);
+    --ok-line:   oklch(85% 0.09 145);
+
+    --degraded:  oklch(72% 0.15 75);
+    --degraded-ink: oklch(45% 0.13 75);
+    --degraded-bg: oklch(96% 0.05 80);
+    --degraded-line: oklch(86% 0.11 78);
+
+    --down:      oklch(58% 0.18 25);
+    --down-bg:   oklch(96% 0.04 25);
+    --down-line: oklch(85% 0.10 25);
+
+    --unknown:   oklch(60% 0.01 250);
+    --unknown-bg: oklch(96% 0.005 250);
+    --unknown-line: oklch(86% 0.01 250);
+
+    --accent: oklch(48% 0.14 250);
+    --accent-ink: oklch(40% 0.16 250);
+    --accent-bg: oklch(96% 0.03 250);
+
+    --radius-sm: 4px;
+    --radius:    6px;
+    --radius-lg: 10px;
+
+    --shadow-card: 0 1px 0 rgba(15,18,22,.03), 0 1px 2px rgba(15,18,22,.04);
+    --shadow-pop: 0 2px 4px rgba(15,18,22,.06), 0 8px 24px rgba(15,18,22,.08);
+
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, Segoe UI, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  input { font-family: inherit; }
+
+  /* ── Top bar ─────────────────────────── */
+  .topbar {
+    height: 48px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: -.005em;
+  }
+  .brand .mark {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    position: relative;
+  }
+  .brand .mark::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: var(--ok);
+    border-radius: 1px;
+  }
+  .brand .org {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    font-weight: 400;
+    padding-left: 10px;
+    margin-left: 4px;
+    border-left: 1px solid var(--line);
+  }
+
+  .nav { display: flex; gap: 2px; margin-left: 8px; }
+  .nav a {
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background .12s;
+  }
+  .nav a:hover { background: var(--surface-hover); }
+  .nav a.active { color: var(--ink); background: var(--surface-hover); font-weight: 500; }
+
+  .top-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .refresh-status {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+  .refresh-status .pip {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ok);
+    position: relative;
+  }
+  .refresh-status .pip::after {
+    content: ''; position: absolute; inset: -2px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ok);
+    opacity: .3;
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0%   { transform: scale(.8); opacity: .4; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  .avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: oklch(70% 0.05 60);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+
+  /* ── Page ────────────────────────────── */
+  main { padding: 24px 28px 64px; max-width: 1480px; margin: 0 auto; }
+
+  .page-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    gap: 24px;
+  }
+  .page-head h1 {
+    font-size: 22px;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -.01em;
+  }
+  .page-head .crumb {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+  }
+  .page-head .ts {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+  .page-head .ts b { color: var(--ink-2); font-weight: 500; }
+
+  /* ── KPI strip ───────────────────────── */
+  .kpis {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    padding: 16px 20px;
+    border-right: 1px solid var(--line);
+    text-align: left;
+    background: var(--surface);
+    border: none;
+    border-right: 1px solid var(--line);
+    transition: background .12s;
+    display: block;
+    width: 100%;
+  }
+  .kpi:last-child { border-right: 0; }
+  .kpi:hover { background: var(--surface-2); }
+  .kpi.active { background: var(--surface-2); box-shadow: inset 0 -2px 0 var(--ink); }
+  .kpi.active.kpi-ok       { box-shadow: inset 0 -2px 0 var(--ok); }
+  .kpi.active.kpi-degraded { box-shadow: inset 0 -2px 0 var(--degraded); }
+  .kpi.active.kpi-down     { box-shadow: inset 0 -2px 0 var(--down); }
+  .kpi.active.kpi-unknown  { box-shadow: inset 0 -2px 0 var(--unknown); }
+
+  .kpi .label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 10px;
+  }
+  .kpi .label .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+  .kpi .label .dot.ok       { background: var(--ok); }
+  .kpi .label .dot.degraded { background: var(--degraded); }
+  .kpi .label .dot.down     { background: var(--down); }
+  .kpi .label .dot.unknown  { background: var(--unknown); }
+
+  .kpi .value {
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    line-height: 1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi.kpi-down .value      { color: var(--down); }
+  .kpi.kpi-degraded .value  { color: var(--degraded-ink); }
+  .kpi.kpi-down.zero .value     { color: var(--ink); }
+  .kpi.kpi-degraded.zero .value { color: var(--ink); }
+  .kpi .sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 6px;
+  }
+
+  /* Total kpi shows distribution bar */
+  .kpi-total .bar {
+    margin-top: 12px;
+    height: 6px;
+    background: var(--unknown-bg);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+  }
+  .kpi-total .bar span { display: block; height: 100%; }
+  .kpi-total .bar .b-ok       { background: var(--ok); }
+  .kpi-total .bar .b-degraded { background: var(--degraded); }
+  .kpi-total .bar .b-down     { background: var(--down); }
+  .kpi-total .bar .b-unknown  { background: var(--unknown); opacity: .6; }
+
+  /* ── Toolbar ─────────────────────────── */
+  .toolbar {
+    display: flex; align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .chips { display: flex; gap: 6px; align-items: center; }
+  .chip-group {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .chip {
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--line);
+    padding: 7px 11px;
+    font-size: 12px;
+    color: var(--ink-2);
+    display: flex; align-items: center; gap: 7px;
+    font-variant-numeric: tabular-nums;
+    transition: background .12s, color .12s;
+  }
+  .chip:last-child { border-right: 0; }
+  .chip:hover { background: var(--surface-hover); }
+  .chip.active { background: var(--ink); color: white; }
+  .chip .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ink-4);
+  }
+  .chip[data-status="ok"] .dot       { background: var(--ok); }
+  .chip[data-status="degraded"] .dot { background: var(--degraded); }
+  .chip[data-status="down"] .dot     { background: var(--down); }
+  .chip[data-status="unknown"] .dot  { background: var(--unknown); }
+  .chip .count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    padding-left: 4px;
+    margin-left: 2px;
+    border-left: 1px solid var(--line);
+  }
+  .chip.active .count { color: rgba(255,255,255,.7); border-left-color: rgba(255,255,255,.2); }
+
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-right: 4px;
+    margin-left: 8px;
+  }
+  .filter-label:first-child { margin-left: 0; }
+
+  .search {
+    position: relative;
+    flex: 0 0 280px;
+    margin-left: auto;
+  }
+  .search input {
+    width: 100%;
+    height: 32px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0 12px 0 32px;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .12s;
+  }
+  .search input::placeholder { color: var(--ink-4); }
+  .search input:focus { border-color: var(--ink-3); }
+  .search svg {
+    position: absolute;
+    left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-4);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    transition: background .12s, border-color .12s;
+  }
+  .btn:hover { background: var(--surface-hover); }
+  .btn.primary {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .btn.primary:hover { background: #000; }
+  .btn .plus {
+    display: inline-flex;
+    width: 14px; height: 14px;
+    align-items: center; justify-content: center;
+    margin-left: -2px;
+  }
+
+  /* ── Table ───────────────────────────── */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  table.svc {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.svc thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+    position: sticky; top: 48px;
+    user-select: none;
+  }
+  table.svc thead th.num { text-align: right; }
+  table.svc thead th.sortable { cursor: pointer; }
+  table.svc thead th.sortable:hover { color: var(--ink); }
+  table.svc thead th .sort-ind {
+    display: inline-block;
+    width: 8px;
+    margin-left: 4px;
+    color: var(--ink-3);
+    opacity: 0;
+  }
+  table.svc thead th.sorted .sort-ind { opacity: 1; color: var(--ink); }
+
+  table.svc tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink);
+    vertical-align: middle;
+  }
+  table.svc tbody tr:last-child td { border-bottom: 0; }
+  table.svc tbody tr { cursor: pointer; transition: background .08s; }
+  table.svc tbody tr:hover { background: var(--surface-2); }
+
+  table.svc td.num { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+  table.svc td.num.warn { color: var(--degraded-ink); }
+  table.svc td.num.bad  { color: var(--down); }
+  table.svc td.num.muted { color: var(--ink-4); }
+  table.svc td.mono { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); }
+
+  table.svc td .svc-name {
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  table.svc td .svc-name .n { font-weight: 500; color: var(--ink); }
+  table.svc td .svc-name .target {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dot-cell { padding-left: 16px !important; width: 26px; }
+  .dot-cell .pip {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 0 0 0 2px var(--surface);
+    transition: box-shadow .12s;
+  }
+  tr:hover .dot-cell .pip { box-shadow: 0 0 0 2px var(--surface-2); }
+  .pip.ok       { background: var(--ok); }
+  .pip.degraded { background: var(--degraded); }
+  .pip.down     { background: var(--down); position: relative; }
+  .pip.unknown  { background: var(--unknown); }
+  .pip.down::after {
+    content: '';
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid var(--down);
+    opacity: .3;
+    animation: pulse 1.6s ease-out infinite;
+  }
+
+  /* Check type tag */
+  .ct {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--ink-2);
+    text-transform: uppercase;
+  }
+  .ct.http  { color: oklch(45% 0.13 250); border-color: oklch(88% 0.04 250); background: oklch(97% 0.015 250); }
+  .ct.https { color: oklch(45% 0.13 250); border-color: oklch(88% 0.04 250); background: oklch(97% 0.015 250); }
+  .ct.tcp   { color: oklch(45% 0.10 290); border-color: oklch(88% 0.03 290); background: oklch(97% 0.012 290); }
+  .ct.dns   { color: oklch(45% 0.10 180); border-color: oklch(88% 0.03 180); background: oklch(97% 0.012 180); }
+
+  /* Status badge in table */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 2px 8px 2px 7px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    font-variant-numeric: tabular-nums;
+  }
+  .badge .b-pip { width: 5px; height: 5px; border-radius: 50%; flex: none; }
+  .badge.ok        { color: var(--ok);             background: var(--ok-bg);       border-color: var(--ok-line); }
+  .badge.ok .b-pip { background: var(--ok); }
+  .badge.degraded  { color: var(--degraded-ink);   background: var(--degraded-bg); border-color: var(--degraded-line); }
+  .badge.degraded .b-pip { background: var(--degraded); }
+  .badge.down      { color: var(--down);           background: var(--down-bg);     border-color: var(--down-line); }
+  .badge.down .b-pip { background: var(--down); }
+  .badge.unknown   { color: var(--ink-2);          background: var(--unknown-bg);  border-color: var(--unknown-line); }
+  .badge.unknown .b-pip { background: var(--unknown); }
+
+  /* 24h ministrip */
+  .mini-strip {
+    display: flex; gap: 1px; height: 14px; width: 96px;
+    align-items: stretch;
+  }
+  .mini-strip .b { flex: 1; border-radius: 1px; min-width: 2px; }
+  .mini-strip .b.ok { background: var(--ok); opacity: .9; }
+  .mini-strip .b.deg { background: var(--degraded); }
+  .mini-strip .b.down { background: var(--down); }
+  .mini-strip .b.unk { background: var(--unknown); opacity: .5; }
+
+  /* Row action */
+  td.actions { width: 36px; padding-right: 12px !important; }
+  .row-action {
+    width: 22px; height: 22px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: var(--ink-3);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: background .12s, opacity .12s;
+  }
+  tr:hover .row-action { opacity: 1; }
+  .row-action:hover { background: var(--surface-hover); color: var(--ink); }
+
+  /* Empty / count footer */
+  .table-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px;
+    border-top: 1px solid var(--line);
+    background: var(--surface-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+  .table-foot .keyhint kbd {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-bottom-width: 2px;
+    padding: 0 5px;
+    border-radius: 3px;
+    color: var(--ink-2);
+    margin: 0 2px;
+  }
+
+  /* Empty state */
+  .empty {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--ink-3);
+    font-size: 13px;
+  }
+  .empty b { color: var(--ink); font-weight: 500; display: block; margin-bottom: 4px; }
+
+  /* ── Modal "Service hinzufügen" ─────── */
+  .modal-veil {
+    position: fixed; inset: 0;
+    background: rgba(15, 18, 22, .35);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: flex-start; justify-content: center;
+    padding-top: 80px;
+    z-index: 100;
+  }
+  .modal-veil.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-pop);
+    width: 560px;
+    max-width: calc(100% - 40px);
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .modal-head h2 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -.005em; }
+  .modal-head p { margin: 2px 0 0; font-size: 12px; color: var(--ink-3); }
+  .modal-close {
+    width: 26px; height: 26px;
+    background: transparent; border: none;
+    border-radius: 4px; color: var(--ink-3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { background: var(--surface-hover); color: var(--ink); }
+  .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .field input, .field select {
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0 10px;
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--ink);
+    outline: none;
+  }
+  .field input:focus, .field select:focus { border-color: var(--ink-3); }
+  .field-row { display: grid; grid-template-columns: 140px 1fr; gap: 12px; }
+  .seg {
+    display: flex;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    align-self: flex-start;
+  }
+  .seg button {
+    padding: 7px 14px;
+    background: var(--surface);
+    border: none;
+    border-right: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    color: var(--ink-2);
+  }
+  .seg button:last-child { border-right: 0; }
+  .seg button.active { background: var(--ink); color: white; }
+  .modal-foot {
+    padding: 14px 20px;
+    border-top: 1px solid var(--line);
+    background: var(--surface-2);
+    display: flex; justify-content: flex-end; gap: 8px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink);
+    color: white;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    box-shadow: var(--shadow-pop);
+    z-index: 200;
+    display: flex; align-items: center; gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  .toast .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+
+</style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark"></span>
+      <span>Sentry</span>
+      <span class="org">platform / production</span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Incidents</a>
+      <a href="#">History</a>
+      <a href="#">Maintenance</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="top-right">
+      <div class="refresh-status">
+        <span class="pip"></span>
+        <span>Live · alle 30 s</span>
+      </div>
+      <div class="avatar">MR</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page head -->
+    <div class="page-head">
+      <div>
+        <div class="crumb">Übersicht</div>
+        <h1>Dashboard</h1>
+      </div>
+      <div class="ts">letzter Check · <b id="last-check-ts">04:12:08 UTC</b></div>
+    </div>
+
+    <!-- KPI strip -->
+    <div class="kpis" id="kpis">
+      <div class="kpi kpi-total">
+        <div class="label">Services gesamt</div>
+        <div class="value" id="kpi-total">24</div>
+        <div class="bar">
+          <span class="b-ok"        id="bar-ok"></span>
+          <span class="b-degraded"  id="bar-degraded"></span>
+          <span class="b-down"      id="bar-down"></span>
+          <span class="b-unknown"   id="bar-unknown"></span>
+        </div>
+      </div>
+      <button class="kpi kpi-ok" data-filter="ok">
+        <div class="label"><span class="dot ok"></span>OK</div>
+        <div class="value" id="kpi-ok">20</div>
+        <div class="sub" id="kpi-ok-sub">83 % der Services</div>
+      </button>
+      <button class="kpi kpi-degraded" data-filter="degraded">
+        <div class="label"><span class="dot degraded"></span>Degraded</div>
+        <div class="value" id="kpi-degraded">2</div>
+        <div class="sub" id="kpi-degraded-sub">2 Services</div>
+      </button>
+      <button class="kpi kpi-down" data-filter="down">
+        <div class="label"><span class="dot down"></span>Down</div>
+        <div class="value" id="kpi-down">1</div>
+        <div class="sub" id="kpi-down-sub">1 Service · 4 m</div>
+      </button>
+      <button class="kpi kpi-unknown" data-filter="unknown">
+        <div class="label"><span class="dot unknown"></span>Unknown</div>
+        <div class="value" id="kpi-unknown">1</div>
+        <div class="sub" id="kpi-unknown-sub">1 Service stale</div>
+      </button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <span class="filter-label">Status</span>
+      <div class="chip-group" id="status-chips">
+        <button class="chip active" data-status="all">Alle <span class="count" id="cnt-all">24</span></button>
+        <button class="chip" data-status="ok"><span class="dot"></span>OK <span class="count" id="cnt-ok">20</span></button>
+        <button class="chip" data-status="degraded"><span class="dot"></span>Degraded <span class="count" id="cnt-degraded">2</span></button>
+        <button class="chip" data-status="down"><span class="dot"></span>Down <span class="count" id="cnt-down">1</span></button>
+        <button class="chip" data-status="unknown"><span class="dot"></span>Unknown <span class="count" id="cnt-unknown">1</span></button>
+      </div>
+
+      <span class="filter-label">Check</span>
+      <div class="chip-group" id="type-chips">
+        <button class="chip active" data-type="all">Alle</button>
+        <button class="chip" data-type="HTTP">HTTP</button>
+        <button class="chip" data-type="TCP">TCP</button>
+        <button class="chip" data-type="DNS">DNS</button>
+      </div>
+
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20 20-3.5-3.5"/>
+        </svg>
+        <input id="search-input" type="text" placeholder="Service oder Ziel suchen…">
+      </div>
+
+      <button class="btn" title="Aktualisieren">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>
+        </svg>
+      </button>
+
+      <button class="btn primary" id="add-btn">
+        <span class="plus">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        </span>
+        Service hinzufügen
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="svc" id="svc-table">
+        <thead>
+          <tr>
+            <th class="dot-cell"></th>
+            <th class="sortable" data-sort="name">Service <span class="sort-ind">↕</span></th>
+            <th class="sortable" data-sort="type">Check <span class="sort-ind">↕</span></th>
+            <th>Status</th>
+            <th class="num sortable" data-sort="latency">Antwortzeit <span class="sort-ind">↕</span></th>
+            <th>24-h-Verlauf</th>
+            <th class="sortable" data-sort="checked">Letzter Check <span class="sort-ind">↕</span></th>
+            <th>Owner</th>
+            <th class="actions"></th>
+          </tr>
+        </thead>
+        <tbody id="svc-tbody"></tbody>
+      </table>
+      <div class="table-foot">
+        <span id="row-count">24 von 24 Services</span>
+        <span class="keyhint"><kbd>↑</kbd><kbd>↓</kbd> navigieren · <kbd>↵</kbd> öffnen · <kbd>/</kbd> suchen · <kbd>N</kbd> neu</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add service modal -->
+  <div class="modal-veil" id="modal-veil">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h2>Service hinzufügen</h2>
+          <p>Lege einen neuen Health-Check an. Der erste Lauf startet sofort.</p>
+        </div>
+        <button class="modal-close" id="modal-close" aria-label="Schließen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label>Check-Typ</label>
+          <div class="seg" id="add-type">
+            <button class="active" data-v="HTTP">HTTP</button>
+            <button data-v="TCP">TCP</button>
+            <button data-v="DNS">DNS</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Servicename</label>
+          <input type="text" placeholder="z. B. payments-gateway">
+        </div>
+        <div class="field">
+          <label>Ziel</label>
+          <input type="text" placeholder="https://… · host:port · domain">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Interval</label>
+            <select>
+              <option>30 s</option>
+              <option>1 m</option>
+              <option>5 m</option>
+              <option>15 m</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Owner-Team</label>
+            <select>
+              <option>payments</option>
+              <option>identity</option>
+              <option>platform</option>
+              <option>edge</option>
+              <option>data-platform</option>
+              <option>discovery</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" id="cancel-btn">Abbrechen</button>
+        <button class="btn primary" id="save-btn">Hinzufügen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><span class="pip"></span><span id="toast-msg">Service hinzugefügt</span></div>
+
+<script>
+// ── Daten ──────────────────────────────────────────────
+const services = [
+  { name: 'payments-gateway', target: 'https://pay.api.acme.io/health', type: 'HTTPS', status: 'down', latency: null, sla: 99.95, checked: -242, history: hist('ok×10, deg×3, down×4, ok×3, down×4'), owner: 'payments', tier: 0 },
+  { name: 'webhooks-out',     target: 'https://hooks.acme.io/_status', type: 'HTTPS', status: 'degraded', latency: 612, sla: 99.5, checked: -28, history: hist('ok×12, deg×7, ok×2, deg×3'), owner: 'platform', tier: 1 },
+  { name: 'search-index',     target: 'https://search.internal:9200', type: 'HTTPS', status: 'degraded', latency: 488, sla: 99.5, checked: -14, history: hist('ok×14, deg×6, ok×2, deg×2'), owner: 'discovery', tier: 1 },
+  { name: 'batch-reporting',  target: 'reporting.internal:5432', type: 'TCP', status: 'unknown', latency: null, sla: 99.0, checked: -1448, history: hist('ok×15, unk×9'), owner: 'data-platform', tier: 2 },
+
+  { name: 'auth-service',     target: 'https://auth.acme.io/healthz', type: 'HTTPS', status: 'ok', latency: 96, sla: 99.99, checked: -11, history: hist('ok×24'), owner: 'identity', tier: 0 },
+  { name: 'cdn-edge',         target: 'https://www.acme.io', type: 'HTTPS', status: 'ok', latency: 42, sla: 99.99, checked: -8, history: hist('ok×24'), owner: 'edge', tier: 0 },
+  { name: 'session-store',    target: 'redis-prod.internal:6379', type: 'TCP', status: 'ok', latency: 4, sla: 99.95, checked: -6, history: hist('ok×24'), owner: 'platform', tier: 0 },
+  { name: 'postgres-primary', target: 'pg-primary.internal:5432', type: 'TCP', status: 'ok', latency: 8, sla: 99.99, checked: -5, history: hist('ok×24'), owner: 'data-platform', tier: 0 },
+  { name: 'mail-relay',       target: 'smtp.acme.io:587', type: 'TCP', status: 'ok', latency: 38, sla: 99.5, checked: -22, history: hist('ok×24'), owner: 'platform', tier: 2 },
+
+  { name: 'api.acme.io',      target: 'A · api.acme.io', type: 'DNS', status: 'ok', latency: 14, sla: 99.99, checked: -9, history: hist('ok×24'), owner: 'edge', tier: 0 },
+  { name: 'acme.io',          target: 'NS · acme.io', type: 'DNS', status: 'ok', latency: 18, sla: 99.99, checked: -16, history: hist('ok×24'), owner: 'edge', tier: 0 },
+  { name: 'mx.acme.io',       target: 'MX · acme.io', type: 'DNS', status: 'ok', latency: 22, sla: 99.5, checked: -33, history: hist('ok×24'), owner: 'edge', tier: 2 },
+
+  { name: 'admin-ui',         target: 'https://admin.acme.io', type: 'HTTPS', status: 'ok', latency: 188, sla: 99.5, checked: -19, history: hist('ok×24'), owner: 'platform', tier: 1 },
+  { name: 'billing-api',      target: 'https://billing.api.acme.io/_h', type: 'HTTPS', status: 'ok', latency: 122, sla: 99.9, checked: -12, history: hist('ok×24'), owner: 'payments', tier: 0 },
+  { name: 'analytics-collect',target: 'https://t.acme.io/p', type: 'HTTPS', status: 'ok', latency: 71, sla: 99.0, checked: -7, history: hist('ok×24'), owner: 'data-platform', tier: 2 },
+  { name: 'queue-broker',     target: 'rabbitmq.internal:5672', type: 'TCP', status: 'ok', latency: 3, sla: 99.95, checked: -4, history: hist('ok×24'), owner: 'platform', tier: 0 },
+  { name: 'object-storage',   target: 'https://s3.eu-west.acme.io', type: 'HTTPS', status: 'ok', latency: 56, sla: 99.99, checked: -10, history: hist('ok×24'), owner: 'platform', tier: 0 },
+  { name: 'ldap-directory',   target: 'ldap.internal:389', type: 'TCP', status: 'ok', latency: 6, sla: 99.5, checked: -45, history: hist('ok×24'), owner: 'identity', tier: 1 },
+  { name: 'feature-flags',    target: 'https://flags.acme.io/eval', type: 'HTTPS', status: 'ok', latency: 28, sla: 99.9, checked: -3, history: hist('ok×24'), owner: 'platform', tier: 1 },
+  { name: 'status-page',      target: 'https://status.acme.io', type: 'HTTPS', status: 'ok', latency: 110, sla: 99.0, checked: -52, history: hist('ok×24'), owner: 'platform', tier: 2 },
+  { name: 'support-portal',   target: 'https://help.acme.io', type: 'HTTPS', status: 'ok', latency: 244, sla: 99.0, checked: -41, history: hist('ok×24'), owner: 'support', tier: 2 },
+  { name: 'docs.acme.io',     target: 'A · docs.acme.io', type: 'DNS', status: 'ok', latency: 11, sla: 99.0, checked: -24, history: hist('ok×24'), owner: 'edge', tier: 2 },
+  { name: 'jobs-runner',      target: 'jobs.internal:8080', type: 'TCP', status: 'ok', latency: 12, sla: 99.5, checked: -38, history: hist('ok×24'), owner: 'data-platform', tier: 1 },
+  { name: 'image-resize',     target: 'https://img.acme.io/_/health', type: 'HTTPS', status: 'ok', latency: 84, sla: 99.5, checked: -17, history: hist('ok×24'), owner: 'edge', tier: 1 },
+];
+
+function hist(spec) {
+  // "ok×10, deg×3, down×4, ok×3, down×4" → array of 24
+  const out = [];
+  spec.split(',').forEach(part => {
+    const [k, n] = part.trim().split('×');
+    for (let i = 0; i < parseInt(n); i++) out.push(k);
+  });
+  while (out.length < 24) out.unshift('ok');
+  return out.slice(-24);
+}
+
+// ── State ──────────────────────────────────────────────
+let state = {
+  statusFilter: 'all',
+  typeFilter: 'all',
+  search: '',
+  sortBy: 'severity',
+  sortDir: 'asc',
+};
+
+const SEVERITY = { down: 4, degraded: 3, unknown: 2, ok: 1 };
+
+// ── Rendering ──────────────────────────────────────────
+function ctClass(t) { return t.toLowerCase(); }
+function ctLabel(t) { return t; } // keep HTTP/HTTPS/TCP/DNS as-is
+function statusToBaseColor(s) { return s; } // matches CSS
+
+function formatLatency(ms) {
+  if (ms == null) return { text: '—', cls: 'muted' };
+  let cls = '';
+  if (ms >= 500) cls = 'bad';
+  else if (ms >= 200) cls = 'warn';
+  return { text: ms + ' ms', cls };
+}
+
+function formatAgo(seconds) {
+  // negative seconds → "vor X"
+  const s = Math.abs(seconds);
+  if (s < 60) return `vor ${s} s`;
+  if (s < 3600) return `vor ${Math.round(s/60)} m`;
+  if (s < 86400) return `vor ${Math.round(s/3600)} h`;
+  return `vor ${Math.round(s/86400)} d`;
+}
+
+function statusLabel(s, latency, checked) {
+  if (s === 'ok') return 'OK';
+  if (s === 'degraded') return 'Degraded';
+  if (s === 'down') return `Down · ${formatAgo(checked).replace('vor ', '')}`;
+  if (s === 'unknown') return `Unknown · ${formatAgo(checked).replace('vor ', '')}`;
+  return s;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('svc-tbody');
+  let list = services.slice();
+
+  // filter
+  if (state.statusFilter !== 'all') list = list.filter(s => s.status === state.statusFilter);
+  if (state.typeFilter !== 'all') {
+    list = list.filter(s => {
+      const t = s.type === 'HTTPS' ? 'HTTP' : s.type;
+      return t === state.typeFilter;
+    });
+  }
+  if (state.search) {
+    const q = state.search.toLowerCase();
+    list = list.filter(s => s.name.toLowerCase().includes(q) || s.target.toLowerCase().includes(q));
+  }
+
+  // sort
+  list.sort((a, b) => {
+    let cmp;
+    if (state.sortBy === 'severity') {
+      cmp = (SEVERITY[b.status] - SEVERITY[a.status]) || a.name.localeCompare(b.name);
+    } else if (state.sortBy === 'name') {
+      cmp = a.name.localeCompare(b.name);
+    } else if (state.sortBy === 'type') {
+      cmp = a.type.localeCompare(b.type) || a.name.localeCompare(b.name);
+    } else if (state.sortBy === 'latency') {
+      const av = a.latency == null ? Infinity : a.latency;
+      const bv = b.latency == null ? Infinity : b.latency;
+      cmp = av - bv;
+    } else if (state.sortBy === 'checked') {
+      cmp = a.checked - b.checked;
+    }
+    return state.sortDir === 'desc' ? -cmp : cmp;
+  });
+
+  if (state.sortBy === 'severity') {
+    // default: most severe first (already handled in comparator)
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty"><b>Keine Services gefunden</b>Filter zurücksetzen oder Suchbegriff anpassen.</div></td></tr>`;
+  } else {
+    tbody.innerHTML = list.map(s => {
+      const lat = formatLatency(s.latency);
+      const checkType = s.type === 'HTTPS' ? 'HTTP' : s.type;
+      const tag = s.type === 'HTTPS'
+        ? `<span class="ct https">HTTPS</span>`
+        : `<span class="ct ${ctClass(s.type)}">${ctLabel(s.type)}</span>`;
+      const strip = s.history.map(h => {
+        const cls = h === 'deg' ? 'deg' : h === 'down' ? 'down' : h === 'unk' ? 'unk' : 'ok';
+        return `<span class="b ${cls}"></span>`;
+      }).join('');
+      return `
+        <tr data-name="${s.name}">
+          <td class="dot-cell"><span class="pip ${s.status}"></span></td>
+          <td>
+            <div class="svc-name">
+              <span class="n">${s.name}</span>
+              <span class="target">${s.target}</span>
+            </div>
+          </td>
+          <td>${tag}</td>
+          <td><span class="badge ${s.status}"><span class="b-pip"></span>${statusLabel(s.status, s.latency, s.checked)}</span></td>
+          <td class="num ${lat.cls}">${lat.text}</td>
+          <td><div class="mini-strip">${strip}</div></td>
+          <td class="mono">${formatAgo(s.checked)}</td>
+          <td class="mono">${s.owner}</td>
+          <td class="actions"><button class="row-action" title="Optionen">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+          </button></td>
+        </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('row-count').textContent = `${list.length} von ${services.length} Services`;
+}
+
+function updateCounts() {
+  const c = { ok: 0, degraded: 0, down: 0, unknown: 0 };
+  services.forEach(s => c[s.status]++);
+  const total = services.length;
+
+  document.getElementById('kpi-total').textContent = total;
+  document.getElementById('kpi-ok').textContent = c.ok;
+  document.getElementById('kpi-degraded').textContent = c.degraded;
+  document.getElementById('kpi-down').textContent = c.down;
+  document.getElementById('kpi-unknown').textContent = c.unknown;
+
+  // subs
+  document.getElementById('kpi-ok-sub').textContent = `${Math.round(c.ok / total * 100)} % der Services`;
+  document.getElementById('kpi-degraded-sub').textContent = c.degraded === 0 ? 'keine Auffälligkeiten' : `${c.degraded} ${c.degraded === 1 ? 'Service' : 'Services'} · SLO-Burn`;
+  document.getElementById('kpi-down-sub').textContent = c.down === 0 ? 'keine Ausfälle' : `${c.down} ${c.down === 1 ? 'Service' : 'Services'} · seit 4 m`;
+  document.getElementById('kpi-unknown-sub').textContent = c.unknown === 0 ? 'alle Probes liefern' : `${c.unknown} Probe${c.unknown === 1 ? '' : 's'} stale`;
+
+  // zero-state styling
+  document.querySelector('.kpi-down').classList.toggle('zero', c.down === 0);
+  document.querySelector('.kpi-degraded').classList.toggle('zero', c.degraded === 0);
+
+  // chips
+  document.getElementById('cnt-all').textContent = total;
+  document.getElementById('cnt-ok').textContent = c.ok;
+  document.getElementById('cnt-degraded').textContent = c.degraded;
+  document.getElementById('cnt-down').textContent = c.down;
+  document.getElementById('cnt-unknown').textContent = c.unknown;
+
+  // bar
+  const pctOk = c.ok / total * 100;
+  const pctDeg = c.degraded / total * 100;
+  const pctDown = c.down / total * 100;
+  const pctUnk = c.unknown / total * 100;
+  document.getElementById('bar-ok').style.width = pctOk + '%';
+  document.getElementById('bar-degraded').style.width = pctDeg + '%';
+  document.getElementById('bar-down').style.width = pctDown + '%';
+  document.getElementById('bar-unknown').style.width = pctUnk + '%';
+}
+
+// ── Wire up ────────────────────────────────────────────
+function setStatusFilter(v) {
+  state.statusFilter = v;
+  document.querySelectorAll('#status-chips .chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.status === v);
+  });
+  document.querySelectorAll('.kpi[data-filter]').forEach(k => {
+    k.classList.toggle('active', k.dataset.filter === v);
+  });
+  renderTable();
+}
+
+document.querySelectorAll('#status-chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => setStatusFilter(chip.dataset.status));
+});
+document.querySelectorAll('.kpi[data-filter]').forEach(kpi => {
+  kpi.addEventListener('click', () => {
+    setStatusFilter(state.statusFilter === kpi.dataset.filter ? 'all' : kpi.dataset.filter);
+  });
+});
+document.querySelectorAll('#type-chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    state.typeFilter = chip.dataset.type;
+    document.querySelectorAll('#type-chips .chip').forEach(c => c.classList.toggle('active', c === chip));
+    renderTable();
+  });
+});
+
+document.getElementById('search-input').addEventListener('input', (e) => {
+  state.search = e.target.value;
+  renderTable();
+});
+
+// Sort
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    if (state.sortBy === key) {
+      state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      state.sortBy = key;
+      state.sortDir = key === 'latency' ? 'desc' : 'asc';
+    }
+    document.querySelectorAll('th.sortable').forEach(t => {
+      t.classList.toggle('sorted', t === th);
+      const ind = t.querySelector('.sort-ind');
+      if (t === th) ind.textContent = state.sortDir === 'asc' ? '↑' : '↓';
+      else ind.textContent = '↕';
+    });
+    renderTable();
+  });
+});
+
+// Modal
+const veil = document.getElementById('modal-veil');
+function openModal() { veil.classList.add('open'); }
+function closeModal() { veil.classList.remove('open'); }
+document.getElementById('add-btn').addEventListener('click', openModal);
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('cancel-btn').addEventListener('click', closeModal);
+veil.addEventListener('click', (e) => { if (e.target === veil) closeModal(); });
+
+document.querySelectorAll('#add-type button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#add-type button').forEach(x => x.classList.toggle('active', x === b));
+  });
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  closeModal();
+  showToast('Service hinzugefügt — erster Check läuft');
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__tt);
+  window.__tt = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') {
+    if (e.key === 'Escape') e.target.blur();
+    return;
+  }
+  if (e.key === '/') {
+    e.preventDefault();
+    document.getElementById('search-input').focus();
+  } else if (e.key.toLowerCase() === 'n') {
+    e.preventDefault();
+    openModal();
+  } else if (e.key === 'Escape') {
+    closeModal();
+  }
+});
+
+// Init
+updateCounts();
+renderTable();
+
+// fake live ticker
+setInterval(() => {
+  const now = new Date();
+  const utc = `${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')}:${String(now.getUTCSeconds()).padStart(2,'0')} UTC`;
+  document.getElementById('last-check-ts').textContent = utc;
+}, 1000);
+</script>
+</body>
+</html>
