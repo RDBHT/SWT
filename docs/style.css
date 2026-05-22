@@ -1,39 +1,649 @@
-/* SWT-Portfolio — minimale Ergänzungen zu Pico.css */
+/* ============================================================
+   SWT-Portfolio — Aufwertung über Pico.css v2
+   Eine zentrale Datei, eingebunden von allen Seiten.
+   ============================================================ */
 
-header nav {
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+/* ---------- 1. Color tokens & Pico overrides ----------
+   Pico v2 setzt seine Variablen unter [data-theme="light"]
+   (Specificity 0,1,0). Wir müssen also mindestens auf dieselbe
+   Specificity gehen, sonst gewinnen Picos Defaults.
+   ---------------------------------------------------------- */
+
+:root,
+:root[data-theme="light"],
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Type */
+  --pico-font-family-sans-serif: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pico-font-family-monospace: "IBM Plex Mono", ui-monospace, "JetBrains Mono", "Fira Code", monospace;
+  --pico-font-family: var(--pico-font-family-sans-serif);
+  --pico-font-size: 16px;
+  --pico-line-height: 1.6;
+  --pico-font-weight: 400;
+  --pico-typography-spacing-vertical: 1rem;
+
+  /* Surface */
+  --pico-background-color: #f7f6f3;
+  --pico-color: #1d2330;
+  --pico-h1-color: #14192a;
+  --pico-h2-color: #14192a;
+  --pico-h3-color: #14192a;
+  --pico-h4-color: #14192a;
+  --pico-h5-color: #14192a;
+  --pico-h6-color: #14192a;
+  --pico-muted-color: #5a6273;
+  --pico-muted-border-color: #e3e1da;
+
+  /* Accent — academic blue */
+  --pico-primary: oklch(48% 0.13 250);
+  --pico-primary-hover: oklch(38% 0.14 250);
+  --pico-primary-background: oklch(48% 0.13 250);
+  --pico-primary-border: oklch(48% 0.13 250);
+  --pico-primary-underline: oklch(48% 0.13 250 / 0.32);
+  --pico-primary-focus: oklch(48% 0.13 250 / 0.22);
+  --pico-primary-hover-background: oklch(38% 0.14 250);
+  --pico-primary-hover-border: oklch(38% 0.14 250);
+  --pico-primary-hover-underline: var(--pico-primary-hover);
+  --pico-primary-inverse: #ffffff;
+
+  /* Card */
+  --pico-card-background-color: #ffffff;
+  --pico-card-border-color: #e6e3da;
+  --pico-card-box-shadow: 0 1px 0 0 rgba(15, 23, 42, 0.04), 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+  --pico-card-sectioning-background-color: #fafaf7;
+
+  /* Code / Tables */
+  --pico-code-background-color: oklch(96% 0.005 250);
+  --pico-code-color: #1d2330;
+  --pico-code-kbd-background-color: #1d2330;
+  --pico-code-kbd-color: #fafaf7;
+  --pico-table-border-color: #e6e3da;
+  --pico-table-row-stripped-background-color: #fafaf7;
+
+  /* Form */
+  --pico-form-element-border-color: #d8d5cb;
+  --pico-form-element-focus-color: var(--pico-primary-focus);
+
+  /* Borders / radii */
+  --pico-border-radius: 8px;
+  --pico-border-width: 1px;
+}
+
+html {
+  font-family: var(--pico-font-family-sans-serif);
+  background-color: var(--pico-background-color);
+}
+
+body {
+  background-color: var(--pico-background-color);
+  color: var(--pico-color);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- 2. Layout container ---------- */
+
+main.container,
+body > header.container,
+body > footer.container {
+  max-width: 960px;
+  padding-inline: clamp(1rem, 4vw, 1.75rem);
+}
+
+main.container {
+  padding-bottom: 3rem;
+}
+
+/* ---------- 3. Header ---------- */
+
+body > header.container {
+  padding-top: 2.5rem;
+  padding-bottom: 0;
+  margin-bottom: 2rem;
+}
+
+body > header.container hgroup {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--pico-muted-border-color);
-  padding-bottom: 0.5rem;
 }
 
-header nav a[aria-current="page"] {
+body > header.container hgroup h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.2vw, 1.8rem);
   font-weight: 600;
-  text-decoration: underline;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--pico-h1-color);
 }
 
-header nav .subtab {
-  opacity: 0.85;
-  font-size: 0.95em;
-}
-
-header nav .subtab-arrow {
-  margin-right: 0.25rem;
+body > header.container hgroup > p,
+body > header.container hgroup > :nth-child(2) {
+  margin: 0.35rem 0 0;
   color: var(--pico-muted-color);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  --pico-color: var(--pico-muted-color);
+}
+
+/* ---------- 4. Tab navigation ---------- */
+
+body > header nav {
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: 1.5rem;
+  row-gap: 0;
+}
+
+body > header nav > ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+body > header nav > ul:first-child {
+  margin: 0 0.5rem 0.4rem 0;
+}
+
+body > header nav > ul:first-child li {
+  padding: 0;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pico-muted-color);
+}
+
+body > header nav > ul:first-child strong {
+  font-weight: 600;
+}
+
+body > header nav > ul:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0;
+}
+
+body > header nav > ul:last-child li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+body > header nav > ul:last-child li a {
+  display: inline-block;
+  padding: 0.6rem 0.95rem;
+  color: var(--pico-muted-color);
+  text-decoration: none;
+  font-size: 0.93rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 120ms ease, border-color 120ms ease, background-color 120ms ease;
+  border-radius: 4px 4px 0 0;
+}
+
+body > header nav > ul:last-child li a:hover {
+  color: var(--pico-color);
+  border-bottom-color: var(--pico-muted-border-color);
+  background: rgba(15, 23, 42, 0.025);
+}
+
+body > header nav > ul:last-child li a[aria-current="page"] {
+  color: var(--pico-primary);
+  border-bottom-color: var(--pico-primary);
+  font-weight: 600;
+}
+
+body > header nav .subtab {
+  font-size: 0.9em;
+}
+
+body > header nav .subtab a {
+  padding-left: 0.35rem;
+  color: var(--pico-muted-color);
+  font-weight: 400;
+}
+
+body > header nav .subtab a[aria-current="page"] {
+  font-weight: 600;
+}
+
+body > header nav .subtab-arrow {
+  display: inline-block;
+  margin-right: 0.1rem;
+  color: var(--pico-muted-color);
+  opacity: 0.55;
+  font-size: 0.95em;
   user-select: none;
 }
 
-main section {
-  margin-bottom: 1.5rem;
+/* ---------- 5. Sections — soft cards ---------- */
+
+main > section {
+  background: var(--pico-card-background-color);
+  border: 1px solid var(--pico-card-border-color);
+  border-radius: var(--pico-border-radius);
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--pico-card-box-shadow);
 }
 
-table code {
+main > section > :first-child {
+  margin-top: 0;
+}
+
+main > section > :last-child {
+  margin-bottom: 0;
+}
+
+main > section h2 {
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+}
+
+main > section h3 {
+  font-size: 1.13rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.002em;
+}
+
+main > section h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--pico-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+main > section hgroup {
+  margin-bottom: 1rem;
+}
+
+main > section hgroup > :last-child:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  color: var(--pico-muted-color);
+  font-size: 0.93rem;
+  margin: 0.2rem 0 0;
+  font-weight: 400;
+  letter-spacing: 0.002em;
+  --pico-color: var(--pico-muted-color);
+}
+
+main p {
+  margin: 0 0 0.85rem;
+  text-wrap: pretty;
+}
+
+main > section ul,
+main > section ol {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 0.85rem;
+}
+
+main > section li {
+  margin-bottom: 0.4rem;
+  text-wrap: pretty;
+}
+
+main > section li::marker {
+  color: var(--pico-muted-color);
+}
+
+/* ---------- 6. Tables ---------- */
+
+main figure {
+  margin: 1rem 0;
+  padding: 0;
+}
+
+main figure:has(> table) {
+  border: 1px solid var(--pico-card-border-color);
+  border-radius: var(--pico-border-radius);
+  overflow: hidden;
+  background: #fff;
+}
+
+main table {
+  width: 100%;
+  margin: 0;
+  font-size: 0.93rem;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+main figure:has(> table) > table {
+  border: none;
+}
+
+main table thead th {
+  background: #fafaf7;
+  font-weight: 600;
+  color: var(--pico-color);
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  text-align: left;
+  padding: 0.6rem 0.85rem;
+  letter-spacing: 0.005em;
+  font-size: 0.88rem;
+}
+
+main table tbody td,
+main table tbody th {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid #efece4;
+  vertical-align: top;
+  background: transparent;
+}
+
+main table tbody tr:last-child td,
+main table tbody tr:last-child th {
+  border-bottom: none;
+}
+
+main table tbody th[scope="row"] {
+  font-weight: 500;
+  color: var(--pico-muted-color);
+  width: 11rem;
+  background: #fbfaf6;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+}
+
+main table code {
   white-space: nowrap;
 }
 
-/* Teil-A — Live-Vorschau der Iterationen */
+/* ---------- 7. Inline code & kbd ---------- */
+
+code,
+kbd,
+samp {
+  font-family: var(--pico-font-family-monospace);
+  font-feature-settings: "zero", "ss01";
+}
+
+main code,
+main p code,
+main li code,
+main td code,
+main th code {
+  background: var(--pico-code-background-color);
+  color: var(--pico-color);
+  padding: 0.1em 0.42em;
+  border-radius: 4px;
+  border: 1px solid #e8e7df;
+  font-size: 0.84em;
+  font-weight: 500;
+}
+
+main a code {
+  color: var(--pico-primary);
+  border-color: oklch(48% 0.13 250 / 0.2);
+  background: oklch(96% 0.02 250);
+}
+
+main a:hover code {
+  border-color: var(--pico-primary);
+}
+
+/* ---------- 8. Status badges (<kbd class="status …">) ---------- */
+
+main kbd.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.18em 0.7em 0.22em;
+  border-radius: 999px;
+  font-family: var(--pico-font-family-sans-serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border: 1px solid transparent;
+  background: #f2efe7;
+  color: #1d2330;
+  box-shadow: none;
+  line-height: 1.25;
+  vertical-align: baseline;
+}
+
+main kbd.status::before {
+  content: "";
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 auto;
+}
+
+main kbd.status.done {
+  background: oklch(96% 0.04 155);
+  color: oklch(38% 0.1 155);
+  border-color: oklch(86% 0.07 155);
+}
+
+main kbd.status.wip {
+  background: oklch(96% 0.05 75);
+  color: oklch(44% 0.12 60);
+  border-color: oklch(86% 0.1 75);
+}
+
+main kbd.status.open {
+  background: oklch(96% 0.005 250);
+  color: oklch(46% 0.012 250);
+  border-color: oklch(88% 0.005 250);
+}
+
+/* ---------- 9. Info / hint article ---------- */
+
+main article {
+  background: oklch(97% 0.018 245);
+  border: 1px solid oklch(88% 0.035 245);
+  border-radius: var(--pico-border-radius);
+  padding: 1rem 1.2rem;
+  margin: 1rem 0 1.2rem;
+  box-shadow: none;
+}
+
+main article > header {
+  background: transparent;
+  border: none;
+  padding: 0 0 0.35rem;
+  margin: 0;
+  color: var(--pico-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+main article > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 10. Buttons ---------- */
+
+main button,
+main a[role="button"] {
+  font-family: var(--pico-font-family-sans-serif);
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  --pico-form-element-spacing-vertical: 0.55rem;
+  --pico-form-element-spacing-horizontal: 1rem;
+  font-size: 0.93rem;
+  border-radius: 6px;
+}
+
+main a[role="button"] {
+  text-decoration: none;
+  color: #fff;
+}
+
+main a[role="button"]:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* ---------- 11. Forms ---------- */
+
+main form {
+  margin: 0;
+}
+
+main form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem 1rem;
+}
+
+main form > label {
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+main form label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--pico-color);
+}
+
+main form input,
+main form select,
+main form textarea {
+  font-family: var(--pico-font-family-sans-serif);
+  font-size: 0.92rem;
+  margin-top: 0.25rem;
+}
+
+/* ---------- 12. Iter-Vorschau iframe ---------- */
+
 .iter-preview {
   width: 100%;
   height: 620px;
   border: 1px solid var(--pico-muted-border-color);
   border-radius: var(--pico-border-radius);
   background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  margin-top: 0.5rem;
+}
+
+/* ---------- 13. Figures with images ---------- */
+
+main figure img {
+  border-radius: 6px;
+  border: 1px solid var(--pico-muted-border-color);
+  background: #fff;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+main figure figcaption {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin-top: 0.6rem;
+  text-align: center;
+  letter-spacing: 0.005em;
+}
+
+/* ---------- 14. Links ---------- */
+
+main a {
+  color: var(--pico-primary);
+  text-decoration: underline;
+  text-decoration-color: oklch(48% 0.13 250 / 0.3);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 120ms ease, color 120ms ease;
+}
+
+main a:hover {
+  color: var(--pico-primary-hover);
+  text-decoration-color: var(--pico-primary-hover);
+}
+
+main h2 a,
+main h3 a,
+main h4 a {
+  text-decoration: none;
+}
+
+/* ---------- 15. Footer ---------- */
+
+body > footer.container {
+  border-top: 1px solid var(--pico-muted-border-color);
+  margin-top: 2.5rem;
+  padding-top: 1.2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+
+body > footer.container small {
+  color: var(--pico-muted-color);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+}
+
+body > footer.container small a {
+  color: var(--pico-muted-color);
+  text-decoration-color: transparent;
+}
+
+body > footer.container small a:hover {
+  color: var(--pico-primary);
+  text-decoration-color: var(--pico-primary);
+}
+
+/* ---------- 16. Responsive ---------- */
+
+@media (max-width: 720px) {
+  main > section {
+    padding: 1.2rem;
+  }
+  body > header nav {
+    column-gap: 0;
+  }
+  body > header nav > ul:last-child li a {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.88rem;
+  }
+  main table tbody th[scope="row"] {
+    width: auto;
+  }
+  .iter-preview {
+    height: 480px;
+  }
+}
+
+/* ---------- 17. Print ---------- */
+
+@media print {
+  body > header nav,
+  .iter-preview {
+    display: none;
+  }
+  main > section {
+    box-shadow: none;
+    border-color: #ccc;
+    page-break-inside: avoid;
+  }
 }
