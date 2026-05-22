@@ -1,0 +1,1425 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>IT Service Monitor — Service-Formular</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --surface-2: #fbfbfc;
+    --surface-hover: #f3f4f6;
+    --line: #e6e8ec;
+    --line-strong: #d3d7de;
+    --ink: #0f1216;
+    --ink-2: #353a42;
+    --ink-3: #6b727c;
+    --ink-4: #9aa0aa;
+
+    --ok:        oklch(62% 0.14 145);
+    --ok-bg:     oklch(96% 0.04 145);
+    --ok-line:   oklch(85% 0.09 145);
+
+    --degraded:  oklch(72% 0.15 75);
+    --degraded-ink: oklch(45% 0.13 75);
+    --degraded-bg: oklch(96% 0.05 80);
+    --degraded-line: oklch(86% 0.11 78);
+
+    --down:      oklch(58% 0.18 25);
+    --down-bg:   oklch(96% 0.04 25);
+    --down-line: oklch(85% 0.10 25);
+    --down-ink:  oklch(50% 0.18 25);
+
+    --unknown:   oklch(60% 0.01 250);
+    --unknown-bg: oklch(96% 0.005 250);
+    --unknown-line: oklch(86% 0.01 250);
+
+    --radius-sm: 4px;
+    --radius:    6px;
+    --radius-lg: 10px;
+
+    --shadow-card: 0 1px 0 rgba(15,18,22,.03), 0 1px 2px rgba(15,18,22,.04);
+    --shadow-pop: 0 2px 4px rgba(15,18,22,.06), 0 8px 24px rgba(15,18,22,.08);
+
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, Segoe UI, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  input, select, textarea { font-family: inherit; }
+
+  @keyframes pulse {
+    0% { transform: scale(.8); opacity: .4; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-3px); }
+    40%, 60% { transform: translateX(3px); }
+  }
+
+  /* ── Top bar ─────────────────────────── */
+  .topbar {
+    height: 48px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center;
+    padding: 0 20px;
+    gap: 24px;
+    position: sticky; top: 0;
+    z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13px; letter-spacing: -.005em; }
+  .brand .mark { width: 18px; height: 18px; border: 1.5px solid var(--ink); border-radius: 4px; position: relative; }
+  .brand .mark::after { content: ''; position: absolute; inset: 3px; background: var(--ok); border-radius: 1px; }
+  .brand .org { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); font-weight: 400; padding-left: 10px; margin-left: 4px; border-left: 1px solid var(--line); }
+  .nav { display: flex; gap: 2px; margin-left: 8px; }
+  .nav a { text-decoration: none; color: var(--ink-2); font-size: 13px; padding: 6px 10px; border-radius: 4px; }
+  .nav a:hover { background: var(--surface-hover); }
+  .nav a.active { color: var(--ink); background: var(--surface-hover); font-weight: 500; }
+  .top-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .refresh-status { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+  .refresh-status .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); position: relative; }
+  .refresh-status .pip::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 1.5px solid var(--ok); opacity: .3; animation: pulse 1.8s ease-out infinite; }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; background: oklch(70% 0.05 60); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+
+  /* ── Page ────────────────────────────── */
+  main { padding: 20px 28px 96px; max-width: 1100px; margin: 0 auto; }
+
+  .breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 14px;
+  }
+  .breadcrumb a { text-decoration: none; color: var(--ink-3); padding: 2px 6px; margin-left: -6px; border-radius: 3px; }
+  .breadcrumb a:hover { background: var(--surface-hover); color: var(--ink-2); }
+  .breadcrumb .sep { opacity: .5; }
+  .breadcrumb .curr { color: var(--ink); }
+
+  .page-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+  .page-head h1 { font-size: 22px; margin: 0; font-weight: 600; letter-spacing: -.01em; }
+  .page-head .sub { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+  .mode-toggle {
+    display: flex; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  .mode-toggle button {
+    background: transparent; border: none; border-right: 1px solid var(--line);
+    padding: 7px 14px; font-size: 12px;
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    letter-spacing: .02em;
+  }
+  .mode-toggle button:last-child { border-right: 0; }
+  .mode-toggle button:hover { background: var(--surface-hover); }
+  .mode-toggle button.active { background: var(--ink); color: white; }
+
+  /* ── Layout ──────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* ── Cards ───────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+  .card-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .card-head h2 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -.005em; }
+  .card-head .ix {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .card-head .opt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-left: auto;
+  }
+  .card-body { padding: 18px 20px; }
+
+  /* ── Validation banner ───────────────── */
+  .validation-banner {
+    display: none;
+    align-items: center; gap: 10px;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--down-bg);
+    border: 1px solid var(--down-line);
+    border-radius: var(--radius);
+    color: var(--down-ink);
+    font-size: 13px;
+  }
+  .validation-banner.show { display: flex; }
+  .validation-banner.shake { animation: shake .35s ease; }
+  .validation-banner b { font-weight: 600; }
+  .validation-banner svg { flex: none; color: var(--down); }
+
+  /* ── Fields ──────────────────────────── */
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field + .field { margin-top: 16px; }
+  .field-row {
+    display: grid;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .field-row.r-2 { grid-template-columns: 1fr 1fr; }
+  .field-row.r-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .field-row.r-2-1 { grid-template-columns: 2fr 1fr; }
+  .field-row.r-1-2 { grid-template-columns: 1fr 2fr; }
+  .field-row .field + .field { margin-top: 0; }
+
+  .field .label-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 500;
+  }
+  .field .req { color: var(--down); margin-left: 2px; }
+  .field .opt-tag { font-family: var(--font-mono); font-size: 10px; color: var(--ink-4); text-transform: uppercase; letter-spacing: .06em; }
+
+  .input-wrap {
+    display: flex; align-items: stretch;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    transition: border-color .12s, box-shadow .12s;
+    overflow: hidden;
+  }
+  .input-wrap:focus-within {
+    border-color: var(--ink-2);
+    box-shadow: 0 0 0 3px rgba(15,18,22,.04);
+  }
+  .input-wrap.invalid {
+    border-color: var(--down);
+    background: var(--down-bg);
+  }
+  .input-wrap.invalid:focus-within {
+    box-shadow: 0 0 0 3px oklch(58% 0.18 25 / .12);
+  }
+  .input-wrap.valid:not(:focus-within) {
+    border-color: var(--ok-line);
+  }
+  .input-wrap input,
+  .input-wrap select,
+  .input-wrap textarea {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    min-width: 0;
+  }
+  .input-wrap input::placeholder { color: var(--ink-4); }
+  .input-wrap .prefix,
+  .input-wrap .suffix {
+    display: flex; align-items: center;
+    padding: 0 10px;
+    background: var(--surface-2);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border-right: 1px solid var(--line);
+  }
+  .input-wrap .suffix { border-right: 0; border-left: 1px solid var(--line); }
+  .input-wrap.invalid .prefix,
+  .input-wrap.invalid .suffix { background: var(--down-bg); border-color: var(--down-line); }
+  .input-wrap .icon-r {
+    display: flex; align-items: center;
+    padding: 0 10px;
+    color: var(--ink-3);
+  }
+  .input-wrap.valid .icon-r { color: var(--ok); }
+  .input-wrap.invalid .icon-r { color: var(--down); }
+
+  .input-wrap.mono input,
+  .input-wrap.mono { font-family: var(--font-mono); font-size: 13px; }
+  .input-wrap.mono input { font-family: var(--font-mono); }
+
+  .help-text {
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .help-text.error {
+    color: var(--down);
+    display: flex; align-items: center; gap: 6px;
+    font-weight: 500;
+  }
+  .help-text.error svg { flex: none; }
+
+  /* ── Segmented control for check-type ── */
+  .seg-types {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .seg-types button {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 14px;
+    text-align: left;
+    transition: border-color .12s, background .12s, box-shadow .12s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .seg-types button:hover { border-color: var(--line-strong); background: var(--surface-2); }
+  .seg-types button.active {
+    border-color: var(--ink);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(15,18,22,.04);
+  }
+  .seg-types button .top {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .seg-types button .name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: .02em;
+  }
+  .seg-types button .check {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-strong);
+    display: flex; align-items: center; justify-content: center;
+    color: transparent;
+    background: var(--surface);
+  }
+  .seg-types button.active .check {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: white;
+  }
+  .seg-types button .desc {
+    font-size: 11px;
+    color: var(--ink-3);
+    line-height: 1.4;
+  }
+
+  /* ── Conditional fieldset ────────────── */
+  .conditional {
+    border-top: 1px solid var(--line);
+    margin-top: 18px;
+    padding-top: 18px;
+  }
+  .conditional .cond-head {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 12px;
+  }
+  .conditional .cond-head .tag {
+    background: var(--ink);
+    color: white;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .cond-panel { display: none; }
+  .cond-panel.active { display: block; }
+
+  /* ── Interval cards ──────────────────── */
+  .interval-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .interval-grid button {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 8px;
+    text-align: center;
+    transition: border-color .12s, background .12s;
+  }
+  .interval-grid button:hover { background: var(--surface-2); }
+  .interval-grid button .v {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+  }
+  .interval-grid button .h {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    display: block;
+    margin-top: 2px;
+  }
+  .interval-grid button.active {
+    border-color: var(--ink);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(15,18,22,.04);
+  }
+
+  /* ── Sidebar ─────────────────────────── */
+  .side-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+  }
+  .side-card.sticky { position: sticky; top: 68px; }
+  .side-card h3 {
+    margin: 0;
+    padding: 14px 18px 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .side-card h3 .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 400;
+  }
+  .side-card .summary {
+    padding: 8px 18px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--ink-2);
+  }
+  .side-card .summary .row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 4px 0;
+    border-top: 1px solid var(--line);
+  }
+  .side-card .summary .row:first-child { border-top: 0; }
+  .side-card .summary .k { color: var(--ink-3); text-transform: uppercase; font-size: 10px; letter-spacing: .06em; padding-top: 4px; }
+  .side-card .summary .v { color: var(--ink); word-break: break-all; }
+  .side-card .summary .v.muted { color: var(--ink-4); }
+  .side-card .summary .v .pill {
+    display: inline-block;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+
+  .side-card .body { padding: 6px 18px 16px; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .side-card .body p { margin: 8px 0; }
+
+  .test-row {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 12px 18px 16px;
+    border-top: 1px solid var(--line);
+  }
+  .test-row .label-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .test-result {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+    min-height: 56px;
+    display: flex; flex-direction: column; gap: 4px;
+    transition: background .15s, border-color .15s;
+  }
+  .test-result.ok { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok); }
+  .test-result.bad { background: var(--down-bg); border-color: var(--down-line); color: var(--down-ink); }
+  .test-result.muted { color: var(--ink-4); }
+  .test-result .heading { font-weight: 600; color: inherit; }
+  .test-result .detail { color: var(--ink-2); font-size: 11px; }
+  .test-result.ok .detail { color: var(--ok); opacity: .85; }
+  .test-result.bad .detail { color: var(--down-ink); opacity: .85; }
+
+  /* ── Buttons ─────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+    transition: background .12s, border-color .12s;
+  }
+  .btn:hover { background: var(--surface-hover); }
+  .btn.primary {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .btn.primary:hover { background: #000; }
+  .btn.primary[disabled] {
+    background: var(--ink-4);
+    border-color: var(--ink-4);
+    cursor: not-allowed;
+  }
+  .btn .spin { animation: spin .9s linear infinite; }
+
+  /* ── Footer ──────────────────────────── */
+  .form-foot {
+    position: sticky; bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding: 12px 28px;
+    margin: 0 -28px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 -1px 0 rgba(15,18,22,.02), 0 -8px 16px rgba(15,18,22,.02);
+    z-index: 5;
+  }
+  .form-foot .status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .form-foot .status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ink-4);
+  }
+  .form-foot .status.ok .dot { background: var(--ok); }
+  .form-foot .status.err .dot { background: var(--down); }
+  .form-foot .actions { display: flex; gap: 8px; }
+
+  /* ── Toast ───────────────────────────── */
+  .toast {
+    position: fixed;
+    bottom: 80px; left: 50%; transform: translateX(-50%);
+    background: var(--ink);
+    color: white;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    box-shadow: var(--shadow-pop);
+    z-index: 200;
+    display: flex; align-items: center; gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  .toast .pip { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+</style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark"></span>
+      <span>Sentry</span>
+      <span class="org">platform / production</span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Incidents</a>
+      <a href="#">History</a>
+      <a href="#">Maintenance</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="top-right">
+      <div class="refresh-status">
+        <span class="pip"></span>
+        <span>Live · alle 30 s</span>
+      </div>
+      <div class="avatar">MR</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="#">← Dashboard</a>
+      <span class="sep">/</span>
+      <span class="curr" id="crumb-curr">Service hinzufügen</span>
+    </div>
+
+    <!-- Page head -->
+    <div class="page-head">
+      <div>
+        <h1 id="page-title">Service hinzufügen</h1>
+        <p class="sub" id="page-sub">Lege einen neuen Health-Check an. Der erste Lauf startet sofort nach dem Speichern.</p>
+      </div>
+      <div class="mode-toggle">
+        <button class="active" data-mode="create">Anlegen</button>
+        <button data-mode="edit">Bearbeiten</button>
+      </div>
+    </div>
+
+    <!-- Validation banner -->
+    <div class="validation-banner" id="val-banner">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>
+      </svg>
+      <span><b id="val-count">2 Felder</b> benötigen Aufmerksamkeit, bevor du den Service speichern kannst.</span>
+    </div>
+
+    <form class="layout" id="form" novalidate>
+
+      <!-- Left column: form -->
+      <div class="form-col">
+
+        <!-- 1 Identität -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ix">01</span>
+            <h2>Identität</h2>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <div class="label-row">
+                <label for="f-name">Name <span class="req">*</span></label>
+                <span class="opt-tag">eindeutig, kebab-case</span>
+              </div>
+              <div class="input-wrap" id="wrap-name">
+                <input type="text" id="f-name" placeholder="z. B. payments-gateway" autocomplete="off">
+                <div class="icon-r" id="icon-name"></div>
+              </div>
+              <div class="help-text" id="help-name">Wird als ID verwendet — kann später nicht umbenannt werden.</div>
+            </div>
+
+            <div class="field-row r-2-1">
+              <div class="field">
+                <div class="label-row">
+                  <label for="f-desc">Beschreibung</label>
+                  <span class="opt-tag">optional</span>
+                </div>
+                <div class="input-wrap">
+                  <input type="text" id="f-desc" placeholder="Kurzer Satz, wofür der Service da ist" autocomplete="off">
+                </div>
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <label for="f-tier">Tier</label>
+                </div>
+                <div class="input-wrap">
+                  <select id="f-tier">
+                    <option value="0">T0 · kritisch</option>
+                    <option value="1" selected>T1 · wichtig</option>
+                    <option value="2">T2 · informativ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2 Check -->
+        <section class="card" style="margin-top: 16px;">
+          <div class="card-head">
+            <span class="ix">02</span>
+            <h2>Check</h2>
+          </div>
+          <div class="card-body">
+
+            <div class="field">
+              <div class="label-row">
+                <label>Check-Typ <span class="req">*</span></label>
+              </div>
+              <div class="seg-types" id="type-seg">
+                <button type="button" data-t="HTTP" class="active">
+                  <div class="top">
+                    <span class="name">HTTP</span>
+                    <span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  </div>
+                  <div class="desc">Anfrage an URL, prüft Statuscode und optional Inhalt</div>
+                </button>
+                <button type="button" data-t="TCP">
+                  <div class="top">
+                    <span class="name">TCP</span>
+                    <span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  </div>
+                  <div class="desc">Verbindungsaufbau zu Host:Port, prüft Erreichbarkeit</div>
+                </button>
+                <button type="button" data-t="DNS">
+                  <div class="top">
+                    <span class="name">DNS</span>
+                    <span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  </div>
+                  <div class="desc">Auflösen einer Domain, prüft Recordtyp und Antwort</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- HTTP-specific -->
+            <div class="conditional cond-panel active" id="panel-HTTP">
+              <div class="cond-head"><span class="tag">HTTP</span>spezifische Konfiguration</div>
+
+              <div class="field-row r-1-2" style="margin-top: 0;">
+                <div class="field">
+                  <div class="label-row"><label for="f-method">Methode</label></div>
+                  <div class="input-wrap">
+                    <select id="f-method">
+                      <option>GET</option>
+                      <option>HEAD</option>
+                      <option>POST</option>
+                      <option>PUT</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-url">URL <span class="req">*</span></label>
+                    <span class="opt-tag">https:// oder http://</span>
+                  </div>
+                  <div class="input-wrap mono" id="wrap-url">
+                    <input type="text" id="f-url" placeholder="https://pay.api.acme.io/health" autocomplete="off">
+                    <div class="icon-r" id="icon-url"></div>
+                  </div>
+                  <div class="help-text" id="help-url">Muss mit http:// oder https:// beginnen.</div>
+                </div>
+              </div>
+
+              <div class="field-row r-2">
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-status">Erwarteter Statuscode <span class="req">*</span></label>
+                  </div>
+                  <div class="input-wrap mono" id="wrap-status">
+                    <input type="text" id="f-status" placeholder="200" value="200" autocomplete="off" maxlength="3">
+                    <div class="icon-r" id="icon-status"></div>
+                  </div>
+                  <div class="help-text" id="help-status">Drei-stelliger HTTP-Code zwischen 100 und 599.</div>
+                </div>
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-body">Body enthält</label>
+                    <span class="opt-tag">optional</span>
+                  </div>
+                  <div class="input-wrap mono">
+                    <input type="text" id="f-body" placeholder="z. B. „ok&#x201C; oder JSON-Fragment" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TCP-specific -->
+            <div class="conditional cond-panel" id="panel-TCP">
+              <div class="cond-head"><span class="tag">TCP</span>spezifische Konfiguration</div>
+
+              <div class="field-row r-2-1" style="margin-top: 0;">
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-host">Host <span class="req">*</span></label>
+                    <span class="opt-tag">IP oder Hostname</span>
+                  </div>
+                  <div class="input-wrap mono" id="wrap-host">
+                    <input type="text" id="f-host" placeholder="pg-primary.internal" autocomplete="off">
+                    <div class="icon-r" id="icon-host"></div>
+                  </div>
+                  <div class="help-text" id="help-host">Domain, FQDN oder IPv4-Adresse.</div>
+                </div>
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-port">Port <span class="req">*</span></label>
+                    <span class="opt-tag">1 – 65 535</span>
+                  </div>
+                  <div class="input-wrap mono" id="wrap-port">
+                    <input type="text" id="f-port" placeholder="5432" autocomplete="off" maxlength="5">
+                    <div class="icon-r" id="icon-port"></div>
+                  </div>
+                  <div class="help-text" id="help-port">Ganzzahlige Portnummer.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DNS-specific -->
+            <div class="conditional cond-panel" id="panel-DNS">
+              <div class="cond-head"><span class="tag">DNS</span>spezifische Konfiguration</div>
+
+              <div class="field-row r-2-1" style="margin-top: 0;">
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-domain">Domain <span class="req">*</span></label>
+                  </div>
+                  <div class="input-wrap mono" id="wrap-domain">
+                    <input type="text" id="f-domain" placeholder="api.acme.io" autocomplete="off">
+                    <div class="icon-r" id="icon-domain"></div>
+                  </div>
+                  <div class="help-text" id="help-domain">FQDN ohne Schema, z. B. <span style="font-family: var(--font-mono);">acme.io</span>.</div>
+                </div>
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-record">Recordtyp</label>
+                  </div>
+                  <div class="input-wrap">
+                    <select id="f-record">
+                      <option>A</option>
+                      <option>AAAA</option>
+                      <option>CNAME</option>
+                      <option>MX</option>
+                      <option>TXT</option>
+                      <option>NS</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-row r-2">
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-resolver">Resolver</label>
+                  </div>
+                  <div class="input-wrap mono">
+                    <select id="f-resolver">
+                      <option>System-Default</option>
+                      <option>1.1.1.1 · Cloudflare</option>
+                      <option>8.8.8.8 · Google</option>
+                      <option>9.9.9.9 · Quad9</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label-row">
+                    <label for="f-expected">Erwartete Antwort</label>
+                    <span class="opt-tag">optional</span>
+                  </div>
+                  <div class="input-wrap mono">
+                    <input type="text" id="f-expected" placeholder="z. B. 192.0.2.1 oder Substring" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 3 Zeitplan -->
+        <section class="card" style="margin-top: 16px;">
+          <div class="card-head">
+            <span class="ix">03</span>
+            <h2>Zeitplan</h2>
+          </div>
+          <div class="card-body">
+
+            <div class="field">
+              <div class="label-row">
+                <label>Prüfintervall <span class="req">*</span></label>
+                <span class="opt-tag">aktuell <span id="iv-label">1 m</span></span>
+              </div>
+              <div class="interval-grid" id="iv-grid">
+                <button type="button" data-iv="30">
+                  <span class="v">30 s</span>
+                  <span class="h">120 / h</span>
+                </button>
+                <button type="button" data-iv="60" class="active">
+                  <span class="v">1 m</span>
+                  <span class="h">60 / h</span>
+                </button>
+                <button type="button" data-iv="300">
+                  <span class="v">5 m</span>
+                  <span class="h">12 / h</span>
+                </button>
+                <button type="button" data-iv="900">
+                  <span class="v">15 m</span>
+                  <span class="h">4 / h</span>
+                </button>
+                <button type="button" data-iv="3600">
+                  <span class="v">1 h</span>
+                  <span class="h">1 / h</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="field-row r-3">
+              <div class="field">
+                <div class="label-row">
+                  <label for="f-timeout">Timeout</label>
+                </div>
+                <div class="input-wrap mono">
+                  <input type="text" id="f-timeout" value="5" autocomplete="off">
+                  <div class="suffix">Sek.</div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <label for="f-retries">Retries</label>
+                </div>
+                <div class="input-wrap mono">
+                  <select id="f-retries">
+                    <option>keine</option>
+                    <option selected>2 · expon. backoff</option>
+                    <option>3 · expon. backoff</option>
+                    <option>5 · expon. backoff</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <label for="f-regions">Regionen</label>
+                </div>
+                <div class="input-wrap mono">
+                  <select id="f-regions">
+                    <option>eu-west-1</option>
+                    <option selected>eu-west-1 · us-east-1</option>
+                    <option>eu-west-1 · us-east-1 · ap-southeast-1</option>
+                    <option>alle (5)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right column: live summary / test -->
+      <aside class="form-side">
+        <div class="side-card sticky">
+          <h3>Live-Zusammenfassung <span class="meta">aktualisiert beim Tippen</span></h3>
+          <div class="summary" id="summary">
+            <div class="row"><span class="k">Name</span><span class="v muted" id="s-name">—</span></div>
+            <div class="row"><span class="k">Typ</span><span class="v" id="s-type"><span class="pill">HTTP</span></span></div>
+            <div class="row"><span class="k">Ziel</span><span class="v muted" id="s-target">—</span></div>
+            <div class="row"><span class="k">Erwartet</span><span class="v" id="s-expect">HTTP 200</span></div>
+            <div class="row"><span class="k">Interval</span><span class="v" id="s-iv">alle 1 m</span></div>
+            <div class="row"><span class="k">Last</span><span class="v" id="s-load">60 Checks / h</span></div>
+          </div>
+
+          <div class="test-row">
+            <div class="label-row">
+              <span>Test-Check</span>
+              <button type="button" class="btn" id="test-btn" style="height: 26px; padding: 0 10px; font-size: 12px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Jetzt testen
+              </button>
+            </div>
+            <div class="test-result muted" id="test-result">
+              <span class="heading">Noch nicht getestet</span>
+              <span class="detail">Speichere oder klicke „Jetzt testen", um den Check einmalig auszuführen.</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </form>
+  </main>
+
+  <!-- Sticky footer -->
+  <div class="form-foot">
+    <div class="status ok" id="foot-status">
+      <span class="dot"></span>
+      <span id="foot-status-text">Bereit zum Speichern</span>
+    </div>
+    <div class="actions">
+      <button class="btn" id="cancel-btn">Abbrechen</button>
+      <button class="btn primary" id="save-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="save-label">Service anlegen</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span class="pip"></span><span id="toast-msg">Gespeichert</span></div>
+
+<script>
+// ── State ──────────────────────────────────────────────
+const state = {
+  mode: 'create',    // create | edit
+  type: 'HTTP',      // HTTP | TCP | DNS
+  interval: 60,
+  errors: {},
+  touched: {},
+};
+
+const editPreset = {
+  name: 'payments-gateway',
+  desc: 'Zahlungs-API · production',
+  tier: '0',
+  type: 'HTTP',
+  method: 'GET',
+  url: 'https://pay.api.acme.io/health',
+  status: '200',
+  body: 'ok',
+  interval: 30,
+};
+
+const els = {
+  banner: document.getElementById('val-banner'),
+  count: document.getElementById('val-count'),
+  pageTitle: document.getElementById('page-title'),
+  pageSub: document.getElementById('page-sub'),
+  crumb: document.getElementById('crumb-curr'),
+  saveLabel: document.getElementById('save-label'),
+  saveBtn: document.getElementById('save-btn'),
+  footStatus: document.getElementById('foot-status'),
+  footStatusText: document.getElementById('foot-status-text'),
+
+  // type
+  typeSeg: document.getElementById('type-seg'),
+  panels: {
+    HTTP: document.getElementById('panel-HTTP'),
+    TCP: document.getElementById('panel-TCP'),
+    DNS: document.getElementById('panel-DNS'),
+  },
+
+  // fields
+  name: document.getElementById('f-name'),
+  desc: document.getElementById('f-desc'),
+  tier: document.getElementById('f-tier'),
+  method: document.getElementById('f-method'),
+  url: document.getElementById('f-url'),
+  status: document.getElementById('f-status'),
+  body: document.getElementById('f-body'),
+  host: document.getElementById('f-host'),
+  port: document.getElementById('f-port'),
+  domain: document.getElementById('f-domain'),
+  record: document.getElementById('f-record'),
+
+  // summary
+  sName: document.getElementById('s-name'),
+  sType: document.getElementById('s-type'),
+  sTarget: document.getElementById('s-target'),
+  sExpect: document.getElementById('s-expect'),
+  sIv: document.getElementById('s-iv'),
+  sLoad: document.getElementById('s-load'),
+
+  ivLabel: document.getElementById('iv-label'),
+  ivGrid: document.getElementById('iv-grid'),
+  testBtn: document.getElementById('test-btn'),
+  testResult: document.getElementById('test-result'),
+  toast: document.getElementById('toast'),
+  toastMsg: document.getElementById('toast-msg'),
+};
+
+// ── Validators ─────────────────────────────────────────
+const VALIDATORS = {
+  name: v => {
+    const x = (v || '').trim();
+    if (!x) return 'Name darf nicht leer sein';
+    if (!/^[a-z0-9][a-z0-9-]{1,40}[a-z0-9]$/.test(x))
+      return 'Nur Kleinbuchstaben, Ziffern und Bindestriche (3 – 42 Zeichen)';
+    return null;
+  },
+  url: v => {
+    const x = (v || '').trim();
+    if (!x) return 'URL erforderlich';
+    if (!/^https?:\/\//.test(x)) return 'Muss mit http:// oder https:// beginnen';
+    try { new URL(x); } catch { return 'Ungültiges URL-Format'; }
+    return null;
+  },
+  status: v => {
+    const x = (v || '').trim();
+    if (!x) return 'Statuscode erforderlich';
+    const n = parseInt(x, 10);
+    if (!/^\d{3}$/.test(x) || n < 100 || n > 599) return 'Drei-stelliger Code zwischen 100 und 599';
+    return null;
+  },
+  host: v => {
+    const x = (v || '').trim();
+    if (!x) return 'Host erforderlich';
+    if (!/^[a-z0-9.-]+$/i.test(x)) return 'Ungültiger Hostname';
+    if (x.length > 253) return 'Hostname zu lang';
+    return null;
+  },
+  port: v => {
+    const x = (v || '').trim();
+    if (!x) return 'Port erforderlich';
+    if (!/^\d+$/.test(x)) return 'Nur Ziffern';
+    const n = parseInt(x, 10);
+    if (n < 1 || n > 65535) return 'Bereich 1 – 65 535';
+    return null;
+  },
+  domain: v => {
+    const x = (v || '').trim();
+    if (!x) return 'Domain erforderlich';
+    if (!/^([a-z0-9-]+\.)+[a-z]{2,}$/i.test(x)) return 'Ungültiger Domainname (FQDN ohne Schema)';
+    return null;
+  },
+};
+
+function fieldsForType(t) {
+  if (t === 'HTTP') return ['name', 'url', 'status'];
+  if (t === 'TCP')  return ['name', 'host', 'port'];
+  return ['name', 'domain'];
+}
+
+function validate(field) {
+  const v = els[field] ? els[field].value : '';
+  return VALIDATORS[field] ? VALIDATORS[field](v) : null;
+}
+
+function setFieldState(field) {
+  const wrap = document.getElementById('wrap-' + field);
+  const help = document.getElementById('help-' + field);
+  const icon = document.getElementById('icon-' + field);
+  if (!wrap) return;
+
+  const err = validate(field);
+  const wasTouched = state.touched[field];
+  const isEmpty = !(els[field] && els[field].value.trim());
+
+  if (err && wasTouched) {
+    wrap.classList.add('invalid');
+    wrap.classList.remove('valid');
+    help.classList.add('error');
+    help.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>${err}`;
+    icon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>`;
+    state.errors[field] = err;
+  } else if (!err && !isEmpty) {
+    wrap.classList.remove('invalid');
+    wrap.classList.add('valid');
+    help.classList.remove('error');
+    help.textContent = helpDefaults[field] || '';
+    icon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="20 6 9 17 4 12"/></svg>`;
+    delete state.errors[field];
+  } else {
+    wrap.classList.remove('invalid');
+    wrap.classList.remove('valid');
+    help.classList.remove('error');
+    if (help) help.textContent = helpDefaults[field] || '';
+    icon.innerHTML = '';
+    if (!err) delete state.errors[field];
+  }
+}
+
+const helpDefaults = {
+  name: 'Wird als ID verwendet — kann später nicht umbenannt werden.',
+  url: 'Muss mit http:// oder https:// beginnen.',
+  status: 'Drei-stelliger HTTP-Code zwischen 100 und 599.',
+  host: 'Domain, FQDN oder IPv4-Adresse.',
+  port: 'Ganzzahlige Portnummer.',
+  domain: 'FQDN ohne Schema, z. B. acme.io.',
+};
+
+// ── Type switching ─────────────────────────────────────
+function setType(t) {
+  state.type = t;
+  // segmented
+  els.typeSeg.querySelectorAll('button').forEach(b => {
+    b.classList.toggle('active', b.dataset.t === t);
+  });
+  // panels
+  ['HTTP', 'TCP', 'DNS'].forEach(k => {
+    els.panels[k].classList.toggle('active', k === t);
+  });
+  // clear errors of hidden type
+  Object.keys(state.errors).forEach(k => {
+    if (!fieldsForType(t).includes(k)) {
+      delete state.errors[k];
+      const w = document.getElementById('wrap-' + k);
+      if (w) { w.classList.remove('invalid'); w.classList.remove('valid'); }
+      const h = document.getElementById('help-' + k);
+      if (h) { h.classList.remove('error'); h.textContent = helpDefaults[k] || ''; }
+      const ic = document.getElementById('icon-' + k);
+      if (ic) ic.innerHTML = '';
+      state.touched[k] = false;
+    }
+  });
+  updateSummary();
+  updateFootStatus();
+}
+
+els.typeSeg.querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', () => setType(b.dataset.t));
+});
+
+// ── Interval ───────────────────────────────────────────
+function setInterval(sec) {
+  state.interval = sec;
+  els.ivGrid.querySelectorAll('button').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.iv, 10) === sec);
+  });
+  const label = els.ivGrid.querySelector('button.active .v').textContent;
+  els.ivLabel.textContent = label;
+  updateSummary();
+}
+els.ivGrid.querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', () => setInterval(parseInt(b.dataset.iv, 10)));
+});
+
+// ── Summary ────────────────────────────────────────────
+function updateSummary() {
+  els.sName.textContent = els.name.value.trim() || '—';
+  els.sName.classList.toggle('muted', !els.name.value.trim());
+
+  const typePill = `<span class="pill">${state.type}${state.type === 'HTTP' ? ' · ' + els.method.value : ''}</span>`;
+  els.sType.innerHTML = typePill;
+
+  let target = '—';
+  if (state.type === 'HTTP') target = els.url.value.trim() || '—';
+  if (state.type === 'TCP') {
+    const h = els.host.value.trim();
+    const p = els.port.value.trim();
+    target = (h && p) ? `${h}:${p}` : (h || p || '—');
+  }
+  if (state.type === 'DNS') {
+    const d = els.domain.value.trim();
+    target = d ? `${els.record.value} · ${d}` : '—';
+  }
+  els.sTarget.textContent = target;
+  els.sTarget.classList.toggle('muted', target === '—');
+
+  let expect = '—';
+  if (state.type === 'HTTP') {
+    expect = `HTTP ${els.status.value || '?'}`;
+    if (els.body.value.trim()) expect += ` · Body „${els.body.value.trim()}"`;
+  } else if (state.type === 'TCP') {
+    expect = 'TCP-Verbindung erfolgreich';
+  } else {
+    expect = `${els.record.value}-Record vorhanden`;
+  }
+  els.sExpect.textContent = expect;
+
+  const ivMap = { 30: '30 s', 60: '1 m', 300: '5 m', 900: '15 m', 3600: '1 h' };
+  const perH = { 30: '120 Checks / h', 60: '60 Checks / h', 300: '12 Checks / h', 900: '4 Checks / h', 3600: '1 Check / h' };
+  els.sIv.textContent = `alle ${ivMap[state.interval]}`;
+  els.sLoad.textContent = perH[state.interval];
+}
+
+// ── Bind inputs ────────────────────────────────────────
+const watchFields = ['name', 'desc', 'method', 'url', 'status', 'body', 'host', 'port', 'domain', 'record'];
+watchFields.forEach(f => {
+  if (!els[f]) return;
+  const ev = els[f].tagName === 'SELECT' ? 'change' : 'input';
+  els[f].addEventListener(ev, () => {
+    if (state.touched[f]) setFieldState(f);
+    updateSummary();
+    updateFootStatus();
+  });
+  els[f].addEventListener('blur', () => {
+    state.touched[f] = true;
+    setFieldState(f);
+    updateFootStatus();
+  });
+});
+
+function countErrors() {
+  // only count fields that are relevant to current type
+  const relevant = fieldsForType(state.type);
+  return relevant.filter(f => VALIDATORS[f] ? VALIDATORS[f](els[f].value) : null).length;
+}
+
+function updateFootStatus() {
+  const errCount = countErrors();
+  if (errCount === 0) {
+    els.footStatus.className = 'status ok';
+    els.footStatusText.textContent = 'Bereit zum Speichern';
+    els.saveBtn.disabled = false;
+  } else {
+    els.footStatus.className = 'status';
+    els.footStatusText.textContent = `${errCount} ${errCount === 1 ? 'Pflichtfeld' : 'Pflichtfelder'} offen`;
+    els.saveBtn.disabled = false; // keep clickable to show banner
+  }
+
+  // Update banner only if visible
+  if (els.banner.classList.contains('show')) {
+    if (errCount === 0) {
+      els.banner.classList.remove('show');
+    } else {
+      els.count.textContent = `${errCount} ${errCount === 1 ? 'Feld' : 'Felder'}`;
+    }
+  }
+}
+
+// ── Save / Cancel ──────────────────────────────────────
+els.saveBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  // mark touched + validate all visible fields
+  fieldsForType(state.type).forEach(f => {
+    state.touched[f] = true;
+    setFieldState(f);
+  });
+  const errCount = countErrors();
+  if (errCount > 0) {
+    els.count.textContent = `${errCount} ${errCount === 1 ? 'Feld' : 'Felder'}`;
+    els.banner.classList.add('show');
+    els.banner.classList.remove('shake');
+    void els.banner.offsetWidth; // restart animation
+    els.banner.classList.add('shake');
+    els.footStatus.className = 'status err';
+    els.footStatusText.textContent = 'Validierung fehlgeschlagen';
+    return;
+  }
+  els.banner.classList.remove('show');
+  // Animate save
+  els.saveBtn.disabled = true;
+  els.saveLabel.textContent = state.mode === 'edit' ? 'Speichere…' : 'Lege an…';
+  const svg = els.saveBtn.querySelector('svg');
+  svg.classList.add('spin');
+  setTimeout(() => {
+    svg.classList.remove('spin');
+    els.saveBtn.disabled = false;
+    els.saveLabel.textContent = state.mode === 'edit' ? 'Änderungen gespeichert' : 'Service angelegt';
+    showToast(state.mode === 'edit'
+      ? 'Änderungen gespeichert · nächster Check in ' + els.ivLabel.textContent
+      : 'Service angelegt · erster Check läuft');
+    setTimeout(() => {
+      els.saveLabel.textContent = state.mode === 'edit' ? 'Änderungen speichern' : 'Service anlegen';
+    }, 2000);
+  }, 1200);
+});
+
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  showToast('Änderungen verworfen');
+});
+
+function showToast(msg) {
+  els.toastMsg.textContent = msg;
+  els.toast.classList.add('show');
+  clearTimeout(window.__tt);
+  window.__tt = setTimeout(() => els.toast.classList.remove('show'), 2400);
+}
+
+// ── Test-Check ─────────────────────────────────────────
+els.testBtn.addEventListener('click', () => {
+  // Validate first relevant fields
+  fieldsForType(state.type).forEach(f => { state.touched[f] = true; setFieldState(f); });
+  if (countErrors() > 0) {
+    els.testResult.className = 'test-result bad';
+    els.testResult.innerHTML = `<span class="heading">Test übersprungen</span><span class="detail">Es gibt noch Pflichtfeld-Fehler. Behebe sie und versuch es nochmal.</span>`;
+    return;
+  }
+  // Simulate
+  els.testResult.className = 'test-result muted';
+  els.testResult.innerHTML = `<span class="heading">Test läuft…</span><span class="detail">Verbinde mit Ziel und warte auf Antwort.</span>`;
+  setTimeout(() => {
+    // Heuristic: HTTP+url → ok-ish, simulate latency; if "fail" in url → bad
+    const ms = 40 + Math.floor(Math.random() * 240);
+    let ok = true;
+    if (state.type === 'HTTP' && /fail|down|broken/i.test(els.url.value)) ok = false;
+    if (state.type === 'TCP' && els.port.value === '999') ok = false;
+    if (ok) {
+      let detail;
+      if (state.type === 'HTTP') detail = `HTTP ${els.status.value || 200} · ${ms} ms · TLS handshake ok`;
+      else if (state.type === 'TCP') detail = `Verbindung aufgebaut · RTT ${ms} ms`;
+      else detail = `${els.record.value}-Record aufgelöst · ${ms} ms`;
+      els.testResult.className = 'test-result ok';
+      els.testResult.innerHTML = `<span class="heading">✓ Check erfolgreich</span><span class="detail">${detail}</span>`;
+    } else {
+      els.testResult.className = 'test-result bad';
+      els.testResult.innerHTML = `<span class="heading">✗ Check fehlgeschlagen</span><span class="detail">Timeout nach 5 s · Verbindung verweigert</span>`;
+    }
+  }, 900);
+});
+
+// ── Mode toggle ────────────────────────────────────────
+document.querySelectorAll('.mode-toggle button').forEach(b => {
+  b.addEventListener('click', () => {
+    state.mode = b.dataset.mode;
+    document.querySelectorAll('.mode-toggle button').forEach(x => x.classList.toggle('active', x === b));
+    if (state.mode === 'edit') {
+      els.pageTitle.textContent = 'Service bearbeiten';
+      els.pageSub.textContent = 'Änderungen werden ab dem nächsten Check wirksam.';
+      els.crumb.textContent = 'payments-gateway · bearbeiten';
+      els.saveLabel.textContent = 'Änderungen speichern';
+      // prefill
+      els.name.value = editPreset.name;
+      els.desc.value = editPreset.desc;
+      els.tier.value = editPreset.tier;
+      els.method.value = editPreset.method;
+      els.url.value = editPreset.url;
+      els.status.value = editPreset.status;
+      els.body.value = editPreset.body;
+      setType('HTTP');
+      setInterval(editPreset.interval);
+      // touch + validate so green ticks appear
+      fieldsForType('HTTP').forEach(f => { state.touched[f] = true; setFieldState(f); });
+    } else {
+      els.pageTitle.textContent = 'Service hinzufügen';
+      els.pageSub.textContent = 'Lege einen neuen Health-Check an. Der erste Lauf startet sofort nach dem Speichern.';
+      els.crumb.textContent = 'Service hinzufügen';
+      els.saveLabel.textContent = 'Service anlegen';
+      // clear
+      els.name.value = '';
+      els.desc.value = '';
+      els.tier.value = '1';
+      els.method.value = 'GET';
+      els.url.value = '';
+      els.status.value = '200';
+      els.body.value = '';
+      els.host.value = '';
+      els.port.value = '';
+      els.domain.value = '';
+      setType('HTTP');
+      setInterval(60);
+      Object.keys(state.touched).forEach(k => state.touched[k] = false);
+      Object.keys(state.errors).forEach(k => delete state.errors[k]);
+      ['name','url','status','host','port','domain'].forEach(f => {
+        const w = document.getElementById('wrap-' + f);
+        if (w) { w.classList.remove('invalid'); w.classList.remove('valid'); }
+        const h = document.getElementById('help-' + f);
+        if (h) { h.classList.remove('error'); h.textContent = helpDefaults[f] || ''; }
+        const ic = document.getElementById('icon-' + f);
+        if (ic) ic.innerHTML = '';
+      });
+      els.banner.classList.remove('show');
+    }
+    els.testResult.className = 'test-result muted';
+    els.testResult.innerHTML = `<span class="heading">Noch nicht getestet</span><span class="detail">Speichere oder klicke „Jetzt testen", um den Check einmalig auszuführen.</span>`;
+    updateSummary();
+    updateFootStatus();
+  });
+});
+
+// ── Keyboard ───────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    e.preventDefault();
+    els.saveBtn.click();
+  }
+  if (e.key === 'Escape' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {
+    document.getElementById('cancel-btn').click();
+  }
+});
+
+// init
+updateSummary();
+updateFootStatus();
+</script>
+</body>
+</html>
