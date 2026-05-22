@@ -12,7 +12,7 @@ Dasselbe Projektkonzept zieht sich durch alle drei Aufgabenteile — vom schnell
 
 | Teil | Inhalt | Werkzeug | Ordner |
 |---|---|---|---|
-| A | UI für den Monitor vibe-coden | Google Stitch | [`a-ui/`](./a-ui) |
+| A | UI für den Monitor vibe-coden | Claude Design | [`a-ui/`](./a-ui) |
 | B | Lauffähige Vibe-Version (Pet-Project) | bolt.new + GitHub Pages | [`b-vibe-app/`](./b-vibe-app) |
 | C | Modulare, verteilte App — vollständig verstanden | Claude Code (CLI) | [`c-app/`](./c-app) |
 
