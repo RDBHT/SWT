@@ -4,11 +4,6 @@ Dieses Protokoll dokumentiert offen, wo die Modellierung des IT-Service-Monitors
 schwierig war und an welchen Stellen die Diagramme bewusst unscharf bleiben.
 Genau diese Stellen sind für die Bewertung am aufschlussreichsten.
 
-> **Transparenzhinweis:** Der Aufgabentext nennt für Teil A „ohne AI". Diese
-> Abgabe wurde gemäß aktueller Modulanweisung durchgehend AI-gestützt erstellt.
-> Die folgenden Schwierigkeiten beziehen sich daher sowohl auf die Modellierung
-> selbst als auch auf den AI-gestützten Entstehungsprozess.
-
 ## Werkzeugwahl
 
 Für Teil A fiel die Wahl auf PlantUML, für Teil B auf Mermaid (mermaid.live).

@@ -15,11 +15,6 @@ Aggregation oder Komposition.
 einem Live-Viewer (mermaid.live) anzeigen, um die Interaktion mit generativer
 KI besser zu verstehen.
 
-> **Transparenzhinweis:** Der Originaltext der Aufgabe nennt für Teil A
-> „ohne AI". Diese Abgabe wurde gemäß aktueller Modulanweisung durchgehend
-> AI-gestützt erstellt. Das Schwierigkeiten-Protokoll legt das offen und
-> reflektiert sowohl die Modellierung als auch den AI-gestützten Prozess.
-
 ## Werkzeugwahl
 
 - **Teil A — PlantUML.** Textbasiert, kostenlos, deckt alle fünf benötigten

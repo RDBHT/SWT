@@ -65,16 +65,6 @@
           </tbody>
         </table>
       </figure>
-      <article>
-        <header><strong>Transparenzhinweis</strong></header>
-        <p>
-          Der Originaltext der Aufgabe nennt für Teil A „ohne AI". Diese Abgabe
-          wurde gemäß aktueller Modulanweisung durchgehend AI-gestützt erstellt.
-          Das <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/schwierigkeiten-protokoll.md">Schwierigkeiten-Protokoll</a>
-          legt das offen und reflektiert sowohl die Modellierung als auch den
-          AI-gestützten Prozess.
-        </p>
-      </article>
     </section>
 
     <section>
@@ -324,12 +314,26 @@ sequenceDiagram
         Zustandsdiagramm hat keinen Wartungszustand, obwohl
         <code>Check.enabled</code> ihn nahelegt.
       </p>
+      <p>Zur Interaktion mit der generativen KI &mdash; die wichtigsten Beobachtungen:</p>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>Beobachtung</th><th>Konsequenz</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Erster Klassendiagramm-Entwurf mit 13 Klassen</td><td>KI liefert eher zu viel; Knappheit explizit einfordern</td></tr>
+            <tr><td>Diagramm-Code lief fehlerfrei in den Live-Viewern</td><td>KI ist stark bei Notation und Syntax</td></tr>
+            <tr><td>Komposition vs. Assoziation, Kardinalitäten</td><td>Modellierungsentscheidungen blieben menschlich</td></tr>
+            <tr><td>Mermaid kann kein Use-Case-/Komponentendiagramm</td><td>Notation begrenzt die text-first erzeugbare Sicht</td></tr>
+            <tr><td>mermaid.live rendert sofort, kein Setup</td><td>schneller Iterationszyklus; Engpass ist das Spezifizieren</td></tr>
+          </tbody>
+        </table>
+      </figure>
       <p>
-        Zur KI-Interaktion: Der erste Entwurf war mit 13 Klassen überladen und
-        musste auf neun reduziert werden &mdash; generative KI neigt zur
-        Über-Lieferung, Knappheit muss man einfordern. Die KI war stark bei der
-        Syntax, die Modellierungsentscheidungen blieben menschlich. Volle Details
-        im Protokoll und in der Prompt-Dokumentation.
+        Volle Details im
+        <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/schwierigkeiten-protokoll.md">Schwierigkeiten-Protokoll</a>
+        und in der
+        <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/prompts.md">Prompt-Dokumentation</a>.
       </p>
     </section>
 
