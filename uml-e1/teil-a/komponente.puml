@@ -1,0 +1,24 @@
+@startuml IT-Service-Monitor-Komponenten
+skinparam componentStyle rectangle
+
+component "scheduler" as SCH
+component "checker" as CHK
+component "store" as STO
+component "alerting" as ALR
+component "dashboard-ui" as UI
+component "mock-service" as MOCK
+
+interface "CheckAPI" as ICheck
+interface "StoreAPI" as IStore
+interface "AlertAPI" as IAlert
+
+SCH --> ICheck
+ICheck - CHK
+CHK --> IStore
+IStore - STO
+CHK ..> MOCK : prueft (HTTP/TCP/DNS)
+ALR --> IStore
+SCH --> IAlert
+IAlert - ALR
+UI --> IStore
+@enduml

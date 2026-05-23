@@ -1,0 +1,23 @@
+sequenceDiagram
+    actor Scheduler
+    participant Check as HttpCheck
+    participant Ziel as Zielsystem
+    participant Rule as AlertRule
+
+    Scheduler->>Check: execute()
+    activate Check
+    Check->>Ziel: HTTP GET /health
+    activate Ziel
+    Ziel-->>Check: 200 OK, 42 ms
+    deactivate Ziel
+    Check-->>Scheduler: result: CheckResult
+    deactivate Check
+    Scheduler->>Rule: matches(result)
+    activate Rule
+    alt Schwellwert überschritten
+        Rule-->>Scheduler: true
+        Scheduler->>Rule: raiseAlert()
+    else Normalbereich
+        Rule-->>Scheduler: false
+    end
+    deactivate Rule

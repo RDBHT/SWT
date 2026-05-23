@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UML-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    pre.mermaid {
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html" aria-current="page">UML-E1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <hgroup>
+        <h2>UML-E1 &mdash; Eigenes UML-Werkzeug wählen und Diagramme erstellen</h2>
+        <p>Einsendeaufgabe UML-E1 (Softwaretechnik)</p>
+      </hgroup>
+      <p>
+        Modelliertes System: der <strong>IT-Service-Monitor</strong> &mdash; das
+        durchgehende Projekt der Vibe-&amp;-AI-Coding-Aufgabe. Ein Werkzeug zur
+        Überwachung von Diensten per HTTP-, TCP- und DNS-Checks. Teil A entwirft
+        fünf UML-Diagramme mit PlantUML, Teil B erzeugt Diagramme text-first mit
+        generativer KI und zeigt sie im Live-Viewer mermaid.live.
+      </p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Ziel</th><td>Ein großes System des Lieblingsprojekts mit mindestens fünf UML-Diagrammen modellieren</td></tr>
+            <tr><th scope="row">Werkzeug</th><td>PlantUML (Teil A) &middot; Mermaid / mermaid.live (Teil B)</td></tr>
+            <tr><th scope="row">Anforderungen</th><td>Klassendiagramm mit ≥ 7 Klassen, Kardinalitäten, Aggregation/Komposition; Teil B text-first mit KI im Live-Viewer</td></tr>
+            <tr><th scope="row">Abgabe</th><td>5 PlantUML- und 3 Mermaid-Diagramme, Schwierigkeiten-Protokoll, Prompt-Dokumentation</td></tr>
+            <tr><th scope="row">Status</th><td><kbd class="status done">abgeschlossen</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <article>
+        <header><strong>Transparenzhinweis</strong></header>
+        <p>
+          Der Originaltext der Aufgabe nennt für Teil A „ohne AI". Diese Abgabe
+          wurde gemäß aktueller Modulanweisung durchgehend AI-gestützt erstellt.
+          Das <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/schwierigkeiten-protokoll.md">Schwierigkeiten-Protokoll</a>
+          legt das offen und reflektiert sowohl die Modellierung als auch den
+          AI-gestützten Prozess.
+        </p>
+      </article>
+    </section>
+
+    <section>
+      <h3>Werkzeugwahl</h3>
+      <p>
+        Für Teil A fiel die Wahl auf <strong>PlantUML</strong>: textbasiert,
+        kostenlos und &mdash; entscheidend &mdash; in der Lage, alle fünf
+        benötigten Diagrammtypen abzudecken. Für Teil B kommt
+        <strong>Mermaid</strong> mit <strong>mermaid.live</strong> zum Einsatz,
+        der in der Aufgabe genannte Live-Viewer: sofortiges Rendern im Browser
+        ohne Installation. Ein praktischer Unterschied wurde erst bei der Arbeit
+        sichtbar: Mermaid unterstützt weder Use-Case- noch Komponentendiagramme.
+        Die Notation schränkt damit ein, welche Systemsicht man text-first
+        überhaupt erzeugen kann.
+      </p>
+    </section>
+
+    <section>
+      <h3>Teil A &mdash; Modellierung mit PlantUML</h3>
+      <p>
+        Fünf Diagramme des IT-Service-Monitors. Jede Quelle als
+        <code>.puml</code>-Datei im Repository, hier über den PlantUML-Server
+        gerendert.
+      </p>
+
+      <article>
+        <h4>1 &mdash; Klassendiagramm</h4>
+        <p>
+          Neun Klassen: <code>Service</code>, die abstrakte <code>Check</code>
+          mit den drei Spezialisierungen HTTP/TCP/DNS, <code>CheckResult</code>,
+          <code>Scheduler</code>, <code>AlertRule</code> und <code>Alert</code>.
+          Komposition Service ◆— Check, Aggregation Service ◇— AlertRule,
+          Kardinalitäten durchgängig.
+        </p>
+        <figure>
+          <img loading="lazy" alt="UML-Klassendiagramm des IT-Service-Monitors mit neun Klassen"
+            src="https://www.plantuml.com/plantuml/svg/VLHRRjim4FpdAHRwIc8eI7w58eZHe6XGv2Vo1MXgAnEcI85Skd7ItAPdw0LoiIxri2Itw9yrd9tPdLtuFf3q51i3ZvkyH7_G2lCdPpKvdtypCWIqbPQrbqqZmbxRLl9FKEbbJUJrDX8-AcTB_Ofm8tQwGb3QAuD2T2mOLE5D0EHWPOC5b5nfwmxOkK0BW3kY68gnhkm--MK5U90cIXgWYyjpphiGSXl8IqLzX_1vXse_E6jBp9QcH6wtOWC6kWUqSckmAc3hd45fEw-tKUaTy0KLJvdyEhrd3D5GSkjDlXArSwFepM8WV6bH4LRbC5ZoFHLlrAAsTPxE60ysp1afhxz2z3oJhpR7Te9FzREU1mdI3NBAJLl00yUvuS__9f-3OPfLnwVpxakrmoeQz9to2hfhIa4TdAuwXBJQdu1JtPfBw9aBXuvu8o65h0_uHMeJFSxs4_20NjDnDl4A6adi7IxyOYcNqnANNeEFbpfWjQQpmQNQM_U3Rw2Udm4hzC5_-fddqvRduBYzEJRkIuZnyhFR3Axu9RkzlhxAXgCi-Evez_6BBwa74YlFxo2xcLZ3sfZhNp7M17SBKPT4U_gKQ05xPx_hEdhDa9XMz2y3PhT6sYGyAPmH-m0BC1-_0u6CWSdt_BV0_nhY3m00">
+          <figcaption>Klassendiagramm: 9 Klassen, Vererbung unter <code>Check</code>, Komposition und Aggregation.</figcaption>
+        </figure>
+        <p><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-a/klassendiagramm.puml">PlantUML-Quelle ansehen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>2 &mdash; Use-Case-Diagramm</h4>
+        <p>
+          Zwei Akteure (Operator, Admin) und fünf Anwendungsfälle. Admin ist als
+          Spezialisierung von Operator modelliert; „Service anlegen" schließt
+          „Check konfigurieren" per <code>&lt;&lt;include&gt;&gt;</code> ein.
+        </p>
+        <figure>
+          <img loading="lazy" alt="UML-Use-Case-Diagramm mit zwei Akteuren und fünf Anwendungsfällen"
+            src="https://www.plantuml.com/plantuml/svg/RL71JiCm3BtxAwpUCucnNT1KRUff1uH4sGTOgTTPJTEIk4C8-7T2nKfXNAAyl9VdPtiRbO8EhSFzaoavdCMokU-yQ1VC8N91aS7nKL4x35AV52i9R5Kw3x4HtrEW5dko3TLSwgjZ_AB9ruu1o2OVVEWvKBfymrtLYeVnH6FUynyUfg-ONUV9y0qGXyWsXSBimfPAEaHayP5Fx3EaY8VYPYxTEGwApuEe2eT9i_p73iaxhYV9xLnIdDWss7J-AFKGvawhgshcCRauF7Du8QUJS0qV09T-K_Vv6FNFmt8QJZv6cAFLBxI6nEDYCJ9uXvkDUEk6YlCSjkohj5Zu1000">
+          <figcaption>Use-Case-Diagramm: Akteur-Vererbung und <code>&lt;&lt;include&gt;&gt;</code>-Beziehung.</figcaption>
+        </figure>
+        <p><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-a/use-case.puml">PlantUML-Quelle ansehen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>3 &mdash; Sequenzdiagramm</h4>
+        <p>
+          Ein Check-Durchlauf: Der Scheduler startet einen HttpCheck, dieser
+          fragt das Zielsystem ab und liefert ein CheckResult; die AlertRule
+          prüft den Schwellwert (<code>alt</code>-Fragment).
+        </p>
+        <figure>
+          <img loading="lazy" alt="UML-Sequenzdiagramm eines Check-Durchlaufs"
+            src="https://www.plantuml.com/plantuml/svg/TP9FJyCm3CNl-HJMJaEYOfeuxO264688yKTRJxk5rAWHQJSIPuDzUbwJQMkHEDLsVl5xTZeFeht4nj5ZMQpOxwpXuddJMjbuv5-HsuFI1XcjJCrLTEpL5bUiiLlT2erGDPyqeuN8zgwBHwG3fMW87YmxS6jymayGRXBOfKFEGmFSBPHaYJXXNQ3KoG8LDra287-pYSBZYywdtMdXete6GAwpyg8it-ZXlgIhchMJ-imd4uagUesdamczFbtIzPIQe2eUuiVkuC-kPkGvH2S8ql4oPVshsTbma6KUkD62QXZd5hrfqkmmt0djsRaz5aEHtza7KtihmgsYtEMl7V6HSTQNE-bvRGEdBMDrU1Ecburlj4DVjgR-h-M71gguhVfZ9Ojp5F4dgLy0">
+          <figcaption>Sequenzdiagramm: Check-Durchlauf vom Scheduler bis zur Alarmprüfung.</figcaption>
+        </figure>
+        <p><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-a/sequenz.puml">PlantUML-Quelle ansehen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>4 &mdash; Zustandsdiagramm</h4>
+        <p>
+          Lebenszyklus des Service-Status: von <code>Unbekannt</code> über
+          <code>OK</code> und <code>Degraded</code> bis <code>Down</code>,
+          gesteuert durch Ergebnis und Latenz der Checks.
+        </p>
+        <figure>
+          <img loading="lazy" alt="UML-Zustandsdiagramm des Service-Status"
+            src="https://www.plantuml.com/plantuml/svg/VP2x2W8n44NxVCNKGdx0GWHjHCL2RHIBcBqcYt42iraN_7gpAW4Vs6LopnoIEswIaTHU0iqsUWsvrXPw6RbEKVIkpIbNQZyuaDOZsl8HPyESL3azxbTp6XAaIH2QUDXp7aunE45j_GSxZHr_qYVuuD1O7um3gwnxa71YAbIPNfW4lb6BOzvPMzyXX0wI2lgK_hGLJNdfoyPHBYQyvtz5VLOat_yiUL_Na5vbaaE8lIIfCRZAJQix">
+          <figcaption>Zustandsdiagramm: Status-Lebenszyklus eines überwachten Service.</figcaption>
+        </figure>
+        <p><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-a/zustand.puml">PlantUML-Quelle ansehen &rsaquo;</a></p>
+      </article>
+
+      <article>
+        <h4>5 &mdash; Komponentendiagramm</h4>
+        <p>
+          Die sechs Module des IT-Service-Monitors (scheduler, checker, store,
+          alerting, dashboard-ui, mock-service) mit ihren Schnittstellen
+          CheckAPI, StoreAPI und AlertAPI.
+        </p>
+        <figure>
+          <img loading="lazy" alt="UML-Komponentendiagramm mit sechs Modulen"
+            src="https://www.plantuml.com/plantuml/svg/LP5DRiCW48Ntd6BaLRiWsNSHnN8NjfmqLd4EGF4aGRR10bofjoy_ZKKNQ3HyyEOzE5h7ZLld2PgUCZJVKY0zQoMTDhJLyw8LAeUAs56gXHi-WtZkClSp8HWKZglxX8Hi10eh7ZYi4ve2k0LMrJdqJ8n_gAhRV_VyN4nt-aiEkDToKjqZAq-VEHkuVNnfRWQwoiYlJOvdBKPgKxQ8pvUg9KJwNER61K9H1KDbrqJQn2x7B9ZQSEnoN0Ph6uuT8JuoK7fuggK2DERrAx4abOfd8N9WkzqXUeGtMCoADmSlTTzt-xxgzkyVx9Nu_Bd0DYlDJiNhXMUwDld98wh1VpRv1G00">
+          <figcaption>Komponentendiagramm: sechs Module, drei Schnittstellen.</figcaption>
+        </figure>
+        <p><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-a/komponente.puml">PlantUML-Quelle ansehen &rsaquo;</a></p>
+      </article>
+    </section>
+
+    <section>
+      <h3>Teil B &mdash; Text-first mit generativer KI</h3>
+      <p>
+        Dieselben Diagramme, text-first mit KI als Mermaid-Code erzeugt und hier
+        über den Mermaid-Live-Renderer direkt im Browser dargestellt. Möglich
+        sind drei Typen &mdash; Use-Case- und Komponentendiagramm unterstützt
+        Mermaid nicht. Die Reflexion der GenAI-Interaktion steht in
+        <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/prompts.md">prompts.md</a>.
+      </p>
+
+      <article>
+        <h4>Klassendiagramm (Mermaid)</h4>
+        <figure>
+<pre class="mermaid">
+classDiagram
+    class Service {
+        -name: String
+        -host: String
+        -status: ServiceStatus
+        +evaluateStatus() ServiceStatus
+    }
+    class Check {
+        &lt;&lt;abstract&gt;&gt;
+        -intervalSeconds: int
+        -enabled: boolean
+        +execute() CheckResult
+    }
+    class HttpCheck {
+        -url: String
+        -expectedStatus: int
+    }
+    class TcpCheck {
+        -port: int
+    }
+    class DnsCheck {
+        -hostname: String
+        -recordType: String
+    }
+    class CheckResult {
+        -timestamp: DateTime
+        -status: ServiceStatus
+        -latencyMs: int
+    }
+    class Scheduler {
+        +start() void
+        +tick() void
+    }
+    class AlertRule {
+        -consecutiveFailures: int
+        -severity: String
+        +matches(r) boolean
+    }
+    class Alert {
+        -raisedAt: DateTime
+        -acknowledged: boolean
+    }
+    Check &lt;|-- HttpCheck
+    Check &lt;|-- TcpCheck
+    Check &lt;|-- DnsCheck
+    Service "1" *-- "1..*" Check : enthält
+    Check "1" --&gt; "0..*" CheckResult : erzeugt
+    Service "1" o-- "0..*" AlertRule : konfiguriert
+    Scheduler "1" --&gt; "0..*" Check : plant
+    AlertRule "1" --&gt; "0..*" Alert : löst aus
+</pre>
+          <figcaption>Klassendiagramm, text-first als Mermaid.</figcaption>
+        </figure>
+        <p>
+          <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-b/klassendiagramm.mmd">Mermaid-Quelle ansehen &rsaquo;</a> &middot;
+          <a href="https://mermaid.live/edit#pako:eNqNVMGOmzAQ_RWL0-6mrFKp6gFFkVaNql56WXLkMjETsGJsZI_pptv8e4cAGyhEKifmjefNeN6D90jaHKNERFKD9zsFhYMqM4KfKyJSdI2SKN47sH1iAxUmIiWnTDGCS-tpAfYEFHwyMKXX8JZfYQM6APWJh8elg5fxSN9KlKfxQJsNHDw5kLTdjhorQ8wEOkVpTc4TMDBKo4GDxjwRB2s1ghmP9IYyEPIs116v6IOmhUl-ENWzaeLg9MIa8K1GSZin_To-hpkw7uUCYW0d3SvYGT8vaJW4I5LjZbh8f67_Sc433N16wkuqQpazqhOxY8X2HP6_0LHmEiPPP-9ePpUl5kGjGzddMa0jlqKxKh_BpORpgk6oXpiFXplrMj_7wLfKqga_g9LB4cwVHht0is7z1a0qIB7QP7jHqWXmjSdNHSiP-Qst7gzkydhfbMNi5sSetlN38yeOb3abZQbbzBKDPbrE8DFn0ecsEk-c57fn5ycOuppEoKEyC-s1fhkc32W6kjje8tt6VNK7hAvdbwwFLTWy10Z91U2ZRJysOaoiOMVQX_hhgXsNuazWMGh2Y1s432mRCN1e6PjVk4DWkNEnEVXoKlB5--e7apVFVCIrw0AW5XiE9oOPMnNpD0Mgm56N5CS5gIw4G4qSwyNo38ahzlnb_vfZH7v8BeutoEI=">in mermaid.live öffnen &rsaquo;</a>
+        </p>
+      </article>
+
+      <article>
+        <h4>Zustandsdiagramm (Mermaid)</h4>
+        <figure>
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --&gt; Unbekannt
+    Unbekannt --&gt; OK : erster Check erfolgreich
+    Unbekannt --&gt; Down : erster Check fehlgeschlagen
+    OK --&gt; Degraded : Latenz über Schwellwert
+    OK --&gt; Down : Check fehlgeschlagen
+    Degraded --&gt; OK : Latenz normal
+    Degraded --&gt; Down : Check fehlgeschlagen
+    Down --&gt; OK : Check erfolgreich
+    Down --&gt; [*] : Service gelöscht
+</pre>
+          <figcaption>Zustandsdiagramm, text-first als Mermaid.</figcaption>
+        </figure>
+        <p>
+          <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-b/zustand.mmd">Mermaid-Quelle ansehen &rsaquo;</a> &middot;
+          <a href="https://mermaid.live/edit#pako:eNqFUbFOwzAU_BXLIyJSxcCQgYVuIDFETJjBtc92VMdGjt0Iqv47z0kVBGqFt3vv7nzvvSNXUYO3jI9ZZmx7aZMcmsOdCIze2807a5oH9hp22MsQ8lJe4dx8eWItQxozEnt0UHsCJnqb0Ct3SbCNU_grMXDeYlTOS4uwqMh4poMyaWiSPFPG8MVE2WyM2pG4U26C9xNS_q1ZvrjuvZquE5y9Q0yD9BdI_1tWwmp3ZRMrqa62ZR3SoVdgFn4e6p4saRJ-y_gACtLreptj1QqeHQYIKgiuYWTxWXARTpUsS47dZ1DUzKmAKikW6wga6ceKy4f-OfCZdvoGI_-jpA==">in mermaid.live öffnen &rsaquo;</a>
+        </p>
+      </article>
+
+      <article>
+        <h4>Sequenzdiagramm (Mermaid)</h4>
+        <figure>
+<pre class="mermaid">
+sequenceDiagram
+    actor Scheduler
+    participant Check as HttpCheck
+    participant Ziel as Zielsystem
+    participant Rule as AlertRule
+
+    Scheduler-&gt;&gt;Check: execute()
+    activate Check
+    Check-&gt;&gt;Ziel: HTTP GET /health
+    activate Ziel
+    Ziel--&gt;&gt;Check: 200 OK, 42 ms
+    deactivate Ziel
+    Check--&gt;&gt;Scheduler: result: CheckResult
+    deactivate Check
+    Scheduler-&gt;&gt;Rule: matches(result)
+    activate Rule
+    alt Schwellwert überschritten
+        Rule--&gt;&gt;Scheduler: true
+        Scheduler-&gt;&gt;Rule: raiseAlert()
+    else Normalbereich
+        Rule--&gt;&gt;Scheduler: false
+    end
+    deactivate Rule
+</pre>
+          <figcaption>Sequenzdiagramm, text-first als Mermaid.</figcaption>
+        </figure>
+        <p>
+          <a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/teil-b/sequenz.mmd">Mermaid-Quelle ansehen &rsaquo;</a> &middot;
+          <a href="https://mermaid.live/edit#pako:eNp9UktLAzEQ_itDThVaXIqnPRRExYKg0vYke4nZaRPMPkwm1lL6351s1rZ0xVySmXyPmUn2QjUlihyEx8-AtcJ7IzdOVkUNvKSixsFSaSyDRZeSrXRklGllTXCnUX2A9DAnartgiHkzaCMk7n7nCashZsHyEXPLLhSDok6go_dkNuv0c8BvVIFwdHWs0XxJQjiz747MiJY5zFerV3h8WMG1RmlJX_AiKKXiaXIymmYZvDyN4WYKlU-IEv-gJTfmHYvNwaEPlvJ0t-iCgcJZwedtxvZzqCRxzo-S0GWvaURdylJkb9HaLc8OipBla_WOzivtDBH2g4wrsi7qJBfwBBiW4aTx2L3K77z5ERGeG1dJyy5olP7XYC0Z3zPrcjCD1IgYg6iQJU0Z_-I-wgpBGissOFGIEtcyjlAU9SGCZaBmuauVSB1wxjVho0Xvx3FoS9bvf3MPO_wA2hj29w==">in mermaid.live öffnen &rsaquo;</a>
+        </p>
+      </article>
+    </section>
+
+    <section>
+      <h3>Schwierigkeiten &amp; GenAI-Interaktion</h3>
+      <p>
+        Die spannendsten Stellen sind die bewussten Imperfektionen. Im
+        Klassendiagramm ist die Beziehung Check&nbsp;→&nbsp;CheckResult als
+        einfache Assoziation modelliert, obwohl eine Komposition vertretbar
+        wäre; der Aufzählungstyp <code>ServiceStatus</code> ist nicht
+        ausmodelliert. Über Diagrammgrenzen hinweg gibt es eine echte
+        Inkonsistenz: Das Komponentendiagramm kennt ein Modul <code>store</code>,
+        das Sequenzdiagramm zeigt das Persistieren aber nicht. Das
+        Zustandsdiagramm hat keinen Wartungszustand, obwohl
+        <code>Check.enabled</code> ihn nahelegt.
+      </p>
+      <p>
+        Zur KI-Interaktion: Der erste Entwurf war mit 13 Klassen überladen und
+        musste auf neun reduziert werden &mdash; generative KI neigt zur
+        Über-Lieferung, Knappheit muss man einfordern. Die KI war stark bei der
+        Syntax, die Modellierungsentscheidungen blieben menschlich. Volle Details
+        im Protokoll und in der Prompt-Dokumentation.
+      </p>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/README.md">README &mdash; Abgabebeschreibung UML-E1</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/schwierigkeiten-protokoll.md">schwierigkeiten-protokoll.md &mdash; Modellierungsschwierigkeiten und Imperfektionen</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/uml-e1/prompts.md">prompts.md &mdash; KI-Prompts und Reflexion der GenAI-Interaktion</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/uml-e1/teil-a">teil-a/ &mdash; fünf PlantUML-Quellen</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/uml-e1/teil-b">teil-b/ &mdash; drei Mermaid-Quellen</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</body>
+</html>

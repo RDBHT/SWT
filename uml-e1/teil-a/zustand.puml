@@ -1,0 +1,11 @@
+@startuml IT-Service-Monitor-Zustand
+[*] --> Unbekannt
+Unbekannt --> OK : erster Check erfolgreich
+Unbekannt --> Down : erster Check fehlgeschlagen
+OK --> Degraded : Latenz ueber Schwellwert
+OK --> Down : Check fehlgeschlagen
+Degraded --> OK : Latenz normal
+Degraded --> Down : Check fehlgeschlagen
+Down --> OK : Check erfolgreich
+Down --> [*] : Service geloescht
+@enduml

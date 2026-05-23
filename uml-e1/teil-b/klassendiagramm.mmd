@@ -1,0 +1,50 @@
+classDiagram
+    class Service {
+        -name: String
+        -host: String
+        -status: ServiceStatus
+        +evaluateStatus() ServiceStatus
+    }
+    class Check {
+        <<abstract>>
+        -intervalSeconds: int
+        -enabled: boolean
+        +execute() CheckResult
+    }
+    class HttpCheck {
+        -url: String
+        -expectedStatus: int
+    }
+    class TcpCheck {
+        -port: int
+    }
+    class DnsCheck {
+        -hostname: String
+        -recordType: String
+    }
+    class CheckResult {
+        -timestamp: DateTime
+        -status: ServiceStatus
+        -latencyMs: int
+    }
+    class Scheduler {
+        +start() void
+        +tick() void
+    }
+    class AlertRule {
+        -consecutiveFailures: int
+        -severity: String
+        +matches(r) boolean
+    }
+    class Alert {
+        -raisedAt: DateTime
+        -acknowledged: boolean
+    }
+    Check <|-- HttpCheck
+    Check <|-- TcpCheck
+    Check <|-- DnsCheck
+    Service "1" *-- "1..*" Check : enthält
+    Check "1" --> "0..*" CheckResult : erzeugt
+    Service "1" o-- "0..*" AlertRule : konfiguriert
+    Scheduler "1" --> "0..*" Check : plant
+    AlertRule "1" --> "0..*" Alert : löst aus

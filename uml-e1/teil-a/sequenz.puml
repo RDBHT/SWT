@@ -1,0 +1,25 @@
+@startuml IT-Service-Monitor-Sequenz
+actor Scheduler
+participant "check : HttpCheck" as Check
+participant "ziel : Zielsystem" as Ziel
+participant "rule : AlertRule" as Rule
+
+Scheduler -> Check : execute()
+activate Check
+Check -> Ziel : HTTP GET /health
+activate Ziel
+Ziel --> Check : 200 OK, 42 ms
+deactivate Ziel
+Check --> Scheduler : result : CheckResult
+deactivate Check
+
+Scheduler -> Rule : matches(result)
+activate Rule
+alt Schwellwert ueberschritten
+  Rule --> Scheduler : true
+  Scheduler ->> Rule : raiseAlert()
+else Normalbereich
+  Rule --> Scheduler : false
+end
+deactivate Rule
+@enduml
