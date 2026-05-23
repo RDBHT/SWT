@@ -1,4 +1,5 @@
 @startuml IT-Service-Monitor-Zustand
+skinparam dpi 200
 [*] --> Unbekannt
 Unbekannt --> OK : erster Check erfolgreich
 Unbekannt --> Down : erster Check fehlgeschlagen

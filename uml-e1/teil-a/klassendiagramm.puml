@@ -1,4 +1,5 @@
 @startuml IT-Service-Monitor-Klassendiagramm
+skinparam dpi 200
 skinparam classAttributeIconSize 0
 hide circle
 

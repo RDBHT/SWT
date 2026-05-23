@@ -1,4 +1,5 @@
 @startuml IT-Service-Monitor-Komponenten
+skinparam dpi 200
 skinparam componentStyle rectangle
 
 component "scheduler" as SCH
