@@ -1,5 +1,5 @@
 @startuml IT-Service-Monitor-Sequenz
-skinparam dpi 200
+scale 2
 actor Scheduler
 participant "check : HttpCheck" as Check
 participant "ziel : Zielsystem" as Ziel
