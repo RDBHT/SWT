@@ -13,7 +13,7 @@ Begleitende GitHub-Pages-Site: **https://rdbht.github.io/SWT/**
 | ANA-E1 — Checkliste und Analyse | [`ana-e1/`](./ana-e1) | [ANA-E1](https://rdbht.github.io/SWT/ana-e1.html) | abgegeben |
 | DDD — Präsenzaufgabe Domain-Driven Design | [`ddd-praesenz/`](./ddd-praesenz) | [DDD](https://rdbht.github.io/SWT/ddd.html) | abgegeben |
 | Vibe & AI Coding — Präsenz 1 | [`ai-coding/`](./ai-coding) | [AI-Coding](https://rdbht.github.io/SWT/ai-coding.html) | in Bearbeitung |
-| UML-E1 — Eigenes UML-Werkzeug, fünf Diagramme | [`uml-e1/`](./uml-e1) | [UML-E1](https://rdbht.github.io/SWT/uml-e1.html) | in Bearbeitung |
+| UML-E1 — Eigenes UML-Werkzeug, fünf Diagramme | [`uml-e1/`](./uml-e1) | [UML-E1](https://rdbht.github.io/SWT/uml-e1.html) | abgegeben |
 
 ## Konventionen
 
