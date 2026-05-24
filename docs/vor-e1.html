@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOR-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html" aria-current="page">VOR-E1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <hgroup>
+        <h2>VOR-E1 &mdash; Vorgehensmodell für Projekt wählen</h2>
+        <p>Einsendeaufgabe VOR-E1 (Softwaretechnik)</p>
+      </hgroup>
+      <p>
+        Für das durchgehende Projekt <strong>IT-Service-Monitor</strong> wird ein
+        Vorgehensmodell gewählt, recherchiert, ein Tool erprobt, die Spotify-Videos
+        ausgewertet und der erste Backlog samt erster Iteration geplant.
+      </p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Ziel</th><td>Vorgehensmodell wählen, Backlog erstellen, erste Iteration planen</td></tr>
+            <tr><th scope="row">Projekt</th><td>IT-Service-Monitor (MVP)</td></tr>
+            <tr><th scope="row">Modell</th><td>Scrum &mdash; für ein Ein-Personen-Projekt skaliert</td></tr>
+            <tr><th scope="row">Tool</th><td>GitHub Issues + Milestones (Repo RDBHT/SWT)</td></tr>
+            <tr><th scope="row">Status</th><td><kbd class="status wip">in Bearbeitung</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </section>
+
+    <section>
+      <h3>Teil 1 &mdash; Vorgehensmodell: Scrum</h3>
+      <p>
+        Gewählt wird <strong>Scrum</strong>: Das MVP wird in festen Sprints
+        inkrementell ausgeliefert, die Aufgabe verlangt ausdrücklich eine geplante
+        Iteration (= Sprint), und Scrum-Artefakte sind klar dokumentierbar. Da das
+        Projekt faktisch ein Ein-Personen-Vorhaben ist, wird Scrum bewusst skaliert
+        (Rollen in Personalunion, Daily als kurze Selbst-Synchronisation). Kanban
+        bleibt als Sprint-Board mit WIP-Limit präsent (Scrumban).
+      </p>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/vorgehensmodell.md">vorgehensmodell.md &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 2 &mdash; Recherche</h3>
+      <p>
+        Scrum ist ein empirisches Rahmenwerk mit festen Rollen, Events und
+        Artefakten; Kanban eine evolutionäre Flussmethode mit WIP-Limits. Der
+        Kernunterschied:
+      </p>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>Aspekt</th><th>Scrum</th><th>Kanban</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Kadenz</td><td>feste Sprints</td><td>kontinuierlicher Fluss</td></tr>
+            <tr><td>Rollen</td><td>drei definierte Rollen</td><td>keine vorgeschrieben</td></tr>
+            <tr><td>Zentrale Metrik</td><td>Velocity</td><td>Cycle Time / Durchsatz</td></tr>
+            <tr><td>Stärke bei</td><td>Produktaufbau mit Zielbild</td><td>Betrieb und Wartung</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/recherche.md">recherche.md &mdash; inkl. Tool-Vergleich &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 3 &mdash; Tool-Experiment: GitHub Issues</h3>
+      <p>
+        Erprobt wurde <strong>GitHub Issues + Milestones</strong> im bestehenden
+        Repo &mdash; kein separates Projekt nötig. Backlog-Items werden als Issues
+        geführt, der Milestone bildet den Sprint ab; Issues sind öffentlich
+        verlinkbar und damit beweisbar.
+      </p>
+      <p>
+        Nachweis:
+        <a href="https://github.com/RDBHT/SWT/issues">Issues</a> &middot;
+        <a href="https://github.com/RDBHT/SWT/milestones">Milestones</a>.
+        Screenshots der Issue-Liste und der Milestone-Ansicht folgen.
+      </p>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/tool-experiment.md">tool-experiment.md &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 4 &mdash; Spotify-Beobachtungen</h3>
+      <p>Ausgewertet: „Spotify Engineering Culture" Teil 1 und 2 (Kniberg &amp; Ivarsson, 2014).</p>
+      <ul>
+        <li><strong>Kein vorgeschriebenes Modell</strong> — jedes Squad wählt Scrum, Kanban oder eine Mischung selbst; die Prinzipien zählen, nicht das Modell.</li>
+        <li><strong>Aligned Autonomy</strong> — Führung gibt die Ausrichtung, Squads finden autonom die Lösung.</li>
+        <li><strong>Fehlerfreundlichkeit</strong> — begrenzter Schadensradius, schuldfreie Postmortems; Recovery schlägt Avoidance.</li>
+        <li><strong>Healthy culture heals broken process</strong> — Kultur gleicht Prozessschwächen aus.</li>
+        <li><strong>Cross-Pollination statt Standardisierung</strong> — gute Praktiken breiten sich organisch aus.</li>
+        <li><strong>Entkopplung ermöglicht Autonomie</strong> — unabhängiges Releasen ist Voraussetzung echter Autonomie.</li>
+      </ul>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/spotify-beobachtungen.md">spotify-beobachtungen.md &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 5 &mdash; Backlog &amp; Sprint 1</h3>
+      <p>
+        Der Product Backlog umfasst 7 Epics und 17 priorisierte User Stories mit
+        Akzeptanzkriterien und Story-Point-Schätzung (62 SP gesamt).
+        <strong>Sprint Goal:</strong>
+      </p>
+      <blockquote>
+        Ein Service kann angelegt, mit einem HTTP-Check versehen und manuell
+        geprüft werden; das Ergebnis wird gespeichert und sein Status im Dashboard
+        angezeigt.
+      </blockquote>
+      <p>Sprint-1-Backlog &mdash; vertikaler Durchstich über alle Schichten:</p>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>User Story</th><th>SP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>US-01</td><td>Persistenz-Schicht</td><td>5</td></tr>
+            <tr><td>US-02</td><td>Mock-Service</td><td>3</td></tr>
+            <tr><td>US-03</td><td>Service anlegen</td><td>3</td></tr>
+            <tr><td>US-04</td><td>Service-Liste</td><td>2</td></tr>
+            <tr><td>US-05</td><td>HTTP-Check konfigurieren</td><td>5</td></tr>
+            <tr><td>US-06</td><td>Check ausführen → CheckResult</td><td>5</td></tr>
+            <tr><td>US-07</td><td>Dashboard-Statusübersicht</td><td>5</td></tr>
+            <tr><td></td><td><strong>Forecast</strong></td><td><strong>28</strong></td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/backlog.md">backlog.md &mdash; vollständiger Backlog und Sprint-Planung &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/README.md">README &mdash; Abgabebeschreibung VOR-E1</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/vorgehensmodell.md">vorgehensmodell.md &mdash; Modellwahl und Begründung</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/recherche.md">recherche.md &mdash; Scrum, Kanban, Tool-Vergleich</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/tool-experiment.md">tool-experiment.md &mdash; Experiment mit GitHub Issues</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/spotify-beobachtungen.md">spotify-beobachtungen.md &mdash; Auswertung der Videos</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/vor-e1/backlog.md">backlog.md &mdash; Product Backlog und Sprint-1-Planung</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>
