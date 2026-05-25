@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REF-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html">VOR-E1</a></li>
+        <li><a href="ref-e1.html" aria-current="page">REF-E1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <hgroup>
+        <h2>REF-E1 &mdash; Refactoring-Katalog</h2>
+        <p>Einsendeaufgabe REF-E1 (Softwaretechnik)</p>
+      </hgroup>
+      <p>
+        Auf Basis des Refactoring-Katalogs von Martin Fowler: Eindrücke zum
+        Katalog, die Refactoring-Unterstützung der eigenen IDE, ein eigenes
+        Vorher/Nachher-Beispiel und ein Refactoring mit generativer KI. Die
+        Code-Beispiele stammen aus der Domäne des IT-Service-Monitors.
+      </p>
+      <figure>
+        <table>
+          <tbody>
+            <tr><th scope="row">Grundlage</th><td>Refactoring-Katalog von Martin Fowler (refactoring.com/catalog)</td></tr>
+            <tr><th scope="row">IDE</th><td>Visual Studio Code</td></tr>
+            <tr><th scope="row">Sprache</th><td>JavaScript</td></tr>
+            <tr><th scope="row">Status</th><td><kbd class="status wip">in Bearbeitung</kbd></td></tr>
+          </tbody>
+        </table>
+      </figure>
+    </section>
+
+    <section>
+      <h3>Teil 1 &mdash; Eindrücke zum Katalog</h3>
+      <p>
+        <strong>Beeindruckt</strong> haben mich zwei Refactorings:
+        <em>Replace Conditional with Polymorphism</em> — es ersetzt wachsende
+        Typ-Fallunterscheidungen durch eine Klassenhierarchie und ändert damit
+        die Struktur, nicht nur die Optik. Und <em>Split Phase</em> — es trennt
+        einen Block, der zwei Dinge tut, in zwei Phasen mit Zwischendatenstruktur;
+        es benennt ein Problem, das ich oft gespürt, aber nie gefasst hatte.
+      </p>
+      <p>
+        <strong>Überflüssig</strong> finde ich <em>Slide Statements</em>:
+        zusammengehörige Zeilen zusammenzurücken ist für mich Schreibstil, kein
+        eigener Katalogeintrag. <strong>Nicht sofort verstanden</strong> habe ich
+        <em>Replace Subclass with Delegate</em> — wann sich Delegation gegenüber
+        Vererbung wirklich lohnt, erschloss sich mir erst am zweiten Beispiel.
+      </p>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/katalog-eindruecke.md">katalog-eindruecke.md &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 2 &mdash; IDE: Visual Studio Code</h3>
+      <p>
+        Ich arbeite mit VS Code; die Refactorings für JavaScript/TypeScript
+        kommen aus dem eingebauten TypeScript-Language-Service (<code>Strg+.</code>).
+      </p>
+      <figure>
+        <table>
+          <thead>
+            <tr><th>VS-Code-Aktion</th><th>Entspricht im Fowler-Katalog</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Extract to function / method</td><td>Extract Function</td></tr>
+            <tr><td>Extract to constant</td><td>Extract Variable</td></tr>
+            <tr><td>Inline variable</td><td>Inline Variable</td></tr>
+            <tr><td>Move to new file</td><td>Move Function / Move Class</td></tr>
+            <tr><td>Rename Symbol (F2)</td><td>Rename Variable / Change Function Declaration</td></tr>
+            <tr><td>Convert parameters to destructured object</td><td>Introduce Parameter Object</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <p>
+        VS Code deckt die kleinen, lokalen Refactorings zuverlässig ab. Die
+        großen, strukturellen (Replace Conditional with Polymorphism, Extract
+        Class) sind nicht automatisiert — sie entstehen aus mehreren kleinen
+        Schritten plus Handarbeit.
+      </p>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/ide-refactorings.md">ide-refactorings.md &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 3 &mdash; Eigenes Beispiel: Replace Conditional with Polymorphism</h3>
+      <p>
+        Im IT-Service-Monitor entscheidet eine Funktion per <code>switch</code>
+        über den Check-Typ — jeder neue Typ vergrößert den <code>switch</code>.
+        Mit VS Code (Extract to function, Move to new file, Rename) wird daraus
+        eine Klassenhierarchie.
+      </p>
+      <p><strong>Vorher</strong></p>
+      <pre><code>function runCheck(check) {
+  switch (check.type) {
+    case 'http': {
+      const res = httpGet(check.url, check.timeout);
+      return { status: res.code === check.expected ? 'OK' : 'DOWN', latency: res.ms };
+    }
+    case 'tcp': {
+      const probe = tcpProbe(check.host, check.port, check.timeout);
+      return { status: probe.open ? 'OK' : 'DOWN', latency: probe.ms };
+    }
+    case 'dns': {
+      const rec = dnsResolve(check.host, check.recordType);
+      return { status: rec.found ? 'OK' : 'DOWN', latency: rec.ms };
+    }
+    default:
+      throw new Error('Unbekannter Check-Typ: ' + check.type);
+  }
+}</code></pre>
+      <p><strong>Nachher</strong> — abstrakte Oberklasse plus eine Klasse je Typ:</p>
+      <pre><code>class Check {
+  constructor(config) { this.config = config; }
+  execute() { throw new Error('execute() muss überschrieben werden'); }
+}
+
+class HttpCheck extends Check {
+  execute() {
+    const res = httpGet(this.config.url, this.config.timeout);
+    return { status: res.code === this.config.expected ? 'OK' : 'DOWN', latency: res.ms };
+  }
+}
+
+class TcpCheck extends Check {
+  execute() {
+    const probe = tcpProbe(this.config.host, this.config.port, this.config.timeout);
+    return { status: probe.open ? 'OK' : 'DOWN', latency: probe.ms };
+  }
+}
+
+class DnsCheck extends Check {
+  execute() {
+    const rec = dnsResolve(this.config.host, this.config.recordType);
+    return { status: rec.found ? 'OK' : 'DOWN', latency: rec.ms };
+  }
+}</code></pre>
+      <p>
+        Die Typunterscheidung verschwindet nicht ganz — sie wandert an genau eine
+        Stelle, eine kleine Factory. Ein neuer Check-Typ ist danach eine neue
+        Klasse, der bestehende Code bleibt unangetastet (Open-Closed-Prinzip).
+      </p>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/beispiel-eigenes.md">beispiel-eigenes.md &mdash; mit Factory und VS-Code-Schritten &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Teil 4 &mdash; Refactoring mit generativer KI</h3>
+      <p>
+        Eine überladene Funktion <code>evaluateService()</code> sollte die KI
+        (Claude) per <em>Extract Function</em> und <em>Decompose Conditional</em>
+        refactoren — verhaltensgleich.
+      </p>
+      <p>
+        <strong>Hat es sofort geklappt? Nein.</strong> Der erste Versuch
+        extrahierte zwar sinnvoll, modernisierte aber ungefragt mit:
+        <code>for</code>-Schleifen wurden zu <code>reduce</code>/<code>filter</code>,
+        eine Variable umbenannt. Das ist lesbarer, aber nicht mehr „nur
+        extrahiert" — und barg ein Verhaltensrisiko. Erst der Nachfass-Prompt
+        („nur extrahieren, Schleifen und Logik unverändert") brachte eine
+        konservative, verhaltensgleiche Fassung.
+      </p>
+      <p>
+        Erkenntnis: Die KI erkennt Extraktionsgrenzen gut, neigt aber dazu, mehr
+        zu „verbessern" als verlangt. Refactoring heißt Struktur ändern, Verhalten
+        nicht — diese Disziplin muss man der KI ausdrücklich auferlegen.
+      </p>
+      <p><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/beispiel-genai.md">beispiel-genai.md &mdash; mit Vorher/Nachher-Code &rsaquo;</a></p>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/README.md">README &mdash; Abgabebeschreibung REF-E1</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/katalog-eindruecke.md">katalog-eindruecke.md &mdash; Eindrücke zum Fowler-Katalog</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/ide-refactorings.md">ide-refactorings.md &mdash; VS Code und Refactorings</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/beispiel-eigenes.md">beispiel-eigenes.md &mdash; Replace Conditional with Polymorphism</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ref-e1/beispiel-genai.md">beispiel-genai.md &mdash; Refactoring mit GenAI</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>
