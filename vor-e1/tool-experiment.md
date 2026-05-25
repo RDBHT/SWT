@@ -25,4 +25,4 @@ Projekt nötig, Issues sind öffentlich verlinkbar.
 
 - Issues: `github.com/RDBHT/SWT/issues`
 - Milestone Sprint 1: `github.com/RDBHT/SWT/milestone/1`
-- Screenshots (Issue-Liste, Milestone-Ansicht) → `vor-e1/img/`
+- Screenshots (Issue-Liste, Milestone-Ansicht): auf der Portfolio-Seite `docs/vor-e1.html`, Teil 3
