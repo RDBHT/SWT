@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Identitaet des Artefakts: groupId:artifactId:version -->
+  <groupId>de.rdbht.swt</groupId>
+  <artifactId>maven-demo</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>BUI-E1 Maven Demo</name>
+  <description>Kleines Beispielprojekt fuer die Einsendeaufgabe BUI-E1 (Buildmanagement).</description>
+
+  <properties>
+    <!-- Quell- und Zielversion in einem: kompiliert gegen Java 17 -->
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- Test framework; nur im test scope, landet nicht im fertigen JAR -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Fuehrt die JUnit-5-Tests in der test-Phase aus -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
+
+      <!-- Schreibt die Main-Class ins JAR-Manifest, damit `java -jar` funktioniert -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>de.rdbht.swt.Anonymizer</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

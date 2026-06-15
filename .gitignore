@@ -1,3 +1,6 @@
 .DS_Store
 .vscode/
 *.swp
+
+# Maven (BUI-E1)
+target/
