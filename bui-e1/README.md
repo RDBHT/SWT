@@ -21,32 +21,75 @@ Orchestratoren ohne eigenen Build und würden sich stark überschneiden. Die
 Kombination *Buildsystem + CI/CD* gibt den größeren Lern-Kontrast — Actions
 baut nicht selbst, sondern **ruft** Maven auf.
 
-> Hinweis: Der Einsatz von GitHub Actions als CI/CD-Teil wurde mit der
-> Kursbetreuung abgestimmt (siehe Aufgabenstellung: „Stimmen Sie dies bitte
-> mit der Kursbetreuung ab!").
-
-## 2. Beispielprojekt
+## 2. Beispielprojekt — was konkret passiert
 
 Bewusst minimal gehalten — es geht um das **Prinzip der Pipeline**, nicht um
-den Umfang. Eine Utility-Klasse plus ein JUnit-5-Test, der alle relevanten
-Lifecycle-Phasen auslöst (compile → test → package → run).
+den Umfang. Eine Utility-Klasse plus zwei JUnit-5-Tests reichen, um alle
+relevanten Lifecycle-Phasen auszulösen (compile → test → package → run).
 
 ```
 bui-e1/maven-demo/
 ├── pom.xml                                  # Maven-Steuerdatei
 └── src/
-    ├── main/java/de/rdbht/swt/Anonymizer.java       # maskEmail("anna@x.de") -> "a***@x.de"
+    ├── main/java/de/rdbht/swt/Anonymizer.java       # die Logik
     └── test/java/de/rdbht/swt/AnonymizerTest.java   # 2 JUnit-5-Tests
 ```
 
-`Anonymizer.maskEmail(...)` maskiert den lokalen Teil einer E-Mail-Adresse —
-ein kleiner, themennaher Bezug (Datensparsamkeit) ohne echte Daten.
+**Die Logik (`Anonymizer.maskEmail`):** nimmt eine E-Mail-Adresse, prüft, dass
+genau ein `@` enthalten ist (sonst `IllegalArgumentException`), behält das
+**erste Zeichen** des lokalen Teils, ersetzt den Rest durch `***` und hängt die
+Domain wieder an. `"anna@example.de"` → `"a***@example.de"`. Ein kleiner,
+themennaher Bezug (Datensparsamkeit) ohne echte Daten. Eine `main`-Methode gibt
+Eingabe und maskierten Wert aus, damit das fertige JAR direkt ausführbar ist.
+
+**Die Tests (`AnonymizerTest`):** zwei JUnit-5-Fälle —
+1. `masksLocalPart` prüft, dass `"anna@example.de"` zu `"a***@example.de"` wird;
+2. `rejectsInvalidInput` prüft, dass eine Eingabe ohne `@` die erwartete
+   Exception wirft.
+
+**Warum genau das?** Jede Datei deckt eine Build-Phase ab und macht sie
+beobachtbar: der Quellcode muss *kompilieren*, die Tests müssen in der
+*test*-Phase grün sein, erst dann entsteht in der *package*-Phase das JAR, das
+sich anschließend *ausführen* lässt. Schlägt eine Stufe fehl, bricht der Build
+ab (siehe Abschnitt 4) — genau das soll die Pipeline demonstrieren.
 
 ## 3. Maven — lokaler Build
 
-Ausgeführt in der Build-Umgebung: **JDK 17 (Temurin)**, **Maven 3.9.9**.
+### Umgebung aufsetzen
+
+Die Build-Umgebung war zunächst leer (nur ein Java-**JRE**, kein Compiler, kein
+Maven). Aufgesetzt wurde sie ohne Root-Rechte, rein über entpackte Tarballs ins
+Home-Verzeichnis:
 
 ```bash
+# 1) Volles JDK 17 (Temurin) — enthält javac (das reine JRE nicht)
+curl -L -o jdk17.tar.gz \
+  "https://api.adoptium.net/v3/binary/latest/17/ga/linux/aarch64/jdk/hotspot/normal/eclipse"
+tar xzf jdk17.tar.gz
+
+# 2) Maven 3.9.9 (Binary-Distribution)
+curl -L -o maven.tar.gz \
+  "https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz"
+tar xzf maven.tar.gz
+
+# 3) In die Umgebung einhängen
+export JAVA_HOME="$PWD/jdk-17.0.19+10"
+export PATH="$JAVA_HOME/bin:$PWD/apache-maven-3.9.9/bin:$PATH"
+
+# 4) Prüfen
+mvn -version
+# Apache Maven 3.9.9
+# Java version: 17.0.19, vendor: Eclipse Adoptium
+```
+
+Maven verbindet sich beim ersten Lauf selbst mit *Maven Central* und lädt
+Plugins und Test-Bibliotheken in den lokalen Cache `~/.m2/repository` — ein
+manuelles Einbinden von `.jar`-Dateien (wie bei Ant) entfällt komplett.
+
+### Build ausführen
+
+```bash
+cd bui-e1/maven-demo
 mvn -B clean package      # clean -> compile -> test -> package (JAR)
 ```
 
@@ -101,9 +144,23 @@ Wegwerf-Kopie der erwartete Wert absichtlich verfälscht:
 [ERROR] Failed to execute goal ...maven-surefire-plugin:3.2.5:test ...: There are test failures.
 ```
 
-Maven beendet mit Exit-Code ≠ 0 und **erreicht die `package`-Phase nicht** —
-es entsteht kein JAR. Dieselbe Mechanik stoppt in Schritt 5 die CI-Pipeline
-(roter Run), bevor fehlerhafter Code weiterverarbeitet wird.
+Maven beendet mit **Exit-Code ≠ 0** und **erreicht die `package`-Phase nicht** —
+es entsteht kein JAR.
+
+Genau dieser Exit-Code ist die Verbindung zur CI. In der Pipeline (Schritt 6)
+läuft derselbe Befehl als Workflow-Schritt `run: mvn -B clean package`. GitHub
+Actions wertet den Exit-Code jedes Schritts aus:
+
+- Exit-Code **0** → Schritt grün, der Job läuft weiter;
+- Exit-Code **≠ 0** (roter Test) → der Schritt **schlägt fehl**, alle folgenden
+  Schritte werden übersprungen, der Job und damit der gesamte Run werden **rot**
+  markiert, und das Status-Badge auf der Pages-Seite wird rot.
+
+So wird ein fehlerhafter Commit automatisch sichtbar, *bevor* er als
+funktionierend gilt — der Test-Lauf ist das Qualitäts-Gate, lokal wie in der
+Cloud. (Der Schritt „Upload artifacts" läuft hier dank `if: always()` trotzdem,
+damit der Testbericht zur Fehlersuche verfügbar bleibt — ein JAR enthält er
+mangels `package`-Phase aber nicht.)
 
 ## 5. GitHub Actions — CI/CD
 

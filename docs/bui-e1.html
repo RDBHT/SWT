@@ -67,24 +67,58 @@
       <p>
         Bewusst <strong>nicht</strong> zwei CI/CD-Tools &mdash; die Kombination
         <em>Buildsystem + CI/CD</em> gibt den größeren Lern-Kontrast: Actions baut
-        nicht selbst, sondern <strong>ruft</strong> Maven auf. Der CI/CD-Einsatz wurde
-        mit der Kursbetreuung abgestimmt.
+        nicht selbst, sondern <strong>ruft</strong> Maven auf.
       </p>
     </section>
 
     <section>
-      <h3>2. Beispielprojekt (bewusst minimal)</h3>
+      <h3>2. Beispielprojekt &mdash; was konkret passiert</h3>
       <p>Eine Utility-Klasse plus zwei JUnit-5-Tests &mdash; es geht um das Prinzip der Pipeline, nicht um Umfang.</p>
       <pre><code>bui-e1/maven-demo/
 ├── pom.xml
 └── src/
-    ├── main/java/de/rdbht/swt/Anonymizer.java       maskEmail("anna@x.de") -> "a***@x.de"
+    ├── main/java/de/rdbht/swt/Anonymizer.java       die Logik
     └── test/java/de/rdbht/swt/AnonymizerTest.java   2 JUnit-5-Tests</code></pre>
+      <p>
+        <strong>Logik (<code>Anonymizer.maskEmail</code>):</strong> nimmt eine E-Mail-Adresse,
+        prüft auf genau ein <code>@</code> (sonst <code>IllegalArgumentException</code>), behält das
+        erste Zeichen des lokalen Teils, ersetzt den Rest durch <code>***</code> und hängt die
+        Domain wieder an &mdash; <code>"anna@example.de"</code> &rarr; <code>"a***@example.de"</code>.
+        Eine <code>main</code>-Methode gibt das Ergebnis aus, damit das JAR direkt ausführbar ist.
+      </p>
+      <p>
+        <strong>Tests (<code>AnonymizerTest</code>):</strong> (1) prüft die korrekte Maskierung,
+        (2) prüft, dass eine Eingabe ohne <code>@</code> die erwartete Exception wirft.
+      </p>
+      <p>
+        <strong>Warum genau das?</strong> Jede Datei deckt eine Build-Phase ab und macht sie
+        beobachtbar: Quellcode muss <em>kompilieren</em>, Tests müssen in der <em>test</em>-Phase
+        grün sein, erst dann entsteht in der <em>package</em>-Phase das JAR, das sich
+        <em>ausführen</em> lässt. Schlägt eine Stufe fehl, bricht der Build ab (Abschnitt 5).
+      </p>
     </section>
 
     <section>
       <h3>3. Maven &mdash; lokaler Build</h3>
-      <p>Umgebung: JDK 17 (Temurin), Maven 3.9.9. Aufruf: <code>mvn -B clean package</code>.</p>
+      <p>
+        Die Umgebung war zunächst leer (nur ein Java-<strong>JRE</strong>, kein Compiler, kein
+        Maven). Aufgesetzt ohne Root-Rechte, rein über entpackte Tarballs ins Home-Verzeichnis:
+      </p>
+      <pre><code># 1) Volles JDK 17 (Temurin) — enthaelt javac (das reine JRE nicht)
+curl -L -o jdk17.tar.gz \
+  "https://api.adoptium.net/v3/binary/latest/17/ga/linux/aarch64/jdk/hotspot/normal/eclipse"
+tar xzf jdk17.tar.gz
+
+# 2) Maven 3.9.9 (Binary)
+curl -L -o maven.tar.gz \
+  "https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz"
+tar xzf maven.tar.gz
+
+# 3) Einhaengen + pruefen
+export JAVA_HOME="$PWD/jdk-17.0.19+10"
+export PATH="$JAVA_HOME/bin:$PWD/apache-maven-3.9.9/bin:$PATH"
+mvn -version   # Apache Maven 3.9.9 / Java 17.0.19, Eclipse Adoptium</code></pre>
+      <p>Anschließend der Build &mdash; <code>cd bui-e1/maven-demo &amp;&amp; mvn -B clean package</code>:</p>
       <pre><code>[INFO] --- compiler:3.13.0:compile (default-compile) @ maven-demo ---
 [INFO] --- surefire:3.2.5:test (default-test) @ maven-demo ---
 [INFO]  T E S T S
@@ -119,7 +153,14 @@ Masked: a***@example.de</code></pre>
       <pre><code>[ERROR] AnonymizerTest.masksLocalPart:14 expected: &lt;XXX@example.de&gt; but was: &lt;a***@example.de&gt;
 [INFO] BUILD FAILURE
 [ERROR] ...maven-surefire-plugin:3.2.5:test ...: There are test failures.</code></pre>
-      <p>Exit-Code &ne; 0, die <code>package</code>-Phase wird nicht erreicht &mdash; kein JAR. Dieselbe Mechanik macht in CI den Run rot.</p>
+      <p>
+        Exit-Code &ne; 0, die <code>package</code>-Phase wird nicht erreicht &mdash; kein JAR.
+        Genau dieser Exit-Code ist die Brücke zur CI: in der Pipeline läuft derselbe Befehl als
+        Schritt <code>run: mvn -B clean package</code>. GitHub Actions wertet den Exit-Code aus &mdash;
+        <strong>0</strong> = Schritt grün, <strong>&ne; 0</strong> = Schritt schlägt fehl, folgende
+        Schritte werden übersprungen, Job und Run werden <strong>rot</strong>, und das Badge oben
+        wird rot. Ein fehlerhafter Commit fällt so automatisch auf, bevor er als funktionierend gilt.
+      </p>
     </section>
 
     <section>
