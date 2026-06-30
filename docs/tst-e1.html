@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TST-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html">VOR-E1</a></li>
+        <li><a href="ref-e1.html">REF-E1</a></li>
+        <li><a href="bui-e1.html">BUI-E1</a></li>
+        <li><a href="tst-e1.html" aria-current="page">TST-E1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>TST-E1 &mdash; Projektaufgabe Testen</h2>
+      <p>
+        Praktische Testerfahrung an einem eigenen Projekt mit <strong>Java 17,
+        Maven, JUnit&nbsp;5 und Mockito&nbsp;5</strong>. Domäne ist der
+        <strong>IT-Service-Monitor</strong> aus der AI-Coding-Aufgabe (Health-Checks,
+        Status, Alerting), ergänzt um einen eigenständigen Shopping-Cart für den
+        TDD-Teil. Repository:
+        <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a>.
+      </p>
+      <p>Gesamtstand: <strong>28 Tests, alle grün</strong> (<code>Tests run: 28, Failures: 0, Errors: 0</code>).</p>
+      <pre><code>tst-e1/monitor-test/
+├── pom.xml
+└── src/
+    ├── main/java/de/rdbht/swt/tst/
+    │   ├── monitor/   StatusEvaluator, Target, UptimeCalculator,
+    │   │              AlertingService + HttpProbe/Clock/AlertSink
+    │   └── cart/      ShoppingCart, LineItem        (per TDD entstanden)
+    └── test/java/de/rdbht/swt/tst/
+        ├── monitor/   *Test fuer Teil 1 + AlertingServiceTest (Teil 3)
+        └── cart/      ShoppingCartTest              (Teil 2)</code></pre>
+    </section>
+
+    <section>
+      <h3>1. Unit-Tests für eigenen Code (inkl. Exception)</h3>
+      <p>Reine, deterministische Monitor-Logik ohne I/O:</p>
+      <figure>
+        <table>
+          <thead><tr><th>Klasse</th><th>Verantwortung</th><th>Tests</th></tr></thead>
+          <tbody>
+            <tr><td><code>StatusEvaluator</code></td><td>HTTP-Code + Antwortzeit &rarr; <code>UP/DEGRADED/DOWN</code></td><td>7 (2&times; Exception)</td></tr>
+            <tr><td><code>Target</code></td><td><code>parse("host:port")</code> mit Validierung</td><td>5 (3&times; Exception)</td></tr>
+            <tr><td><code>UptimeCalculator</code></td><td>SLA-Prozent über ein Fenster</td><td>4 (1&times; Exception)</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <p>
+        Die Pflicht-Exception-Tests nutzen
+        <code>assertThrows(IllegalArgumentException.class, …)</code>, z.&nbsp;B.
+        <code>new StatusEvaluator(0)</code>, <code>Target.parse("example.com")</code>
+        (ohne Port) und ein leeres Uptime-Fenster.
+      </p>
+    </section>
+
+    <section>
+      <h3>2. TDD Shopping Cart &mdash; die Git-History ist die Abgabe</h3>
+      <p>
+        Bewertet wird der <strong>Weg</strong>. Jedes Feature entstand strikt im Zyklus
+        <strong>red &rarr; green &rarr; refactor</strong> als je ein Commit mit Zeitstempel.
+        „Rot" scheitert bewusst (Test referenziert noch fehlenden Code &rarr; Compile-Fehler),
+        „grün" macht ihn bestehen, „refactor" verbessert die Struktur bei grünen Tests.
+      </p>
+      <pre><code>test(cart): addItem/total — leerer Korb und Summe (red)
+feat(cart): addItem und total implementiert (green)
+refactor(cart): LineItem-Record extrahiert, drei Listen zu einer (refactor)
+test(cart): removeItem entfernt Position aus der Summe (red)
+feat(cart): removeItem implementiert (green)
+refactor(cart): lineByName-Helfer extrahiert (refactor)
+test(cart): updateQuantity berechnet Summe neu, lehnt ungültige Werte ab (red)
+feat(cart): updateQuantity implementiert inkl. Validierung (green)
+refactor(cart): Positionssuche in indexOf gebündelt (refactor)
+test(cart): applyDiscountPercent rabattiert Summe, lehnt ungültige Prozente ab (red)
+feat(cart): applyDiscountPercent implementiert (green)
+refactor(cart): gross() und applyDiscount() extrahiert (refactor)</code></pre>
+      <p>Nachvollziehen: <code>git log --oneline --grep '(cart)'</code> und <code>git show &lt;red-commit&gt;</code>.</p>
+    </section>
+
+    <section>
+      <h3>3. Mocking (gewählte Variante 3)</h3>
+      <p>
+        <code>AlertingService</code> ist die Kernlogik: pro <code>tick(target)</code>
+        wird geprobt, der Status bewertet und <strong>erst nach einem Ausfallfenster</strong>
+        (z.&nbsp;B. 5&nbsp;min) ein Alarm ausgelöst. Drei „unangenehme" Abhängigkeiten
+        werden per Constructor-Injection gemockt:
+      </p>
+      <figure>
+        <table>
+          <thead><tr><th>Mock</th><th>Effekt in echt</th><th>Warum gemockt</th></tr></thead>
+          <tbody>
+            <tr><td><code>HttpProbe</code></td><td>Netzwerk-Request (Socket)</td><td>langsam, flaky, extern abhängig</td></tr>
+            <tr><td><code>Clock</code></td><td>Systemzeit</td><td>real nicht steuerbar &rarr; 5-min-Regel sonst nur in Echtzeit testbar</td></tr>
+            <tr><td><code>AlertSink</code></td><td>Alarm-Versand</td><td>soll im Test nichts verschicken; <code>verify</code> prüft Aufruf</td></tr>
+          </tbody>
+        </table>
+      </figure>
+      <pre><code>when(probe.probe(target)).thenReturn(new ProbeResult(0, 0));      // DOWN
+when(clock.nowMillis()).thenReturn(0L, 60_000L, 300_000L, 360_000L); // Uhr vorspulen
+// ... vier ticks ...
+verify(sink, times(1)).fire(eq(target), anyString());            // Alarm genau einmal</code></pre>
+      <p>
+        <strong>Warum genau diese Methoden (2–3 Sätze):</strong> Ein Monitoring-Tool
+        besteht im Kern aus Netzwerk, Zeit und Benachrichtigung. Ein echter
+        <code>HttpProbe</code> öffnet einen Socket — langsam, flaky, fremdzustandsabhängig;
+        und „Alarm erst nach 5&nbsp;Minuten" wäre mit echter Uhr nur in Echtzeit testbar.
+        Durch Mocken von Probe und <code>Clock</code> wird der Test deterministisch, läuft
+        offline in Mikrosekunden und prüft ausschließlich die Alarm-Logik.
+      </p>
+      <p>
+        <strong>Warum nicht Mutation Testing (Variante 4):</strong> PIT misst die
+        <em>Güte vorhandener Tests</em> über mutierten Produktivcode, setzt aber
+        deterministisch testbaren Code voraus und adressiert das Kernproblem dieser
+        Domäne — die externen, nicht-deterministischen Abhängigkeiten — nicht. Genau das
+        löst Mocking. Details:
+        <a href="https://github.com/RDBHT/SWT/blob/main/docs/adr/0001-mocking-statt-mutation-testing.md">ADR-0001</a>.
+      </p>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/README.md">README — Abgabebeschreibung TST-E1</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/docs/adr/0001-mocking-statt-mutation-testing.md">ADR-0001 — Mocking statt Mutation Testing</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/tst-e1/monitor-test">monitor-test — Quellcode &amp; Tests</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>
