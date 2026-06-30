@@ -3,7 +3,10 @@ package de.rdbht.swt.tst.cart;
 import java.util.ArrayList;
 import java.util.List;
 
-/** A simple shopping cart. Prices are handled in integer cents. */
+/**
+ * A simple shopping cart. Prices are handled in integer cents to avoid floating
+ * point money bugs; only the final discount step rounds to the nearest cent.
+ */
 public class ShoppingCart {
 
   private final List<LineItem> items = new ArrayList<>();
@@ -33,9 +36,17 @@ public class ShoppingCart {
     this.discountPercent = percent;
   }
 
+  /** Total in cents after the configured discount. */
   public int total() {
-    int gross = items.stream().mapToInt(LineItem::subtotal).sum();
-    return (int) Math.round(gross * (100 - discountPercent) / 100.0);
+    return applyDiscount(gross());
+  }
+
+  private int gross() {
+    return items.stream().mapToInt(LineItem::subtotal).sum();
+  }
+
+  private int applyDiscount(int amount) {
+    return (int) Math.round(amount * (100 - discountPercent) / 100.0);
   }
 
   private int indexOf(String name) {
