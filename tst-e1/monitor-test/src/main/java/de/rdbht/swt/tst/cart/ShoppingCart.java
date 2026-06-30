@@ -12,6 +12,10 @@ public class ShoppingCart {
     items.add(new LineItem(name, unitPriceCents, quantity));
   }
 
+  public void removeItem(String name) {
+    items.removeIf(item -> item.name().equals(name));
+  }
+
   public int total() {
     return items.stream().mapToInt(LineItem::subtotal).sum();
   }
