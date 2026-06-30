@@ -3,7 +3,10 @@ package de.rdbht.swt.tst.monitor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,5 +58,29 @@ class AlertingServiceTest {
     service.tick(target); // DOWN, streak starts
     assertEquals(Status.UP, service.tick(target)); // recovered
     verify(sink, never()).fire(any(), any());
+  }
+
+  @Test
+  void alertsExactlyOnceAfterTheOutageWindowIsExceeded() {
+    HttpProbe probe = mock(HttpProbe.class);
+    Clock clock = mock(Clock.class);
+    AlertSink sink = mock(AlertSink.class);
+
+    // Service is permanently unreachable (HTTP 0 = no response -> DOWN).
+    when(probe.probe(target)).thenReturn(new ProbeResult(0, 0));
+    // Fast-forward the clock across four ticks: 0s, 60s, 300s, 360s.
+    when(clock.nowMillis()).thenReturn(0L, 60_000L, 300_000L, 360_000L);
+
+    AlertingService service =
+        new AlertingService(probe, clock, sink, evaluator, 300_000); // 5 min
+
+    service.tick(target); // t=0:   streak starts
+    service.tick(target); // t=60s: within window, still silent
+    service.tick(target); // t=300s: window reached -> ALERT
+    service.tick(target); // t=360s: already alerted -> no duplicate
+
+    // Mocking the clock makes a 5-minute rule testable in microseconds,
+    // and verify(times(1)) proves the de-duplication of alerts.
+    verify(sink, times(1)).fire(eq(target), anyString());
   }
 }
