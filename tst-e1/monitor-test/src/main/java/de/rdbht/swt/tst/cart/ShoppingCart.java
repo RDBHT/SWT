@@ -7,6 +7,7 @@ import java.util.List;
 public class ShoppingCart {
 
   private final List<LineItem> items = new ArrayList<>();
+  private int discountPercent = 0;
 
   public void addItem(String name, int unitPriceCents, int quantity) {
     items.add(new LineItem(name, unitPriceCents, quantity));
@@ -25,11 +26,18 @@ public class ShoppingCart {
     items.set(i, new LineItem(it.name(), it.unitPriceCents(), quantity));
   }
 
-  public int total() {
-    return items.stream().mapToInt(LineItem::subtotal).sum();
+  public void applyDiscountPercent(int percent) {
+    if (percent < 0 || percent > 100) {
+      throw new IllegalArgumentException("percent must be 0..100, was " + percent);
+    }
+    this.discountPercent = percent;
   }
 
-  /** @throws IllegalArgumentException if no line carries the given name */
+  public int total() {
+    int gross = items.stream().mapToInt(LineItem::subtotal).sum();
+    return (int) Math.round(gross * (100 - discountPercent) / 100.0);
+  }
+
   private int indexOf(String name) {
     for (int i = 0; i < items.size(); i++) {
       if (items.get(i).name().equals(name)) {
