@@ -49,4 +49,27 @@ class ShoppingCartTest {
     assertThrows(IllegalArgumentException.class,
         () -> new ShoppingCart().updateQuantity("Ghost", 3));
   }
+
+  @Test
+  void discountReducesTotal() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem("Coffee", 250, 2);   // 500
+    cart.addItem("Cookie", 150, 1);   // 150  -> gross 650
+    cart.applyDiscountPercent(10);
+    assertEquals(585, cart.total());   // 650 - 10%
+  }
+
+  @Test
+  void fullDiscountMakesCartFree() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem("Coffee", 250, 2);
+    cart.applyDiscountPercent(100);
+    assertEquals(0, cart.total());
+  }
+
+  @Test
+  void discountRejectsOutOfRange() {
+    assertThrows(IllegalArgumentException.class,
+        () -> new ShoppingCart().applyDiscountPercent(101));
+  }
 }
