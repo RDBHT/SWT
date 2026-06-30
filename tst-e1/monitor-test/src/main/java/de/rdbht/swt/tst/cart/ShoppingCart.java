@@ -2,7 +2,6 @@ package de.rdbht.swt.tst.cart;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /** A simple shopping cart. Prices are handled in integer cents. */
 public class ShoppingCart {
@@ -21,21 +20,22 @@ public class ShoppingCart {
     if (quantity <= 0) {
       throw new IllegalArgumentException("quantity must be positive, was " + quantity);
     }
-    for (int i = 0; i < items.size(); i++) {
-      LineItem it = items.get(i);
-      if (it.name().equals(name)) {
-        items.set(i, new LineItem(it.name(), it.unitPriceCents(), quantity));
-        return;
-      }
-    }
-    throw new IllegalArgumentException("no such item: " + name);
+    int i = indexOf(name);
+    LineItem it = items.get(i);
+    items.set(i, new LineItem(it.name(), it.unitPriceCents(), quantity));
   }
 
   public int total() {
     return items.stream().mapToInt(LineItem::subtotal).sum();
   }
 
-  private Optional<LineItem> lineByName(String name) {
-    return items.stream().filter(item -> item.name().equals(name)).findFirst();
+  /** @throws IllegalArgumentException if no line carries the given name */
+  private int indexOf(String name) {
+    for (int i = 0; i < items.size(); i++) {
+      if (items.get(i).name().equals(name)) {
+        return i;
+      }
+    }
+    throw new IllegalArgumentException("no such item: " + name);
   }
 }
