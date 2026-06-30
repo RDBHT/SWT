@@ -146,6 +146,24 @@ verify(sink, times(1)).fire(eq(target), anyString());            // Alarm genau 
     </section>
 
     <section>
+      <h3>Lokaler Testlauf &amp; Umgebung</h3>
+      <p>
+        Ausgeführt auf <strong>macOS</strong>. Benötigt: <strong>Homebrew</strong>,
+        <strong>Maven</strong> (<code>brew install maven</code> — zieht ein OpenJDK &ge; 17 mit) und
+        ein <strong>JDK &ge; 17</strong> (Projekt kompiliert gegen <code>release 17</code>).
+        Testumgebung: <strong>JUnit&nbsp;5</strong> + <strong>Mockito&nbsp;5.12</strong>; der erste Lauf
+        lädt die Abhängigkeiten nach <code>~/.m2</code>. Befehl
+        <code>cd tst-e1/monitor-test &amp;&amp; mvn -B test</code> &rarr;
+        <strong>Tests run: 28, Failures: 0, Errors: 0 &mdash; BUILD SUCCESS</strong>.
+      </p>
+      <figure>
+        <img src="img/tst-e1-local-test.png" alt="Lokaler mvn-test-Lauf: 28 Tests gruen, BUILD SUCCESS">
+        <figcaption>Lokaler <code>mvn -B test</code>-Lauf (VS Code Terminal) &mdash; 28 Tests grün.</figcaption>
+      </figure>
+      <p>Volles Protokoll: <a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/local-test-run.md">local-test-run.md</a>.</p>
+    </section>
+
+    <section>
       <h3>Dokumente</h3>
       <ul>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/README.md">README — Abgabebeschreibung TST-E1</a></li>
