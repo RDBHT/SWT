@@ -1,6 +1,7 @@
 package de.rdbht.swt.tst.cart;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,5 +27,26 @@ class ShoppingCartTest {
     cart.addItem("Cookie", 150, 1);   // 150
     cart.removeItem("Coffee");
     assertEquals(150, cart.total());
+  }
+
+  @Test
+  void updateQuantityRecomputesTotal() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem("Coffee", 250, 2);   // 500
+    cart.updateQuantity("Coffee", 5);  // 1250
+    assertEquals(1250, cart.total());
+  }
+
+  @Test
+  void updateQuantityRejectsNonPositive() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem("Coffee", 250, 2);
+    assertThrows(IllegalArgumentException.class, () -> cart.updateQuantity("Coffee", 0));
+  }
+
+  @Test
+  void updateQuantityRejectsUnknownItem() {
+    assertThrows(IllegalArgumentException.class,
+        () -> new ShoppingCart().updateQuantity("Ghost", 3));
   }
 }
