@@ -35,6 +35,8 @@ cd tst-e1/monitor-test
 mvn -B test          # kompiliert + führt alle JUnit-5-Tests aus
 ```
 
+**Lokaler Testlauf-Nachweis:** [`local-test-run.md`](./local-test-run.md) (28 Tests grün, BUILD SUCCESS).
+
 > Build-Umgebung ohne Maven/JDK 17? Setup analog zu BUI-E1: Temurin-JDK-17- und
 > Maven-3.9.9-Tarball ins Home entpacken, `JAVA_HOME`/`PATH` setzen, dann `mvn`.
 
