@@ -18,4 +18,13 @@ class ShoppingCartTest {
     cart.addItem("Cookie", 150, 1);   // 1 x 150 = 150 cents
     assertEquals(650, cart.total());
   }
+
+  @Test
+  void removingItemSubtractsItFromTotal() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem("Coffee", 250, 2);   // 500
+    cart.addItem("Cookie", 150, 1);   // 150
+    cart.removeItem("Coffee");
+    assertEquals(150, cart.total());
+  }
 }
