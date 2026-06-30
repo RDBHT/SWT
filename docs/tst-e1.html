@@ -103,6 +103,17 @@ test(cart): applyDiscountPercent rabattiert Summe, lehnt ungültige Prozente ab 
 feat(cart): applyDiscountPercent implementiert (green)
 refactor(cart): gross() und applyDiscount() extrahiert (refactor)</code></pre>
       <p>Nachvollziehen: <code>git log --oneline --grep '(cart)'</code> und <code>git show &lt;red-commit&gt;</code>.</p>
+      <p><strong>Eigene lokale TDD-Läufe</strong> (Feature <code>addItem</code>) — direkt aus der Git-Historie ausgecheckt:</p>
+      <div class="grid">
+        <figure>
+          <img src="img/tdd-red.png" alt="Roter TDD-Lauf: Test schlägt fehl, BUILD FAILURE">
+          <figcaption><strong>red</strong> — Commit <a href="https://github.com/RDBHT/SWT/commit/2ffee1f">2ffee1f</a>: Test vor der Implementierung, Compile-Fehler &rarr; <code>BUILD FAILURE</code>.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/tdd-green.png" alt="Grüner TDD-Lauf: Tests bestehen, BUILD SUCCESS">
+          <figcaption><strong>green</strong> — Commit <a href="https://github.com/RDBHT/SWT/commit/3e8485a">3e8485a</a>: minimale Implementierung &rarr; <code>BUILD SUCCESS</code>.</figcaption>
+        </figure>
+      </div>
     </section>
 
     <section>

@@ -81,6 +81,13 @@ feat(cart): applyDiscountPercent implementiert (green)
 refactor(cart): gross() und applyDiscount() extrahiert (refactor)
 ```
 
+**Eigene rot/grün-Läufe (Nachweis).** Direkt aus der Historie ausgecheckt, Feature `addItem`:
+
+| Schritt | Commit | Screenshot |
+|---|---|---|
+| red — Test vor Implementierung, Compile-Fehler → BUILD FAILURE | `2ffee1f` | ![red](../docs/img/tdd-red.png) |
+| green — minimale Implementierung → BUILD SUCCESS | `3e8485a` | ![green](../docs/img/tdd-green.png) |
+
 Den Ablauf nachvollziehen:
 
 ```bash
