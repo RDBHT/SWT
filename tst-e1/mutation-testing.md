@@ -7,6 +7,22 @@ Kurzes Zusatzbeispiel neben der gewählten Variante 3 (Mocking). **PIT** wird au
 - **Aufruf:** `cd tst-e1/monitor-test && mvn -B clean test org.pitest:pitest-maven:mutationCoverage`
 - **Report (lokal):** `target/pit-reports/index.html`
 
+## Setup — was zum Ausführen nötig war
+
+Das Beispiel läuft auf **macOS** mit derselben Toolchain wie die übrige Abgabe;
+für PIT ist **keine** zusätzliche Installation nötig — nur der Plugin-Eintrag im
+`pom.xml`.
+
+- **Maven** + **JDK ≥ 17** (via Homebrew, `brew install maven`) — siehe auch
+  [`local-test-run.md`](./local-test-run.md).
+- **PIT** ist als Maven-Plugin in [`pom.xml`](./monitor-test/pom.xml) eingetragen
+  (`pitest-maven` 1.15.8 + `pitest-junit5-plugin` 1.2.1); beim ersten Lauf lädt
+  Maven diese Artefakte nach `~/.m2`.
+- **Ausführen:** `cd tst-e1/monitor-test && mvn -B clean test org.pitest:pitest-maven:mutationCoverage`
+  — das vorangestellte `clean` ist wichtig, sonst mutiert PIT veraltete
+  `.class`-Dateien und meldet falsche Zahlen.
+- **Report:** danach unter `target/pit-reports/index.html` (der obige Screenshot).
+
 ## Ergebnis (mit den vorhandenen 5 `Target`-Tests)
 
 20 Mutanten, **9 getötet (45 %)**, Test-Stärke 82 %. Mehrere Mutanten überleben,
