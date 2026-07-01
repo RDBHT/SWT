@@ -52,6 +52,20 @@ Reine, deterministische Monitor-Logik ohne I/O:
 | `Target` | `parse("host:port")` mit Validierung | 5, davon 3 Exception |
 | `UptimeCalculator` | SLA-Prozent über ein Fenster | 4, davon 1 Exception |
 
+### Dateien im Überblick (Teil 1)
+
+Basis-URL der Dateien: `tst-e1/monitor-test/src/…`. Direktlinks (main):
+
+| Datei | Rolle | Link |
+|---|---|---|
+| `Status.java` | Enum der drei Health-Check-Zustände `UP` / `DEGRADED` / `DOWN`. | [main/…/monitor/Status.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/Status.java) |
+| `StatusEvaluator.java` | Reine Entscheidungslogik: HTTP-Code + Antwortzeit → `Status`. Wirft `IllegalArgumentException` bei nicht-positivem Schwellwert oder negativer Antwortzeit. | [StatusEvaluator.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/StatusEvaluator.java) |
+| `Target.java` | Überwachtes Ziel (`host:port`). `parse()` validiert die Eingabe und wirft bei fehlendem Port / falschem Bereich `IllegalArgumentException`. | [Target.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/Target.java) |
+| `UptimeCalculator.java` | SLA-Verfügbarkeit in Prozent über ein Fenster; `DEGRADED` zählt als verfügbar; leeres Fenster → `IllegalArgumentException`. | [UptimeCalculator.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/UptimeCalculator.java) |
+| `StatusEvaluatorTest.java` | 7 Tests (UP/DEGRADED/DOWN, Schwellwert-Grenze) inkl. **2 Exception-Tests**. | [StatusEvaluatorTest.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/test/java/de/rdbht/swt/tst/monitor/StatusEvaluatorTest.java) |
+| `TargetTest.java` | 5 Tests (Parsing, Host/Port) inkl. **3 Exception-Tests**. | [TargetTest.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/test/java/de/rdbht/swt/tst/monitor/TargetTest.java) |
+| `UptimeCalculatorTest.java` | 4 Tests (100 %, DEGRADED zählt, 75 %) inkl. **1 Exception-Test**. | [UptimeCalculatorTest.java](https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/test/java/de/rdbht/swt/tst/monitor/UptimeCalculatorTest.java) |
+
 Die geforderten **Exception-Tests** prüfen mit `assertThrows(IllegalArgumentException.class, …)`
 z. B. einen nicht-positiven Schwellwert (`new StatusEvaluator(0)`), eine ungültige
 Target-Angabe (`Target.parse("example.com")` ohne Port) und ein leeres Uptime-Fenster.

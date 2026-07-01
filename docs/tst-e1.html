@@ -80,6 +80,14 @@
         <code>new StatusEvaluator(0)</code>, <code>Target.parse("example.com")</code>
         (ohne Port) und ein leeres Uptime-Fenster.
       </p>
+      <p><strong>Dateien (Direktlinks):</strong></p>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/StatusEvaluator.java"><code>StatusEvaluator.java</code></a> &mdash; HTTP-Code + Antwortzeit &rarr; Status; Exception bei ungültigem Schwellwert.</li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/Target.java"><code>Target.java</code></a> &mdash; <code>parse("host:port")</code> mit Validierung, Exception bei ungültiger Eingabe.</li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/UptimeCalculator.java"><code>UptimeCalculator.java</code></a> &mdash; SLA-Prozent über ein Fenster, Exception bei leerem Fenster.</li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/main/java/de/rdbht/swt/tst/monitor/Status.java"><code>Status.java</code></a> &mdash; Enum UP / DEGRADED / DOWN.</li>
+        <li>Tests: <a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/test/java/de/rdbht/swt/tst/monitor/StatusEvaluatorTest.java"><code>StatusEvaluatorTest</code></a>, <a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/test/java/de/rdbht/swt/tst/monitor/TargetTest.java"><code>TargetTest</code></a>, <a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/monitor-test/src/test/java/de/rdbht/swt/tst/monitor/UptimeCalculatorTest.java"><code>UptimeCalculatorTest</code></a> (zusammen 16 Tests, 6&times; Exception).</li>
+      </ul>
     </section>
 
     <section>
