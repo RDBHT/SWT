@@ -13,6 +13,11 @@ Kurzes Zusatzbeispiel neben der gewählten Variante 3 (Mocking). **PIT** wird au
 weil `equals` / `hashCode` / `toString` und die exakten Port-Grenzen nicht
 geprüft werden — eine Lücke, die reine Zeilen-Coverage nicht zeigt.
 
+![Lokaler PIT-Lauf: 20 Mutanten, 9 getötet (45 %)](../docs/img/tdd-mutation.png)
+
+> Nachweis des **lokalen** Laufs: Screenshot der PIT-Konsolenausgabe bzw. des
+> Reports `target/pit-reports/index.html`. Datei: `docs/img/tdd-mutation.png`.
+
 ## Drei überlebende Mutanten — Bedeutung und tötender Test
 
 1. **`ConditionalsBoundaryMutator` auf `port > 65535` (Konstruktor).**
