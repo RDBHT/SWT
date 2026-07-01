@@ -17,7 +17,7 @@ Begleitende GitHub-Pages-Site: **https://rdbht.github.io/SWT/**
 | VOR-E1 — Vorgehensmodell für Projekt wählen | [`vor-e1/`](./vor-e1) | [VOR-E1](https://rdbht.github.io/SWT/vor-e1.html) | abgegeben |
 | REF-E1 — Refactoring-Katalog | [`ref-e1/`](./ref-e1) | [REF-E1](https://rdbht.github.io/SWT/ref-e1.html) | abgegeben |
 | BUI-E1 — Buildmanagement (Maven + GitHub Actions) | [`bui-e1/`](./bui-e1) | [BUI-E1](https://rdbht.github.io/SWT/bui-e1.html) | in Bearbeitung |
-| TST-E1 — Projektaufgabe Testen (Unit, TDD, Mocking) | [`tst-e1/`](./tst-e1) | [TST-E1](https://rdbht.github.io/SWT/tst-e1.html) | in Bearbeitung |
+| TST-E1 — Projektaufgabe Testen (Unit, TDD, Mocking) | [`tst-e1/`](./tst-e1) | [TST-E1](https://rdbht.github.io/SWT/tst-e1.html) | abgegeben |
 
 ## Konventionen
 
