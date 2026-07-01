@@ -109,6 +109,13 @@ git log --oneline --grep '(cart)'          # die 12 Schritte
 git show <red-commit>                       # zeigt: nur ein neuer, scheiternder Test
 ```
 
+## Zusatz — Mutation Testing mit PIT (Variante 4, kleines Beispiel)
+
+Als kleines Gegenbeispiel läuft **PIT** auf die Klasse `Target`: 20 Mutanten,
+9 getötet (45 %). Drei überlebende Mutanten sind mit ihrem tötenden Test
+kommentiert in [`mutation-testing.md`](./mutation-testing.md).
+Aufruf: `mvn -B clean test org.pitest:pitest-maven:mutationCoverage`.
+
 ## Teil 3 — Mocking (gewählte Variante)
 
 > Gewählt wurde **Variante 3 (Mocking)** statt Variante 4 (Mutation Testing).
