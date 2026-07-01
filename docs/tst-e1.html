@@ -183,10 +183,32 @@ verify(sink, times(1)).fire(eq(target), anyString());            // Alarm genau 
     </section>
 
     <section>
+      <h3>Zusatz — Mutation Testing mit PIT (Variante 4)</h3>
+      <p>
+        Kleines Gegenbeispiel neben der gewählten Variante 3: <strong>PIT</strong> läuft auf die
+        Klasse <code>Target</code>. Von 20 Mutanten werden mit den vorhandenen Tests
+        <strong>9 getötet (45 %)</strong>, Test-Stärke 82 % — mehrere Mutanten überleben, weil
+        <code>equals</code>/<code>hashCode</code>/<code>toString</code> und die exakten Port-Grenzen
+        nicht geprüft sind.
+      </p>
+      <figure>
+        <img src="img/tdd-mutation.png" alt="Lokaler PIT-Report: 9/20 Mutanten getötet, Test-Stärke 82 %">
+        <figcaption>Lokaler PIT-Report (<code>mvn … mutationCoverage</code>) — 9/20 getötet, Test-Stärke 82 %.</figcaption>
+      </figure>
+      <p>
+        Drei überlebende Mutanten sind mit ihrem tötenden Test kommentiert (Port-Grenze
+        <code>65535</code>, <code>toString()&rarr;""</code>, <code>hashCode()&rarr;0</code>) in
+        <a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/mutation-testing.md">mutation-testing.md</a>.
+        Aufruf: <code>mvn -B clean test org.pitest:pitest-maven:mutationCoverage</code>.
+      </p>
+    </section>
+
+    <section>
       <h3>Dokumente</h3>
       <ul>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/README.md">README — Abgabebeschreibung TST-E1</a></li>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/local-test-run.md">Lokaler Testlauf — 28 Tests grün (BUILD SUCCESS)</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/tst-e1/mutation-testing.md">Mutation Testing (PIT) — 9/20 getötet, 3 Survivors kommentiert</a></li>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/docs/adr/0001-mocking-statt-mutation-testing.md">ADR-0001 — Mocking statt Mutation Testing</a></li>
         <li><a href="https://github.com/RDBHT/SWT/tree/main/tst-e1/monitor-test">monitor-test — Quellcode &amp; Tests</a></li>
       </ul>
