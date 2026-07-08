@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="MET-E1 Metrik-Regeln"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+                             https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+  <description>
+    MET-E1: metric-focused PMD rules with deliberately strict thresholds.
+    The defaults (e.g. cyclomatic complexity 10 per method) would stay silent
+    on a small, clean code base; lowering the report levels makes the metrics
+    visible and interpretable.
+  </description>
+
+  <!-- McCabe cyclomatic complexity: report from CC >= 4 per method
+       (PMD default: 10). Reference value for the manual calculation. -->
+  <rule ref="category/java/design.xml/CyclomaticComplexity">
+    <properties>
+      <property name="methodReportLevel" value="4"/>
+      <property name="classReportLevel" value="20"/>
+    </properties>
+  </rule>
+
+  <!-- Cognitive complexity (SonarSource metric): how hard is the method to
+       read, nesting weighs more than plain branching. Default 15. -->
+  <rule ref="category/java/design.xml/CognitiveComplexity">
+    <properties>
+      <property name="reportLevel" value="4"/>
+    </properties>
+  </rule>
+
+  <!-- NPath: number of acyclic execution paths through a method.
+       Default 200; 20 makes path explosion visible early. -->
+  <rule ref="category/java/design.xml/NPathComplexity">
+    <properties>
+      <property name="reportLevel" value="20"/>
+    </properties>
+  </rule>
+
+  <!-- God class detection (WMC / ATFD / TCC combined metric). -->
+  <rule ref="category/java/design.xml/GodClass"/>
+
+  <!-- Long parameter lists: default 10, lowered to 5 -
+       the AlertingService constructor takes exactly 5. -->
+  <rule ref="category/java/design.xml/ExcessiveParameterList">
+    <properties>
+      <property name="minimum" value="5"/>
+    </properties>
+  </rule>
+
+  <!-- Method length in NCSS statements, default 60. -->
+  <rule ref="category/java/design.xml/NcssCount">
+    <properties>
+      <property name="methodReportLevel" value="12"/>
+      <property name="classReportLevel" value="60"/>
+    </properties>
+  </rule>
+
+  <!-- Coupling between objects, default 20. -->
+  <rule ref="category/java/design.xml/CouplingBetweenObjects">
+    <properties>
+      <property name="threshold" value="4"/>
+    </properties>
+  </rule>
+</ruleset>

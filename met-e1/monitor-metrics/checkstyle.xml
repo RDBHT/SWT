@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<!-- MET-E1: metric-focused Checkstyle configuration.
+     Thresholds are deliberately strict (see README) so that the small,
+     already refactored code base still produces findings to interpret. -->
+<module name="Checker">
+  <property name="charset" value="UTF-8"/>
+  <property name="severity" value="warning"/>
+
+  <!-- File-level metrics -->
+  <module name="FileLength">
+    <property name="max" value="120"/>
+  </module>
+
+  <module name="TreeWalker">
+
+    <!-- ===== Metric checks ===== -->
+
+    <!-- McCabe cyclomatic complexity per method (Checkstyle default: 10).
+         Set to 4 so every non-trivial method reports its value. -->
+    <module name="CyclomaticComplexity">
+      <property name="max" value="4"/>
+      <property name="switchBlockAsSingleDecisionPoint" value="false"/>
+    </module>
+
+    <!-- NPath complexity (default 200). -->
+    <module name="NPathComplexity">
+      <property name="max" value="20"/>
+    </module>
+
+    <!-- Fan-out: number of other classes a class relies on (default 20). -->
+    <module name="ClassFanOutComplexity">
+      <property name="max" value="4"/>
+    </module>
+
+    <!-- Boolean expression complexity: number of &&/||/^ per expression. -->
+    <module name="BooleanExpressionComplexity">
+      <property name="max" value="1"/>
+    </module>
+
+    <!-- NCSS: non-commenting source statements per method/class. -->
+    <module name="JavaNCSS">
+      <property name="methodMaximum" value="12"/>
+      <property name="classMaximum" value="40"/>
+    </module>
+
+    <!-- Nesting depth metrics -->
+    <module name="NestedIfDepth">
+      <property name="max" value="1"/>
+    </module>
+    <module name="NestedTryDepth">
+      <property name="max" value="1"/>
+    </module>
+
+    <!-- ===== Supporting style checks (produce discussable findings) ===== -->
+    <module name="MagicNumber">
+      <property name="ignoreNumbers" value="-1, 0, 1, 2"/>
+    </module>
+    <module name="MethodLength">
+      <property name="max" value="25"/>
+    </module>
+    <module name="ParameterNumber">
+      <property name="max" value="4"/>
+    </module>
+    <module name="ReturnCount">
+      <property name="max" value="2"/>
+    </module>
+  </module>
+</module>

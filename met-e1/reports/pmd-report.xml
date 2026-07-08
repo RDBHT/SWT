@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.7.0" timestamp="2026-07-08T16:05:37.725">
+<file name="/sessions/happy-friendly-mccarthy/mnt/Softwaretechnik/SWT/met-e1/monitor-metrics/src/main/java/de/rdbht/swt/tst/cart/ShoppingCart.java">
+<violation beginline="32" endline="32" begincolumn="15" endcolumn="35" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.cart" class="ShoppingCart" method="applyDiscountPercent" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The method 'applyDiscountPercent(int)' has a cyclomatic complexity of 4.
+</violation>
+<violation beginline="52" endline="52" begincolumn="15" endcolumn="22" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.cart" class="ShoppingCart" method="indexOf" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The method 'indexOf(String)' has a cyclomatic complexity of 4.
+</violation>
+</file>
+<file name="/sessions/happy-friendly-mccarthy/mnt/Softwaretechnik/SWT/met-e1/monitor-metrics/src/main/java/de/rdbht/swt/tst/monitor/AlertingService.java">
+<violation beginline="1" endline="57" begincolumn="1" endcolumn="3" rule="CouplingBetweenObjects" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="AlertingService" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#couplingbetweenobjects" priority="3">
+A value of 7 may denote a high amount of coupling within the class (threshold: 4)
+</violation>
+<violation beginline="38" endline="38" begincolumn="17" endcolumn="21" rule="NcssCount" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="AlertingService" method="tick" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#ncsscount" priority="3">
+The method 'tick(Target)' has a NCSS line count of 15.
+</violation>
+<violation beginline="38" endline="38" begincolumn="17" endcolumn="21" rule="CognitiveComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="AlertingService" method="tick" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cognitivecomplexity" priority="3">
+The method 'tick(Target)' has a cognitive complexity of 6, current threshold is 4
+</violation>
+<violation beginline="38" endline="38" begincolumn="17" endcolumn="21" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="AlertingService" method="tick" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The method 'tick(Target)' has a cyclomatic complexity of 5.
+</violation>
+</file>
+<file name="/sessions/happy-friendly-mccarthy/mnt/Softwaretechnik/SWT/met-e1/monitor-metrics/src/main/java/de/rdbht/swt/tst/monitor/StatusEvaluator.java">
+<violation beginline="31" endline="31" begincolumn="17" endcolumn="25" rule="CognitiveComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="StatusEvaluator" method="evaluate" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cognitivecomplexity" priority="3">
+The method 'evaluate(int, long)' has a cognitive complexity of 4, current threshold is 4
+</violation>
+<violation beginline="31" endline="31" begincolumn="17" endcolumn="25" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="StatusEvaluator" method="evaluate" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The method 'evaluate(int, long)' has a cyclomatic complexity of 5.
+</violation>
+</file>
+<file name="/sessions/happy-friendly-mccarthy/mnt/Softwaretechnik/SWT/met-e1/monitor-metrics/src/main/java/de/rdbht/swt/tst/monitor/Target.java">
+<violation beginline="10" endline="10" begincolumn="14" endcolumn="19" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="Target" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The class 'Target' has a total cyclomatic complexity of 21 (highest 7).
+</violation>
+<violation beginline="15" endline="15" begincolumn="10" endcolumn="16" rule="CognitiveComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="Target" method="Target" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cognitivecomplexity" priority="3">
+The constructor 'Target(String, int)' has a cognitive complexity of 4, current threshold is 4
+</violation>
+<violation beginline="15" endline="15" begincolumn="10" endcolumn="16" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="Target" method="Target" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The constructor 'Target(String, int)' has a cyclomatic complexity of 7.
+</violation>
+<violation beginline="32" endline="32" begincolumn="24" endcolumn="29" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="Target" method="parse" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The method 'parse(String)' has a cyclomatic complexity of 7.
+</violation>
+</file>
+<file name="/sessions/happy-friendly-mccarthy/mnt/Softwaretechnik/SWT/met-e1/monitor-metrics/src/main/java/de/rdbht/swt/tst/monitor/UptimeCalculator.java">
+<violation beginline="17" endline="17" begincolumn="17" endcolumn="30" rule="CyclomaticComplexity" ruleset="Design" package="de.rdbht.swt.tst.monitor" class="UptimeCalculator" method="uptimePercent" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.7.0/pmd_rules_java_design.html#cyclomaticcomplexity" priority="3">
+The method 'uptimePercent(List&lt;Status&gt;)' has a cyclomatic complexity of 4.
+</violation>
+</file>
+</pmd>

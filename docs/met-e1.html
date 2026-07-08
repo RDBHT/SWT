@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MET-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html">VOR-E1</a></li>
+        <li><a href="ref-e1.html">REF-E1</a></li>
+        <li><a href="bui-e1.html">BUI-E1</a></li>
+        <li><a href="tst-e1.html">TST-E1</a></li>
+        <li><a href="met-e1.html" aria-current="page">MET-E1</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>MET-E1 &mdash; Metriken <kbd class="status wip">in Bearbeitung</kbd></h2>
+      <p>
+        Praktische Erfahrung mit <strong>zwei Metrik-Werkzeugen</strong> —
+        <strong>PMD&nbsp;7</strong> und <strong>Checkstyle&nbsp;10</strong>, beide als
+        Maven-Plugins ohne Installation reproduzierbar über die Konsole. Analysiert
+        werden die main-Sourcen des IT-Service-Monitors aus TST-E1 (11 Klassen,
+        ~300 LOC). Für die Extrapunkte: <strong>McCabe-Zahlen von Hand</strong>
+        (Kontrollflussgraph, <code>M&nbsp;=&nbsp;E&nbsp;&minus;&nbsp;N&nbsp;+&nbsp;2</code>)
+        mit Abgleich gegen beide Tools. Repository:
+        <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a>.
+      </p>
+      <pre><code>met-e1/
+├── monitor-metrics/       # Analyse-Projekt (Kopie der TST-E1-main-Sourcen)
+│   ├── pom.xml            # maven-pmd-plugin + maven-checkstyle-plugin
+│   ├── pmd-ruleset.xml    # Metrik-Regeln, bewusst strenge Schwellwerte
+│   └── checkstyle.xml     # Metrik-Checks (McCabe, NPath, Fan-Out, NCSS, ...)
+└── reports/               # Rohdaten der Läufe als Beleg (XML)</code></pre>
+    </section>
+
+    <section>
+      <h3>Zentrale Befunde</h3>
+      <ul>
+        <li><strong>13 PMD-Befunde, 13 Checkstyle-Befunde</strong> — gleiche
+          Hotspots (<code>AlertingService.tick</code>, <code>Target</code>-Validierung),
+          teils verschiedene Zahlen.</li>
+        <li><strong>Zählweisen-Differenz empirisch nachgewiesen:</strong>
+          <code>Target</code>-Konstruktor hat McCabe <strong>7 laut PMD, 5 laut
+          Checkstyle</strong> — PMD zählt <code>throw</code>-Statements mit,
+          Checkstyle nicht; dafür ignoriert PMD Bool-Operatoren in Zuweisungen.
+          Konsequenz: Metrik-Schwellwerte sind nur tool-spezifisch vergleichbar.</li>
+        <li><strong>McCabe von Hand:</strong> <code>evaluate</code> = 5,
+          <code>tick</code> = 5, <code>Target.parse</code> = 4 (volle
+          E&minus;N+2-Rechnung) — deckungsgleich mit Checkstyle, Abweichung zu
+          PMD erklärbar.</li>
+        <li><strong>Actionable:</strong> MagicNumber-Befunde (HTTP-Grenzen 200/400,
+          Port-Maximum 65535 als Konstanten extrahieren); Kopplungsbefunde als
+          bewusste DI-Entscheidung begründet akzeptiert.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Reproduktion</h3>
+      <p>
+        <code>cd met-e1/monitor-metrics</code>, dann <code>mvn pmd:check</code>
+        bzw. <code>mvn checkstyle:check</code> — Befunde erscheinen direkt auf
+        der Konsole (<code>failOnViolation=false</code>, damit ein Lauf alle
+        Befunde zeigt). HTML-Reports: <code>mvn pmd:pmd checkstyle:checkstyle</code>.
+      </p>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/met-e1/README.md">README — Toolwahl, Befunde, Interpretation, McCabe-Handrechnung</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/met-e1/monitor-metrics">monitor-metrics — Analyse-Projekt (pom, Rulesets, Quellcode)</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/met-e1/reports">reports — Rohdaten der PMD-/Checkstyle-Läufe</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>

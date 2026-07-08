@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.rdbht.swt</groupId>
+  <artifactId>monitor-metrics</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>MET-E1 Monitor Metrics</name>
+  <description>Einsendeaufgabe MET-E1 (Metriken): statische Analyse der
+    main-Sourcen aus TST-E1 (monitor-test) mit PMD und Checkstyle.
+    Beide Werkzeuge sind als Maven-Plugins eingebunden und laufen ohne
+    weitere Installation ueber die Konsole.</description>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <!-- PMD: complexity and design metrics (cyclomatic, cognitive, NPath,
+           god class, ...). Custom ruleset with deliberately strict thresholds
+           so the small code base produces interpretable findings.
+           failOnViolation=false: violations are printed but the build stays
+           green, so one command shows the full picture. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.26.0</version>
+        <configuration>
+          <rulesets>
+            <ruleset>pmd-ruleset.xml</ruleset>
+          </rulesets>
+          <failOnViolation>false</failOnViolation>
+          <printFailingErrors>true</printFailingErrors>
+          <linkXRef>false</linkXRef>
+        </configuration>
+      </plugin>
+
+      <!-- Checkstyle: metric checks (cyclomatic complexity, NPath, fan-out,
+           NCSS, boolean expression complexity) plus a few style checks.
+           Same idea: strict thresholds, non-failing build. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+          <failOnViolation>false</failOnViolation>
+          <consoleOutput>true</consoleOutput>
+          <linkXRef>false</linkXRef>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>10.20.2</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
