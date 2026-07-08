@@ -19,6 +19,8 @@ Begleitende GitHub-Pages-Site: **https://rdbht.github.io/SWT/**
 | BUI-E1 — Buildmanagement (Maven + GitHub Actions) | [`bui-e1/`](./bui-e1) | [BUI-E1](https://rdbht.github.io/SWT/bui-e1.html) | abgegeben |
 | TST-E1 — Projektaufgabe Testen (Unit, TDD, Mocking) | [`tst-e1/`](./tst-e1) | [TST-E1](https://rdbht.github.io/SWT/tst-e1.html) | abgegeben |
 | MET-E1 — Metriken (PMD + Checkstyle, McCabe von Hand) | [`met-e1/`](./met-e1) | [MET-E1](https://rdbht.github.io/SWT/met-e1.html) | in Bearbeitung |
+| ARC-E1 — Finale Architektur (Komponentendiagramm) | [`arc-e1/`](./arc-e1) | [ARC-E1](https://rdbht.github.io/SWT/arc-e1.html) | in Bearbeitung |
+| ARC-E2 — Architecture Communication Canvas | [`arc-e2/`](./arc-e2) | [ARC-E2](https://rdbht.github.io/SWT/arc-e2.html) | in Bearbeitung |
 
 ## Konventionen
 

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC-E2 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Architecture Communication Canvas grid (canvas.arc42.org layout) */
+    .acc {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas:
+        "value value stake stake"
+        "func  func  qual  qual"
+        "ctx   ctx   dec   dec"
+        "comp  comp  tech  tech"
+        "risk  risk  risk  risk";
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .acc > div {
+      border: 1px solid var(--pico-muted-border-color, #ccc);
+      border-radius: 0.4rem;
+      padding: 0.7rem 0.9rem;
+      background: var(--pico-card-background-color, #fff);
+    }
+    .acc h4 {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--pico-muted-color, #666);
+    }
+    .acc ul { margin: 0; padding-left: 1.1rem; font-size: 0.88rem; }
+    .acc li { margin-bottom: 0.25rem; }
+    .acc p { margin: 0; font-size: 0.88rem; }
+    .acc .a-value { grid-area: value; border-top: 4px solid #2f6feb; }
+    .acc .a-stake { grid-area: stake; }
+    .acc .a-func  { grid-area: func; }
+    .acc .a-qual  { grid-area: qual; }
+    .acc .a-ctx   { grid-area: ctx; }
+    .acc .a-dec   { grid-area: dec; }
+    .acc .a-comp  { grid-area: comp; }
+    .acc .a-tech  { grid-area: tech; }
+    .acc .a-risk  { grid-area: risk; border-top: 4px solid #d29922; }
+    @media (max-width: 800px) {
+      .acc { grid-template-columns: 1fr; grid-template-areas:
+        "value" "stake" "func" "qual" "ctx" "dec" "comp" "tech" "risk"; }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html">VOR-E1</a></li>
+        <li><a href="ref-e1.html">REF-E1</a></li>
+        <li><a href="bui-e1.html">BUI-E1</a></li>
+        <li><a href="tst-e1.html">TST-E1</a></li>
+        <li><a href="met-e1.html">MET-E1</a></li>
+        <li><a href="arc-e1.html">ARC-E1</a></li>
+        <li><a href="arc-e2.html" aria-current="page">ARC-E2</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>ARC-E2 &mdash; Architecture Communication Canvas <kbd class="status wip">in Bearbeitung</kbd></h2>
+      <p>
+        Ein <strong>Architecture Communication Canvas</strong> (nach
+        <a href="https://canvas.arc42.org">canvas.arc42.org</a>) für einen
+        kleinen Teil der <a href="arc-e1.html">ARC-E1-Architektur</a>: die
+        <strong>Alerting-Pipeline</strong> des IT-Service-Monitors — bekannt
+        aus TST-E1 (Mocking-Tests) und MET-E1 (Komplexitäts-Hotspot).
+      </p>
+    </section>
+
+    <section>
+      <h3>Canvas: Alerting-Pipeline</h3>
+      <div class="acc">
+        <div class="a-value">
+          <h4>Value Proposition</h4>
+          <p>Alarmiert Betreiber <strong>zuverlässig und ohne
+          Fehlalarm-Flut</strong>: erst nach Überschreiten des konfigurierten
+          DOWN-Fensters wird <strong>genau ein</strong> Alert ausgelöst —
+          kein Spam bei flatternden Diensten, keine Doppel-Alerts.</p>
+        </div>
+        <div class="a-stake">
+          <h4>Key Stakeholder</h4>
+          <ul>
+            <li><strong>Operator/Admin</strong> — schnelle, verlässliche Alarme</li>
+            <li><strong>Entwicklerteam</strong> — mockbare Schnittstellen</li>
+            <li><strong>Kursbetreuung</strong> — bewertet Architektur- und Testqualität</li>
+          </ul>
+        </div>
+        <div class="a-func">
+          <h4>Core Functions</h4>
+          <ul>
+            <li>Statusereignisse konsumieren (<code>tick</code> je Ziel)</li>
+            <li>DOWN-Strecken erkennen und entprellen (<code>alertAfterMs</code>)</li>
+            <li>Genau einen Alert an den <code>AlertSink</code> feuern</li>
+            <li>Erholung erkennen, Alarmzustand zurücksetzen</li>
+          </ul>
+        </div>
+        <div class="a-qual">
+          <h4>Quality Requirements</h4>
+          <ul>
+            <li><strong>Zuverlässigkeit:</strong> kein verlorener/doppelter Alert</li>
+            <li><strong>Testbarkeit:</strong> ohne echte Uhr/Netz/Mail (Mockito)</li>
+            <li><strong>Erweiterbarkeit:</strong> neue Kanäle ohne Pipeline-Änderung</li>
+            <li><strong>Wartbarkeit:</strong> Hotspot unter Metrik-Beobachtung
+              (<code>tick</code>: McCabe 5, Cognitive Complexity 6)</li>
+          </ul>
+        </div>
+        <div class="a-ctx">
+          <h4>Business Context</h4>
+          <ul>
+            <li><strong>Input:</strong> UP/DEGRADED/DOWN vom
+              <code>StatusEvaluator</code>, Zeit via injizierter <code>Clock</code></li>
+            <li><strong>Output:</strong> Alerts an <code>MailSink</code> /
+              <code>WebhookSink</code> → Operator</li>
+            <li><strong>Nachbarn:</strong> <code>scheduler</code> (Takt),
+              <code>store</code> (unabhängige Persistenz)</li>
+          </ul>
+        </div>
+        <div class="a-dec">
+          <h4>Core Decisions — good or bad</h4>
+          <ul>
+            <li>✅ Entprellung über <strong>Zeitfenster</strong> statt Zähler —
+              robust bei variablen Intervallen</li>
+            <li>✅ <code>AlertSink</code> als Interface (Strategy) — Kanäle austauschbar</li>
+            <li>✅ Injizierte <code>Clock</code> — deterministische Zeitreise-Tests</li>
+            <li>⚠️ Alarmzustand nur im Speicher — geht bei Neustart verloren
+              (KISS, bewusst akzeptiert)</li>
+          </ul>
+        </div>
+        <div class="a-comp">
+          <h4>Components / Modules</h4>
+          <p><code>AlertingService</code> (Zustandsmaschine) ·
+          <code>StatusEvaluator</code> (Ereignisquelle) ·
+          <code>AlertSink</code>-Interface + Adapter ·
+          injizierte <code>Clock</code></p>
+        </div>
+        <div class="a-tech">
+          <h4>Core Technologies</h4>
+          <p>Java 17 · Maven · JUnit 5 + Mockito 5 ·
+          PMD/Checkstyle-Gate im CI (MET-E1)</p>
+        </div>
+        <div class="a-risk">
+          <h4>Risks &amp; Missing Information</h4>
+          <ul>
+            <li>Zustandsverlust bei Agent-Neustart — Persistenz-Entscheidung offen</li>
+            <li>Eskalation/Sammel-Alert bei vielen gleichzeitigen Ausfällen nicht spezifiziert</li>
+            <li>Zustellgarantie: Retry-Strategie bei fehlschlagendem Mail-/Webhook-Versand ungeklärt</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/arc-e2/README.md">README — Canvas als Text (ARC-E2)</a></li>
+        <li><a href="arc-e1.html">ARC-E1 — Gesamtarchitektur mit Komponentendiagramm</a></li>
+        <li><a href="https://canvas.arc42.org">canvas.arc42.org — Vorlage</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+</body>
+</html>

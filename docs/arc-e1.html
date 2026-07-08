@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC-E1 &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html">VOR-E1</a></li>
+        <li><a href="ref-e1.html">REF-E1</a></li>
+        <li><a href="bui-e1.html">BUI-E1</a></li>
+        <li><a href="tst-e1.html">TST-E1</a></li>
+        <li><a href="met-e1.html">MET-E1</a></li>
+        <li><a href="arc-e1.html" aria-current="page">ARC-E1</a></li>
+        <li><a href="arc-e2.html">ARC-E2</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>ARC-E1 &mdash; Finale Architektur <kbd class="status wip">in Bearbeitung</kbd></h2>
+      <p>
+        Konkreter Architekturentwurf für das durchgängige Start-Up-Projekt
+        <strong>IT-Service-Monitor</strong> (HTTP-/TCP-/DNS-Health-Checks,
+        Verlauf, Alerting — siehe VOR-E1, AI-Coding, TST-E1, MET-E1).
+        Zentrales Element: das Komponentendiagramm mit vier Ebenen.
+        Vollständige Erläuterung im
+        <a href="https://github.com/RDBHT/SWT/blob/main/arc-e1/README.md">README</a>.
+      </p>
+    </section>
+
+    <section>
+      <h3>Komponentendiagramm</h3>
+      <pre class="mermaid">
+flowchart TB
+    admin(["Operator / Admin"])
+    svc(["überwachte Services<br/>(extern)"])
+    chan(["Benachrichtigungs-<br/>kanäle (Mail, Webhook)"])
+
+    subgraph P["Ebene 1 — Präsentation"]
+        ui["dashboard-ui<br/><i>Status, Verlauf, Konfiguration</i>"]
+    end
+
+    subgraph A["Ebene 2 — Anwendung (Orchestrierung)"]
+        sched["scheduler<br/><i>periodische Ausführung, Intervalle</i>"]
+        alert["alerting<br/><i>Statuswechsel-Erkennung,<br/>Entprellung, AlertSink</i>"]
+    end
+
+    subgraph D["Ebene 3 — Domäne"]
+        check["checker<br/><i>Check-Abstraktion (Strategy):<br/>HttpCheck / TcpCheck / DnsCheck</i>"]
+        eval["StatusEvaluator<br/><i>Ergebnis → UP/DEGRADED/DOWN</i>"]
+    end
+
+    subgraph I["Ebene 4 — Infrastruktur"]
+        store[("store<br/><i>Verlaufsdaten, SQLite</i>")]
+        sink["Notifier-Adapter<br/><i>MailSink / WebhookSink</i>"]
+        mock["mock-service<br/><i>kontrollierbares Test-Target</i>"]
+    end
+
+    admin --> ui
+    ui -- "liest Status/Verlauf<br/>(Store-API, read-only)" --> store
+    sched -- "stößt Checks an<br/>(Check-API)" --> check
+    check -- "prüft" --> svc
+    check -. "im Test" .-> mock
+    check -- "CheckResult" --> eval
+    eval -- "Status + Messwert" --> store
+    eval -- "Statusereignis" --> alert
+    alert -- "Alert (AlertSink-API)" --> sink
+    sink --> chan
+      </pre>
+      <p>
+        <strong>Verteilungsschnitt:</strong> Check-Agent
+        (<code>scheduler</code> + <code>checker</code> + <code>alerting</code>)
+        und <code>dashboard-ui</code> sind getrennt deploybar; einzige
+        Koppelstelle ist die <strong>Store-API</strong> (Dashboard read-only).
+      </p>
+    </section>
+
+    <section>
+      <h3>Erläuterung in Kürze (Lerneinheit ARC)</h3>
+      <ul>
+        <li><strong>Prinzipien:</strong> Separation of Concerns (ein Modul, eine
+          Verantwortung), Information Hiding (schmale APIs: Check, Store,
+          AlertSink), Strategy für Check-Typen und Alert-Kanäle, Dependency
+          Injection (Mockbarkeit, vgl. TST-E1), KISS/YAGNI (kein Broker, kein
+          Microservice-Zoo).</li>
+        <li><strong>Ebenen:</strong> vier — Präsentation, Anwendung, Domäne,
+          Infrastruktur; Abhängigkeiten nur nach unten, Domäne framework-frei.</li>
+        <li><strong>Architekturstil:</strong> komponentenbasiert/geschichtet als
+          Grundgerüst, <em>Pipe-and-Filter</em> im Messpfad
+          (scheduler → checker → StatusEvaluator → store/alerting),
+          <em>Client-Server</em> zwischen Dashboard und Store.</li>
+        <li><strong>Frameworks:</strong> Java 17 + Maven-Multi-Module, JUnit 5 /
+          Mockito 5, SQLite via JDBC, statisches HTML/JS-Dashboard, GitHub
+          Actions — bewusst ohne Spring Boot zum Start.</li>
+        <li><strong>Qualität &amp; Metriken:</strong> CI-Quality-Gate mit
+          PMD/Checkstyle (Rulesets aus MET-E1), JaCoCo, punktuell PIT;
+          Ebenenregel und Zyklenfreiheit per ArchUnit/JDepend im Build geprüft.
+          Fokus auf die bekannten Hotspots (<code>alerting</code>-Zustandslogik,
+          Validierungscode).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Dokumente</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/arc-e1/README.md">README — vollständige Architektur-Erläuterung ARC-E1</a></li>
+        <li><a href="arc-e2.html">ARC-E2 — Architecture Communication Canvas (Alerting-Pipeline)</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/README.md">AI-Coding Teil C — Modulschnitt des IT-Service-Monitors</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script src="links.js"></script>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+</body>
+</html>
