@@ -43,7 +43,7 @@
   <main class="container">
     <section>
       <hgroup>
-        <h2>Teil C &mdash; Modulare, verteilte App</h2>
+        <h2>Teil C &mdash; Modulare, verteilte App <kbd class="status wip">in Bearbeitung</kbd></h2>
         <p>Vibe &amp; AI Coding &middot; Teil C von drei</p>
       </hgroup>
       <p><a href="ai-coding.html">&lsaquo; Zurück zur AI-Coding-Übersicht</a></p>
@@ -51,22 +51,43 @@
         <table>
           <tbody>
             <tr><th scope="row">Ziel</th><td>Dasselbe Konzept "richtig" — modular, verteilt, vollständig verstanden</td></tr>
-            <tr><th scope="row">Werkzeug</th><td>Claude Code (CLI) für fünf Module; Cline (VS-Code-Plugin) baut das Modul <code>mock-service</code> — Werkzeug-Nachweis</td></tr>
-            <tr><th scope="row">Module</th><td><code>checker</code>, <code>scheduler</code>, <code>store</code>, <code>alerting</code>, <code>dashboard-ui</code>, <code>mock-service</code></td></tr>
-            <tr><th scope="row">Anforderungen</th><td>Separate Module; Entwicklung step-by-step über Spezifikations-MD-Files; Tests; deploybar; Code vollständig verstanden</td></tr>
+            <tr><th scope="row">Werkzeug</th><td>Claude Code (CLI) für fünf Module; Cline (VS-Code-Plugin) für <code>mock-service</code></td></tr>
+            <tr><th scope="row">Stack</th><td>Java 17, Maven-Multi-Module, JUnit 5</td></tr>
+            <tr><th scope="row">Vorgehen</th><td>Specification-Driven: <code>specs/&lt;modul&gt;.md</code> → Planning Mode → Implementierung → Tests</td></tr>
             <tr><th scope="row">Abgabe</th><td>Modulares Repo, Spezifikations-MD-Files, Tests, README mit Pointern</td></tr>
-            <tr><th scope="row">Status</th><td><kbd class="status open">offen</kbd></td></tr>
           </tbody>
         </table>
       </figure>
     </section>
 
     <section>
+      <h3>Module &amp; Tests</h3>
+      <table>
+        <thead><tr><th>Modul</th><th>Verantwortung</th><th>Test</th></tr></thead>
+        <tbody>
+          <tr><td><code>checker</code></td><td>Check-Strategy + HTTP/TCP/DNS + StatusEvaluator</td><td>StatusEvaluatorTest (5)</td></tr>
+          <tr><td><code>store</code></td><td>Verlaufs-Persistenz (HistoryStore)</td><td>StoreTest</td></tr>
+          <tr><td><code>alerting</code></td><td>Ausfall-Entprellung, AlertSink</td><td>AlertingServiceTest</td></tr>
+          <tr><td><code>scheduler</code></td><td>periodischer Messpfad</td><td>SchedulerTest</td></tr>
+          <tr><td><code>dashboard-ui</code></td><td>read-only HTTP-Dashboard</td><td>StatusRendererTest</td></tr>
+          <tr><td><code>mock-service</code></td><td>Test-Target (mit Cline gebaut)</td><td>MockServiceTest</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Verteilter Schnitt:</strong> Check-Agent (scheduler + checker + alerting)
+      und dashboard-ui sind getrennt deploybar; einzige Koppelstelle ist die Store-API
+      (Dashboard read-only). <strong>Bauen/Testen:</strong> <code>mvn -B test</code>.</p>
+      <p><em>Offen (PC-Nachweis):</em> lokaler <code>mvn test</code>-Screenshot,
+      Claude-Code-Planning- und Cline-Screenshots, eigene Prompts.</p>
+    </section>
+
+    <section>
       <h3>Dokumente</h3>
       <ul>
-        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/README.md">README — Teil C</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/README.md">README — Teil C (Module, Build, Verdrahtung)</a></li>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/prompts.md">Prompts — Teil C</a></li>
-        <li><a href="https://github.com/RDBHT/SWT/tree/main/ai-coding/c-app">Modularer Arbeitsstand &amp; Spezifikations-MD-Files (<code>c-app/</code>)</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/ai-coding/c-app/specs">Spezifikations-MD-Files (<code>specs/</code>)</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/ai-coding/c-app">Modularer Code (<code>c-app/</code>)</a></li>
+        <li><a href="arc-e1.html">ARC-E1 — dieselbe Architektur als Komponentendiagramm</a></li>
       </ul>
     </section>
   </main>
