@@ -8,8 +8,6 @@ für einen kleinen, abgeschlossenen Teil der ARC-E1-Architektur: die
 Repository: https://github.com/RDBHT/SWT
 Pages-Reiter (Canvas visuell): https://rdbht.github.io/SWT/arc-e2.html
 
-> **Status: Entwurf / in Bearbeitung.**
-
 ## Canvas: Alerting-Pipeline
 
 ### Value Proposition

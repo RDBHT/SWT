@@ -8,8 +8,6 @@ zentrales Element ist das Komponentendiagramm unten.
 Repository: https://github.com/RDBHT/SWT
 Pages-Reiter: https://rdbht.github.io/SWT/arc-e1.html
 
-> **Status: Entwurf / in Bearbeitung.**
-
 ## 1. Das Start-Up in einem Satz
 
 Der **IT-Service-Monitor** überwacht interne und externe Dienste periodisch
