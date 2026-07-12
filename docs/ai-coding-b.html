@@ -43,7 +43,7 @@
   <main class="container">
     <section>
       <hgroup>
-        <h2>Teil B &mdash; Pet-Project vibe-coden</h2>
+        <h2>Teil B &mdash; Pet-Project vibe-coden <kbd class="status wip">in Bearbeitung</kbd></h2>
         <p>Vibe &amp; AI Coding &middot; Teil B von drei</p>
       </hgroup>
       <p><a href="ai-coding.html">&lsaquo; Zurück zur AI-Coding-Übersicht</a></p>
@@ -52,12 +52,34 @@
           <tbody>
             <tr><th scope="row">Ziel</th><td>Funktionierende Vibe-Version des Monitors — lauffähig, bewusst "Vibe-Qualität"</td></tr>
             <tr><th scope="row">Werkzeug</th><td>bolt.new (Vibe-Coding); Hosting über GitHub Pages</td></tr>
-            <tr><th scope="row">Anforderungen</th><td>Lauffähige App; überlegte Prompts; bewusst gewählte Datenhaltung (lokal/Cloud)</td></tr>
+            <tr><th scope="row">Datenhaltung</th><td>bewusst lokal (<code>localStorage</code>) — kein Backend, sofort statisch hostbar</td></tr>
+            <tr><th scope="row">Live-Link</th><td><a href="b-vibe/index.html">rdbht.github.io/SWT/b-vibe/</a></td></tr>
             <tr><th scope="row">Abgabe</th><td>Live-Link, Prompts, Screenshots, 1–2 Absätze Prosa</td></tr>
-            <tr><th scope="row">Status</th><td><kbd class="status open">offen</kbd></td></tr>
           </tbody>
         </table>
       </figure>
+    </section>
+
+    <section>
+      <h3>Live-Demo</h3>
+      <p>Lauffähige Vibe-Version, eingebettet — bewusst als einzelnes Frontend-File,
+      nicht modular (der Kontrast zu Teil C ist gewollt):</p>
+      <iframe src="b-vibe/index.html" title="IT-Service-Monitor — Vibe-Version"
+        style="width:100%;height:560px;border:1px solid var(--pico-muted-border-color);border-radius:8px"></iframe>
+      <p><small>Öffnet auch direkt: <a href="b-vibe/index.html">b-vibe/index.html</a> ·
+      Health-Checks sind zu Demozwecken simuliert.</small></p>
+    </section>
+
+    <section>
+      <h3>Vorgehen &amp; Datenhaltung</h3>
+      <p>Die App entstand in wenigen gezielten Schritten (Grundgerüst → Dashboard →
+      Formular → simulierte Live-Checks) statt in einem Mega-Prompt. Die Datenhaltung
+      ist bewusst <strong>lokal</strong> im Browser (<code>localStorage</code>): für eine
+      Vibe-Demo genügt ein statisches Frontend, die Daten verlassen den Browser nicht.
+      Geräteübergreifende Persistenz und Mehrbenutzerbetrieb liefert erst Teil C mit
+      echtem <code>store</code>-Modul.</p>
+      <p><em>Offen (PC-Nachweis):</em> die eigenen bolt.new-Prompts (in <code>prompts.md</code>)
+      und zwei Screenshots (Dashboard, Formular).</p>
     </section>
 
     <section>
@@ -65,6 +87,7 @@
       <ul>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/b-vibe-app/README.md">README — Teil B</a></li>
         <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/b-vibe-app/prompts.md">Prompts — Teil B</a></li>
+        <li><a href="b-vibe/index.html">Live-App (b-vibe/)</a></li>
       </ul>
     </section>
   </main>
