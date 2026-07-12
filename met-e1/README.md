@@ -8,8 +8,9 @@ berechnen und mit den Tool-Ausgaben abgleichen.
 Repository: https://github.com/RDBHT/SWT
 Pages-Reiter: https://rdbht.github.io/SWT/met-e1.html
 
-> **Status: Entwurf / in Bearbeitung.** Screenshots der lokalen Läufe folgen
-> (Platzhalter unten mit `TODO` markiert).
+> **Nachweis:** Die lokalen Tool-Läufe sind unten als `[SCREENSHOT]`-Platzhalter
+> markiert und werden vor dem finalen Push aus der eigenen VS-Code-Konsole eingefügt
+> (Ablage unter `docs/img/`).
 
 ## 1. Werkzeugwahl
 
@@ -64,8 +65,8 @@ mvn pmd:pmd checkstyle:checkstyle
 statt beim ersten Fehler abzubrechen. Die Rohdaten der Läufe liegen als Beleg
 in [`reports/`](./reports).
 
-**TODO Screenshot 1:** `mvn pmd:check` in der VS-Code-Konsole
-**TODO Screenshot 2:** `mvn checkstyle:check` in der VS-Code-Konsole
+**[SCREENSHOT — lokal einzufügen] 1:** `mvn pmd:check` in der VS-Code-Konsole → `docs/img/met-e1-pmd.png`
+**[SCREENSHOT — lokal einzufügen] 2:** `mvn checkstyle:check` in der VS-Code-Konsole → `docs/img/met-e1-checkstyle.png`
 
 ## 4. PMD-Ergebnisse und Interpretation
 
@@ -154,9 +155,9 @@ Checkstyle: 4 (nicht gemeldet, da ≤ Schwellwert) ✓. PMD: **7**, weil die
 drei `throw`-Statements mitgezählt werden — die Handrechnung zeigt, dass der
 "echte" McCabe-Wert (Pfadanzahl der Basis-Pfade) bei 4 liegt.
 
-**TODO Screenshot 3:** handschriftliche/skizzierte CFG-Rechnung (optional)
+**[SCREENSHOT — optional] 3:** handschriftliche/skizzierte CFG-Rechnung → `docs/img/met-e1-cfg.png`
 
-## 8. Fazit (Entwurf)
+## 8. Fazit
 
 Beide Tools identifizieren dieselben Hotspots (`AlertingService.tick`,
 `Target`-Validierung) — die absolute Zahl differiert je nach Zählweise, das
