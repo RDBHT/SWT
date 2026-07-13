@@ -8,9 +8,9 @@ berechnen und mit den Tool-Ausgaben abgleichen.
 Repository: https://github.com/RDBHT/SWT
 Pages-Reiter: https://rdbht.github.io/SWT/met-e1.html
 
-> **Nachweis:** Die lokalen Tool-Läufe sind unten als `[SCREENSHOT]`-Platzhalter
-> markiert und werden vor dem finalen Push aus der eigenen VS-Code-Konsole eingefügt
-> (Ablage unter `docs/img/`).
+> **Nachweis:** Die beiden Tool-Läufe sind belegt über die committeten Roh-Reports
+> unter [`reports/`](./reports) (`pmd-report.xml`, `checkstyle-result.xml`) **und** die
+> Konsolen-Screenshots unter [`../docs/img/`](../docs/img) (siehe Abschnitt 3).
 
 ## 1. Werkzeugwahl
 
@@ -65,8 +65,11 @@ mvn pmd:pmd checkstyle:checkstyle
 statt beim ersten Fehler abzubrechen. Die Rohdaten der Läufe liegen als Beleg
 in [`reports/`](./reports).
 
-**[SCREENSHOT — lokal einzufügen] 1:** `mvn pmd:check` in der VS-Code-Konsole → `docs/img/met-e1-pmd.png`
-**[SCREENSHOT — lokal einzufügen] 2:** `mvn checkstyle:check` in der VS-Code-Konsole → `docs/img/met-e1-checkstyle.png`
+**Konsolen-Nachweis der Läufe:**
+
+![mvn pmd:check — 13 Befunde, BUILD SUCCESS](../docs/img/met-e1-pmd.png)
+
+![mvn checkstyle:check — Befunde als WARN, BUILD SUCCESS](../docs/img/met-e1-checkstyle.png)
 
 ## 4. PMD-Ergebnisse und Interpretation
 
@@ -155,7 +158,7 @@ Checkstyle: 4 (nicht gemeldet, da ≤ Schwellwert) ✓. PMD: **7**, weil die
 drei `throw`-Statements mitgezählt werden — die Handrechnung zeigt, dass der
 "echte" McCabe-Wert (Pfadanzahl der Basis-Pfade) bei 4 liegt.
 
-**[SCREENSHOT — optional] 3:** handschriftliche/skizzierte CFG-Rechnung → `docs/img/met-e1-cfg.png`
+> Optional folgt eine skizzierte CFG-Rechnung als Bild (`docs/img/met-e1-cfg.png`).
 
 ## 8. Fazit
 
