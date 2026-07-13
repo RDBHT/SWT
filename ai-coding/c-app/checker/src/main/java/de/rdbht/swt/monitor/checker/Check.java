@@ -1,8 +1,12 @@
 package de.rdbht.swt.monitor.checker;
 
 /**
- * Strategy for one probe type (HTTP, TCP, DNS). A new check type is added by
- * implementing this interface — existing code stays untouched (open/closed).
+ * Strategy-Schnittstelle für einen Prüf-Typ (HTTP, TCP, DNS).
+ *
+ * Zusammenhang: Herzstück des checker-Moduls. Der Scheduler (scheduler-Modul, läuft im
+ * agent-Prozess) hält je überwachtem Dienst eine Check-Instanz und ruft run(target) auf.
+ * Ein neuer Prüf-Typ wird durch eine neue Implementierung dieser Schnittstelle ergänzt,
+ * ohne bestehenden Code zu ändern (Open/Closed-Prinzip).
  */
 public interface Check {
 

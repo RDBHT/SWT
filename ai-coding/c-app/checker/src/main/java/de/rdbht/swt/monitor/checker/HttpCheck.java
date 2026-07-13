@@ -3,7 +3,14 @@ package de.rdbht.swt.monitor.checker;
 import java.net.HttpURLConnection;
 import java.net.URI;
 
-/** HTTP health check: GETs the target URL and evaluates status code plus latency. */
+/**
+ * HTTP-Check: ruft die Ziel-URL per GET ab und bewertet Antwortcode + Antwortzeit.
+ *
+ * Zusammenhang: eine der drei Check-Strategien. Im Demo-Betrieb prüft der agent-Prozess
+ * damit den mock-service (GET /health). Das eigentliche Urteil (Code+Zeit → Status) trifft
+ * der injizierte StatusEvaluator; hier passiert nur das echte I/O und die Zeitmessung.
+ * Jeder Fehler (Timeout, Verbindungsabbruch) wird zu DOWN.
+ */
 public final class HttpCheck implements Check {
 
     private final StatusEvaluator evaluator;

@@ -10,18 +10,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Controllable test target for the monitor. Serves {@code /health} with a settable
- * HTTP status code so checks can be driven deterministically without real services;
- * {@code /admin?code=NNN} changes that code at runtime.
+ * Kontrollierbares Test-Target für den Monitor. Liefert {@code /health} mit einem zur Laufzeit
+ * setzbaren HTTP-Statuscode, damit Checks deterministisch ohne echte Dienste getrieben werden
+ * können; {@code /admin?code=NNN} ändert diesen Code zur Laufzeit.
  *
- * <p>Built with Cline (VS-Code-Plugin) — the second required tool type for Teil C.
+ * Zusammenhang: eigener Prozess und überwachtes Ziel des agent. Mit {@code /admin?code=500}
+ * lässt sich ein Ausfall simulieren, um Alerting live zu zeigen.
+ *
+ * <p>Mit Cline (VS-Code-Plugin) gebaut — die zweite geforderte Werkzeug-Art für Teil C.
  */
 public final class MockService {
 
     private final AtomicInteger healthCode = new AtomicInteger(200);
     private HttpServer server;
 
-    /** Set the HTTP code that {@code /health} returns (e.g. 500 to simulate an outage). */
+    /** Setzt den Code, den {@code /health} zurückgibt (z. B. 500, um einen Ausfall zu simulieren). */
     public void setHealthCode(int code) {
         healthCode.set(code);
     }

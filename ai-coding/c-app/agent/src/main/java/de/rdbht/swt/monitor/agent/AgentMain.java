@@ -9,11 +9,14 @@ import de.rdbht.swt.monitor.scheduler.Scheduler;
 import java.util.List;
 
 /**
- * Check-Agent process — the producer half of the distributed system. Periodically
- * probes the configured targets and hands every result to the {@link IngestClient},
- * which forwards it over HTTP to the collector. Runs in its own JVM.
+ * Check-Agent-Prozess — die Produzenten-Hälfte des verteilten Systems. Prüft periodisch die
+ * konfigurierten Ziele und übergibt jedes Ergebnis dem {@link IngestClient}, der es per HTTP an
+ * den collector weiterleitet. Läuft in einer eigenen JVM.
  *
- * <p>Usage: {@code AgentMain [collectorIngestUrl] [httpTarget] [tcpTarget]}
+ * Zusammenhang: verdrahtet checker + scheduler + IngestClient. Standardmäßig prüft er den
+ * mock-service (mock-http per HTTP, mock-tcp per Port) alle 5 s.
+ *
+ * <p>Aufruf: {@code AgentMain [collectorIngestUrl] [httpTarget] [tcpTarget]}
  */
 public final class AgentMain {
 

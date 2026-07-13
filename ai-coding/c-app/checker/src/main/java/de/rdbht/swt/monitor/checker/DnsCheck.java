@@ -2,7 +2,13 @@ package de.rdbht.swt.monitor.checker;
 
 import java.net.InetAddress;
 
-/** DNS health check: resolves the target domain to one or more addresses. */
+/**
+ * DNS-Check: löst den Ziel-Domainnamen in eine oder mehrere IP-Adressen auf.
+ *
+ * Zusammenhang: dritte Check-Strategie. Liefert die Auflösung mindestens eine Adresse,
+ * gilt der Name als erreichbar (UP), sonst DOWN. Zeigt, dass sich das Strategy-Muster
+ * (Check-Schnittstelle) auf einen ganz anderen Prüf-Typ erweitern lässt.
+ */
 public final class DnsCheck implements Check {
 
     @Override

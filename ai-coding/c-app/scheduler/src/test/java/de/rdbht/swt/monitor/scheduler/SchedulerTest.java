@@ -15,7 +15,7 @@ class SchedulerTest {
 
     @Test
     void runOnce_emits_one_result_per_service_to_the_sink() {
-        // Stub check: always UP, no real network.
+        // Stub-Check: immer UP, kein echtes Netz.
         Check stub = new Check() {
             @Override public String type() { return "STUB"; }
             @Override public CheckResult run(String target) { return new CheckResult(Status.UP, 42, "ok"); }

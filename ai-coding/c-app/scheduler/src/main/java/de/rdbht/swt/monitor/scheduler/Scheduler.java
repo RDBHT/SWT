@@ -10,12 +10,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Taktgeber des Messpfads: runs each check and hands the result to a {@link ResultSink}.
- * The scheduler is deliberately agnostic to <em>what</em> happens with a result — that
- * decision (store locally vs. send to a collector over the network) lives in the sink,
- * which is what lets the same scheduler run inside a distributed agent.
- * {@link #runOnce()} is deterministic and unit-testable; {@link #start(long)} drives it
- * periodically for real operation.
+ * Taktgeber des Messpfads: führt jeden Check aus und übergibt das Ergebnis an einen
+ * {@link ResultSink}.
+ *
+ * Zusammenhang: läuft im agent-Prozess. Der Scheduler ist bewusst UNABHÄNGIG davon, was mit
+ * einem Ergebnis geschieht — diese Entscheidung (lokal speichern vs. per Netzwerk an einen
+ * Collector senden) steckt im Sink. Genau das erlaubt es, denselben Scheduler in einem
+ * verteilten Agenten zu betreiben. runOnce() ist deterministisch und unit-testbar; start(long)
+ * treibt ihn periodisch für den echten Betrieb.
  */
 public final class Scheduler {
 
@@ -28,7 +30,7 @@ public final class Scheduler {
         this.sink = sink;
     }
 
-    /** One measurement pass over all services; each result goes to the sink. */
+    /** Ein Messdurchlauf über alle Dienste; jedes Ergebnis geht an den Sink. */
     public void runOnce() {
         for (MonitoredService service : services) {
             CheckResult result = service.check().run(service.target());
@@ -36,7 +38,7 @@ public final class Scheduler {
         }
     }
 
-    /** Start periodic execution every {@code intervalMs} milliseconds. */
+    /** Startet die periodische Ausführung alle {@code intervalMs} Millisekunden. */
     public void start(long intervalMs) {
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(this::runOnce, 0, intervalMs, TimeUnit.MILLISECONDS);

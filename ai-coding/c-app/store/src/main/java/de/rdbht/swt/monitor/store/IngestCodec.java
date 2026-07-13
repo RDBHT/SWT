@@ -8,16 +8,20 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
 /**
- * Wire format for a {@link StatusRecord}: a simple form-urlencoded line. This lets
- * the agent and the collector exchange results over HTTP without pulling in a JSON
- * library — the whole protocol stays small enough to explain line by line.
+ * Wire-Format (Übertragungsformat) für einen {@link StatusRecord}: eine einfache
+ * form-urlencoded Zeile.
+ *
+ * Zusammenhang: DAS gemeinsame Protokoll der Verteilung. Der agent (IngestClient) ruft
+ * encode(...) und schickt das Ergebnis per HTTP; der collector ruft decode(...) auf den
+ * empfangenen Body. Bewusst OHNE JSON-Bibliothek gehalten, damit das Protokoll klein und
+ * Zeile für Zeile erklärbar bleibt. Round-Trip (encode→decode) abgesichert durch IngestCodecTest.
  */
 public final class IngestCodec {
 
     private IngestCodec() {
     }
 
-    /** Serialise a record to {@code service=...&status=...&responseMs=...&timestamp=...}. */
+    /** Serialisiert einen Datensatz zu {@code service=...&status=...&responseMs=...&timestamp=...}. */
     public static String encode(StatusRecord r) {
         return "service=" + enc(r.service())
                 + "&status=" + r.status()
@@ -25,7 +29,7 @@ public final class IngestCodec {
                 + "&timestamp=" + enc(r.timestamp().toString());
     }
 
-    /** Parse a form-urlencoded body back into a record. */
+    /** Parst einen form-urlencoded Body zurück in einen Datensatz. */
     public static StatusRecord decode(String body) {
         String service = null;
         String status = null;
@@ -43,7 +47,7 @@ public final class IngestCodec {
                 case "status" -> status = value;
                 case "responseMs" -> responseMs = Long.parseLong(value);
                 case "timestamp" -> timestamp = value;
-                default -> { /* ignore unknown keys */ }
+                default -> { /* unbekannte Schlüssel ignorieren */ }
             }
         }
         return new StatusRecord(service, Status.valueOf(status), responseMs, Instant.parse(timestamp));

@@ -3,7 +3,13 @@ package de.rdbht.swt.monitor.checker;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-/** TCP health check: tries to open a socket to {@code host:port}. */
+/**
+ * TCP-Check: versucht, eine Socket-Verbindung zu {@code host:port} zu öffnen.
+ *
+ * Zusammenhang: zweite Check-Strategie. Gelingt der Verbindungsaufbau innerhalb des
+ * Timeouts, gilt der Port als offen (UP), sonst DOWN. Kein StatusEvaluator nötig, weil es
+ * hier nur "verbunden / nicht verbunden" gibt.
+ */
 public final class TcpCheck implements Check {
 
     private final int timeoutMs;

@@ -9,8 +9,11 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Read-only HTTP dashboard: serves the latest status per service from the store.
- * The store is the single coupling point (Client-Server; the dashboard never writes).
+ * Read-only HTTP-Dashboard: liefert den jüngsten Status je Dienst aus dem Store.
+ *
+ * Zusammenhang: die lokale (Ein-Prozess-)Variante der Anzeige; im verteilten Betrieb
+ * übernimmt der CollectorServer dieselbe Aufgabe über GET /. Der Store ist die einzige
+ * Koppelstelle (Client-Server; das Dashboard schreibt nie).
  */
 public final class DashboardServer {
 

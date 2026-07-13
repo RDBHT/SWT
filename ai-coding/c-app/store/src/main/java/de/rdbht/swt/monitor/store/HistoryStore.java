@@ -3,17 +3,21 @@ package de.rdbht.swt.monitor.store;
 import java.util.List;
 
 /**
- * Read/write access to the status history. This interface is the single
- * coupling point between the check agent (writes) and the dashboard (reads).
+ * Lese-/Schreibzugriff auf die Status-Historie.
+ *
+ * Zusammenhang: diese Schnittstelle ist die EINZIGE Koppelstelle zwischen dem schreibenden
+ * Teil (im collector-Prozess: append bei jedem empfangenen Ergebnis) und dem lesenden Teil
+ * (Dashboard: latestPerService). Weil hier nur eine Schnittstelle steht, lässt sich die
+ * In-Memory-Umsetzung später ohne Änderung an Collector oder Dashboard gegen z. B. SQLite tauschen.
  */
 public interface HistoryStore {
 
-    /** Append one observation. */
+    /** Hängt eine Beobachtung an. */
     void append(StatusRecord record);
 
-    /** The most recent {@code limit} records for one service, newest first. */
+    /** Die neuesten {@code limit} Datensätze eines Dienstes, jüngste zuerst. */
     List<StatusRecord> recent(String service, int limit);
 
-    /** The latest record per service (for the dashboard overview). */
+    /** Der jeweils jüngste Datensatz je Dienst (für die Dashboard-Übersicht). */
     List<StatusRecord> latestPerService();
 }

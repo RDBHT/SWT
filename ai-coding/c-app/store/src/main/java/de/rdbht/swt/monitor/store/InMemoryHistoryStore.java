@@ -8,7 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** Simple thread-safe in-memory store — swappable for a SQLite-backed one later. */
+/**
+ * Einfache, thread-sichere In-Memory-Umsetzung von {@link HistoryStore}.
+ *
+ * Zusammenhang: im collector-Prozess schreibt jeder eingehende POST /ingest hier hinein,
+ * während das Dashboard gleichzeitig liest — deshalb thread-sicher (synchronisierte Liste).
+ * Bewusst simpel (KISS); eine SQLite-Variante wäre der nächste Schritt und bräuchte keine
+ * Änderung außerhalb dieses Moduls. Nachteil: bei Neustart sind die Daten weg.
+ */
 public final class InMemoryHistoryStore implements HistoryStore {
 
     private final List<StatusRecord> records = Collections.synchronizedList(new ArrayList<>());

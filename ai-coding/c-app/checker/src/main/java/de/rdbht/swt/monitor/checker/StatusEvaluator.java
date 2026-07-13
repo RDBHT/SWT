@@ -1,8 +1,11 @@
 package de.rdbht.swt.monitor.checker;
 
 /**
- * Maps an HTTP response code and response time to a {@link Status}.
- * Pure decision logic — no I/O, therefore fully unit-testable (see StatusEvaluatorTest).
+ * Bildet einen HTTP-Antwortcode und eine Antwortzeit auf einen {@link Status} ab.
+ *
+ * Zusammenhang: die einzige "Urteils"-Logik des checker-Moduls und bewusst REIN gehalten
+ * (kein Netz, keine Zeit-Abhängigkeit) — dadurch vollständig unit-testbar (StatusEvaluatorTest).
+ * Der HttpCheck ruft evaluate(...) mit dem tatsächlich gemessenen Code und der Zeit auf.
  */
 public final class StatusEvaluator {
 
@@ -15,7 +18,7 @@ public final class StatusEvaluator {
         this.degradedThresholdMs = degradedThresholdMs;
     }
 
-    /** 2xx/3xx within the threshold is UP, slower is DEGRADED, everything else DOWN. */
+    /** 2xx/3xx innerhalb des Schwellwerts = UP, langsamer = DEGRADED, alles andere = DOWN. */
     public Status evaluate(int httpCode, long responseMs) {
         if (responseMs < 0) {
             throw new IllegalArgumentException("responseMs must not be negative");

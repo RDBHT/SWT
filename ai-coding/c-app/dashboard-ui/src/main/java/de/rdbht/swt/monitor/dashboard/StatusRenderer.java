@@ -4,7 +4,13 @@ import de.rdbht.swt.monitor.store.StatusRecord;
 
 import java.util.List;
 
-/** Renders the latest status per service as a small HTML fragment (pure, testable). */
+/**
+ * Rendert den jüngsten Status je Dienst als kleines HTML-Fragment (rein, testbar).
+ *
+ * Zusammenhang: bewusst von der HTTP-Auslieferung getrennt — reine Zeichenketten-Logik,
+ * deshalb per StatusRendererTest prüfbar. Wird sowohl vom lokalen DashboardServer als auch
+ * vom verteilten CollectorServer genutzt, um das Dashboard-HTML zu erzeugen.
+ */
 public final class StatusRenderer {
 
     public String render(List<StatusRecord> latest) {

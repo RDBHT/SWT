@@ -10,9 +10,14 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 
 /**
- * Sends each measured result to the collector over HTTP — the network hop that
- * makes the system distributed. This is the producer side: the agent does not
- * store or evaluate anything itself, it only forwards.
+ * Sendet jedes gemessene Ergebnis per HTTP an den collector — der Netzwerk-Sprung, der das
+ * System verteilt macht.
+ *
+ * Zusammenhang: Produzenten-Seite, lebt im agent-Prozess und IST der ResultSink, den der
+ * Scheduler bekommt (implements ResultSink). Der Agent speichert und bewertet selbst nichts —
+ * er serialisiert das Ergebnis (IngestCodec) und leitet es weiter. Der collector kann in einer
+ * anderen JVM oder auf einem anderen Rechner laufen; diese Klasse interessiert das nicht. Ein
+ * fehlgeschlagener Versand wird geloggt und verworfen (kein Retry).
  */
 public final class IngestClient implements de.rdbht.swt.monitor.scheduler.ResultSink {
 

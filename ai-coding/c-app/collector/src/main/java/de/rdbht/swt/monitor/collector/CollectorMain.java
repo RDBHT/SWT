@@ -7,11 +7,14 @@ import de.rdbht.swt.monitor.store.InMemoryHistoryStore;
 import java.io.IOException;
 
 /**
- * Collector process entry point. Owns the store and the alerting pipeline and
- * exposes the ingest endpoint plus the dashboard. Runs in its own JVM — the
- * consumer half of the distributed system.
+ * Einstiegspunkt des Collector-Prozesses. Hält den Store und die Alerting-Pipeline und stellt
+ * den Ingest-Endpunkt plus das Dashboard bereit. Läuft in einer eigenen JVM — die
+ * Consumer-Hälfte des verteilten Systems.
  *
- * <p>Usage: {@code CollectorMain [port]} (default 8080)
+ * Zusammenhang: erzeugt die konkreten Umsetzungen (InMemoryHistoryStore, AlertingService mit
+ * 15-s-Fenster, Konsolen-AlertSink) und startet den CollectorServer auf dem Port.
+ *
+ * <p>Aufruf: {@code CollectorMain [port]} (Default 8080)
  */
 public final class CollectorMain {
 

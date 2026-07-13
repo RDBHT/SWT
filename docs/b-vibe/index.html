@@ -122,6 +122,9 @@
 <script>
 (function () {
   "use strict";
+  // Aufbau: Datenmodell (services) + localStorage (load/save) + simulierte Checks
+  // (simulateOne/tick, alle 3 s) + Anzeige (render/renderKpis/visibleServices).
+  // Bewusst Vibe-Qualität: alles in einer Datei, kein Framework, kein Backend.
   var KEY = "monitor.services.v1";
   var STATUSES = ["OK", "DEGRADED", "DOWN", "UNKNOWN"];
   var activeFilter = null;
@@ -158,7 +161,7 @@
   function severity(s) { return STATUSES.indexOf(s); }
 
   function simulateOne(svc) {
-    // Weighted random: mostly OK, occasionally degraded/down.
+    // Gewichteter Zufall: meist OK, gelegentlich degraded/down.
     var r = Math.random();
     var status;
     if (r < 0.72) status = "OK";
@@ -173,7 +176,7 @@
 
   function tick() {
     services.forEach(function (svc) {
-      // Only re-check when the interval has elapsed (or never checked).
+      // Nur neu prüfen, wenn das Intervall abgelaufen ist (oder noch nie geprüft).
       if (!svc.lastCheck || (Date.now() - svc.lastCheck) >= svc.interval * 1000 / 10) {
         simulateOne(svc);
       }

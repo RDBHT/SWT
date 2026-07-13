@@ -6,10 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Detects sustained outages and fires exactly one alert per outage, after the
- * configured debounce window ({@code alertAfterMs}). Recovery resets the state
- * so a later outage can alert again. State is kept in memory (KISS — see the
- * ARC-E2 risk note on state loss at restart).
+ * Erkennt anhaltende Ausfälle und löst PRO Ausfall genau EINEN Alarm aus — erst nachdem ein
+ * Ziel länger als das konfigurierte Fenster ({@code alertAfterMs}) DOWN ist. Erholung setzt
+ * den Zustand zurück, sodass ein späterer Ausfall wieder alarmieren kann.
+ *
+ * Zusammenhang: lebt im collector-Prozess. Bei jedem empfangenen Ergebnis ruft der
+ * CollectorServer tick(service, status) auf. Die Zeit kommt über die injizierte Clock, der
+ * Alarm geht an den injizierten AlertSink (beide austauschbar → deterministisch testbar).
+ * Der Zustand liegt im Speicher (KISS — bei Neustart geht eine laufende DOWN-Strecke verloren,
+ * siehe Risiko-Notiz in ARC-E2).
  */
 public final class AlertingService {
 
@@ -28,17 +33,17 @@ public final class AlertingService {
         this.sink = sink;
     }
 
-    /** Feed one status observation for a service. */
+    /** Verarbeitet eine einzelne Status-Beobachtung für einen Dienst. */
     public void tick(String service, Status status) {
         long now = clock.nowMillis();
         if (status != Status.DOWN) {
-            // recovery or any non-down state resets the outage tracking
+            // Erholung oder jeder Nicht-DOWN-Zustand setzt die Ausfall-Verfolgung zurück
             downSince.remove(service);
             alerted.remove(service);
             return;
         }
-        // remember when the outage started, then check the debounce window on the
-        // same tick — so a zero (or already-elapsed) window can fire immediately.
+        // Ausfallbeginn merken und die Entprellung auf DEMSELBEN Tick prüfen —
+        // so kann ein Null- bzw. bereits abgelaufenes Fenster sofort feuern.
         downSince.putIfAbsent(service, now);
         long since = downSince.get(service);
         if (!alerted.getOrDefault(service, false) && (now - since) >= alertAfterMs) {

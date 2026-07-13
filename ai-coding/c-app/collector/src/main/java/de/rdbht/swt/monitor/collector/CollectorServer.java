@@ -14,10 +14,13 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Collector process (consumer/processor). Receives check results from the agent via
- * {@code POST /ingest}, processes them (append to store, feed the alerting pipeline)
- * and serves the dashboard at {@code GET /}. Owns no checks itself — it only reacts
- * to what the agent sends over the network.
+ * Collector-Prozess (Consumer/Verarbeiter). Empfängt Check-Ergebnisse vom Agenten per
+ * {@code POST /ingest}, verarbeitet sie (in den store schreiben, die Alerting-Pipeline speisen)
+ * und liefert das Dashboard unter {@code GET /}.
+ *
+ * Zusammenhang: die Verarbeiter-Hälfte des verteilten Systems. Kennt den Agenten NICHT und
+ * reagiert nur auf eingehende Anfragen — mehrere Agenten könnten in denselben Collector schreiben.
+ * Führt selbst keine Checks aus.
  */
 public final class CollectorServer {
 
