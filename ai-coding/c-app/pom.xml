@@ -15,9 +15,10 @@
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.10.2</junit.version>
+    <exec.plugin.version>3.1.1</exec.plugin.version>
   </properties>
 
-  <!-- Reactor: die sechs Module in Abhängigkeitsreihenfolge -->
+  <!-- Reactor: Bibliotheks-Module zuerst, dann die drei Prozess-Module (agent, collector, mock-service) -->
   <modules>
     <module>checker</module>
     <module>store</module>
@@ -25,6 +26,8 @@
     <module>scheduler</module>
     <module>dashboard-ui</module>
     <module>mock-service</module>
+    <module>agent</module>
+    <module>collector</module>
   </modules>
 
   <dependencyManagement>
@@ -51,6 +54,16 @@
         <artifactId>alerting</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>de.rdbht.swt.monitor</groupId>
+        <artifactId>scheduler</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>de.rdbht.swt.monitor</groupId>
+        <artifactId>dashboard-ui</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -61,6 +74,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.2.5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${exec.plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

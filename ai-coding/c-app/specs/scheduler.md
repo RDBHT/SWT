@@ -6,16 +6,20 @@ den Store und speist die Alerting-Pipeline.
 
 ## Öffentliche Schnittstelle
 - `record MonitoredService(String name, Check check, String target)`
-- `class Scheduler { Scheduler(List<MonitoredService>, HistoryStore, AlertingService);
+- `interface ResultSink { void accept(StatusRecord record); }` — Ziel jedes Ergebnisses
+- `class Scheduler { Scheduler(List<MonitoredService>, ResultSink);
   void runOnce(); void start(long intervalMs); void stop(); }`
 
 ## Fachregeln
 - `runOnce()` ist ein deterministischer Durchlauf über alle Services (testbar)
-- je Service: Check ausführen → `StatusRecord` anhängen → `alerting.tick(...)`
+- je Service: Check ausführen → `StatusRecord` bauen → an den `ResultSink` übergeben
+- der Scheduler kennt **weder store noch alerting** — das ist die Naht, die den
+  Agenten verteilbar macht (lokaler Sink speichert; verteilter Sink sendet per HTTP)
 - `start(intervalMs)` ruft `runOnce()` periodisch über einen Scheduled-Executor
 
 ## Akzeptanztests (siehe `SchedulerTest`)
 - Stub-Check (immer `UP`) + `runOnce()` → 1 Datensatz im Store, Status `UP`
 
 ## Abhängigkeiten
-`checker`, `store`, `alerting` (Orchestrierungsmodul — verbindet den Messpfad)
+`checker`, `store` (für `StatusRecord`). **Nicht** mehr `alerting` — Verarbeitung
+liegt hinter dem `ResultSink`.

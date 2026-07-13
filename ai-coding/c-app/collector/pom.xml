@@ -8,9 +8,9 @@
     <artifactId>monitor-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>scheduler</artifactId>
-  <name>scheduler</name>
-  <description>Periodische Ausführung der Checks; übergibt jedes Ergebnis an einen ResultSink</description>
+  <artifactId>collector</artifactId>
+  <name>collector</name>
+  <description>Verteilter Collector (eigener Prozess): empfängt Ergebnisse (POST /ingest), verarbeitet sie (store + alerting) und zeigt das Dashboard (GET /)</description>
 
   <dependencies>
     <dependency>
@@ -22,8 +22,24 @@
       <artifactId>store</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
+      <groupId>de.rdbht.swt.monitor</groupId>
+      <artifactId>alerting</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>de.rdbht.swt.monitor</groupId>
+      <artifactId>dashboard-ui</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>de.rdbht.swt.monitor.collector.CollectorMain</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

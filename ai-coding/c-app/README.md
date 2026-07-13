@@ -1,8 +1,13 @@
 # Teil C — Modulare, verteilte App
 
 Die „richtige" Umsetzung des IT-Service-Monitors: als **Maven-Multi-Module-Projekt**
-in sechs separate Module geschnitten, spezifikationsgetrieben entwickelt, mit Tests
-und vollständig verstanden (prüfungsfähig).
+in acht Module geschnitten (fünf Bibliotheken + **drei eigenständige Prozesse**),
+spezifikationsgetrieben entwickelt, mit Tests und vollständig verstanden.
+
+**Verteilt** heißt hier: `agent` und `collector` sind **getrennte Prozesse (JVMs)**,
+die über HTTP kommunizieren — der Agent prüft und **sendet**, der Collector
+**verarbeitet** und zeigt an. Ausführliche Erläuterung mit Diagramm:
+**[VERTEILUNG.md](./VERTEILUNG.md)**.
 
 ## Aufgabe
 
@@ -11,22 +16,37 @@ of separate modules! Develop small steps: step-by-step using md-Files!"*
 
 ## Module & Abhängigkeiten
 
-| Modul | Verantwortung | hängt ab von |
-|---|---|---|
-| [`checker`](./checker) | Check-Abstraktion (Strategy) + `HttpCheck`/`TcpCheck`/`DnsCheck` + `StatusEvaluator` | — |
-| [`store`](./store) | Persistenz der Verlaufsdaten (`HistoryStore`, In-Memory) | checker |
-| [`alerting`](./alerting) | Ausfall-Erkennung mit Entprellung; `AlertSink` (Strategy) | checker |
-| [`scheduler`](./scheduler) | periodische Ausführung; verbindet den Messpfad | checker, store, alerting |
-| [`dashboard-ui`](./dashboard-ui) | read-only HTTP-Dashboard (liest nur über Store-API) | store, checker |
-| [`mock-service`](./mock-service) | kontrollierbares Test-Target (settable HTTP-Code) | — |
+| Modul | Art | Verantwortung | hängt ab von |
+|---|---|---|---|
+| [`checker`](./checker) | Lib | Check-Abstraktion (Strategy) + `HttpCheck`/`TcpCheck`/`DnsCheck` + `StatusEvaluator` | — |
+| [`store`](./store) | Lib | `StatusRecord`, `HistoryStore` (In-Memory), `IngestCodec` (Wire-Format) | checker |
+| [`alerting`](./alerting) | Lib | Ausfall-Erkennung mit Entprellung; `AlertSink` (Strategy) | checker |
+| [`scheduler`](./scheduler) | Lib | periodische Ausführung; übergibt Ergebnisse an einen `ResultSink` | checker, store |
+| [`dashboard-ui`](./dashboard-ui) | Lib | `StatusRenderer` (+ lokaler `DashboardServer`) | store, checker |
+| [`mock-service`](./mock-service) | **Prozess** | kontrollierbares Test-Target (settable HTTP-Code) | — |
+| [`agent`](./agent) | **Prozess** | prüft periodisch, sendet Ergebnisse per HTTP an den Collector | checker, scheduler, store |
+| [`collector`](./collector) | **Prozess** | `POST /ingest` (store + alerting), `GET /` (Dashboard) | store, alerting, dashboard-ui, checker |
 
 ```
-checker ─┬─► store ─────┐
-         ├─► alerting ──┤
-         │              ├─► scheduler
-         └──────────────┘
-store, checker ─► dashboard-ui        mock-service (eigenständig)
+Bibliotheken:  checker → store → { scheduler, dashboard-ui } ;  checker → alerting
+Prozesse:      agent (scheduler+checker+store) ── HTTP POST /ingest ──▶ collector (store+alerting+dashboard-ui)
+               agent ── HTTP-Check ──▶ mock-service
 ```
+
+## Verteilter Charakter (Kern der Aufgabe)
+
+Drei **getrennte Prozesse**, die über das **Netzwerk** kommunizieren — kein
+gemeinsamer Speicher:
+
+1. **`mock-service`** (Prozess) — überwachtes HTTP-Ziel.
+2. **`agent`** (Prozess) — führt Checks aus und **sendet** jedes Ergebnis per
+   `HTTP POST /ingest` an den Collector (Produzent).
+3. **`collector`** (Prozess) — **empfängt**, speichert, alarmiert und zeigt das
+   Dashboard (Verarbeiter/Consumer).
+
+Die Entkopplung im Code ist das `ResultSink`-Interface: der `scheduler` übergibt
+Ergebnisse an einen Sink; im verteilten Betrieb ist das der `IngestClient`
+(HTTP). Details und Start-Anleitung: **[VERTEILUNG.md](./VERTEILUNG.md)**.
 
 ## Bauen & Testen
 
@@ -37,49 +57,32 @@ cd ai-coding/c-app
 mvn -B test     # baut alle Module (Reactor) und führt die JUnit-5-Tests aus
 ```
 
-Erwartung: `BUILD SUCCESS`, Tests grün in `checker`, `store`, `alerting`,
-`scheduler`, `dashboard-ui`, `mock-service`.
+Ergebnis lokal bestätigt: **`BUILD SUCCESS`, 13 Tests grün** über alle Module
+(checker 5, store 3, alerting 2, scheduler 1, dashboard-ui 1, mock-service 1;
+agent/collector kompilieren). Vollständiges Protokoll **beider** Läufe — inklusive
+eines Tests, der einen echten Fehler gefunden hat — in **[TESTLAUF.md](./TESTLAUF.md)**.
 
-> **[SCREENSHOT — lokal einzufügen]:** `mvn -B test` mit `BUILD SUCCESS` →
-> `docs/img/c-app-tests.png` (Nachweis des lokalen Testlaufs, analog zu TST-E1).
-> Build-Umgebung ohne Maven/JDK 17? Setup wie in BUI-E1 beschrieben.
+## Verteilt starten (drei Prozesse)
 
-## Verteilter Charakter
-
-Check-Agent (`scheduler` + `checker` + `alerting`) und `dashboard-ui` sind getrennt
-deploybare Komponenten. Einzige Koppelstelle ist die **Store-API** — das Dashboard
-liest ausschließlich (`latestPerService()`), es schreibt nie.
-
-## Verdrahtung (Demo-Betrieb)
-
-```java
-// mock-service als Test-Target starten
-MockService mock = new MockService();
-mock.start(8081);                               // GET /health, /admin?code=NNN
-
-HistoryStore store = new InMemoryHistoryStore();
-AlertingService alerting = new AlertingService(
-        300_000, System::currentTimeMillis,     // 5-Minuten-Fenster
-        (svc, msg) -> System.out.println("ALERT " + svc + ": " + msg));
-
-Check http = new HttpCheck(new StatusEvaluator(500), 2000);
-Scheduler scheduler = new Scheduler(List.of(
-        new MonitoredService("mock", http, "http://localhost:8081/health")),
-        store, alerting);
-scheduler.start(5000);                          // alle 5 s prüfen
-
-new DashboardServer(store).start(8080);         // Dashboard auf :8080
+```bash
+mvn -q -DskipTests install                 # einmalig alle Module installieren
+mvn -q -pl mock-service exec:java          # Terminal 1 — Ziel (:8081)
+mvn -q -pl collector   exec:java           # Terminal 2 — Collector (:8080)
+mvn -q -pl agent       exec:java           # Terminal 3 — Agent (prüft + sendet)
 ```
+
+Dashboard: `http://localhost:8080/`. Ausfall simulieren:
+`curl "http://localhost:8081/admin?code=500"`. Vollständige Erläuterung inkl.
+Prozess-Diagramm: **[VERTEILUNG.md](./VERTEILUNG.md)**.
 
 ## Specification-Driven Development
 
 Jedes Modul entstand step-by-step über ein Spezifikations-MD-File in
-[`specs/`](./specs) — **erst Spezifikation, dann Implementierung, dann Tests**
-(Zweck, öffentliche Schnittstelle, Fachregeln, Akzeptanztests je Modul).
+[`specs/`](./specs) — **erst Spezifikation, dann Implementierung, dann Tests**.
 
 ## Werkzeuge & Werkzeug-Nachweis
 
-- **Claude Code (CLI):** `checker`, `store`, `alerting`, `scheduler`, `dashboard-ui`
+- **Claude Code (CLI):** `checker`, `store`, `alerting`, `scheduler`, `dashboard-ui`, `agent`, `collector`
 - **Cline (VS-Code-Plugin):** `mock-service` — belegt die **zweite Werkzeug-Art**
 
 ## Tests im Überblick
@@ -87,20 +90,22 @@ Jedes Modul entstand step-by-step über ein Spezifikations-MD-File in
 | Modul | Test | prüft |
 |---|---|---|
 | checker | `StatusEvaluatorTest` | Statuslogik + Exceptions (5 Tests) |
-| store | `StoreTest` | Reihenfolge & Deduplizierung |
+| store | `StoreTest`, `IngestCodecTest` | Reihenfolge/Dedup; Wire-Format Round-Trip |
 | alerting | `AlertingServiceTest` | Entprellung: genau ein Alarm; Recovery |
-| scheduler | `SchedulerTest` | ein Datensatz je Service pro Durchlauf |
+| scheduler | `SchedulerTest` | ein Ergebnis je Service an den Sink |
 | dashboard-ui | `StatusRendererTest` | HTML je Service |
 | mock-service | `MockServiceTest` | Health-Code setzbar |
 
 ## Nachweise (vor dem Push zu ergänzen)
 
-- **[SCREENSHOT] 1:** `mvn -B test` grün → `docs/img/c-app-tests.png`
-- **[SCREENSHOT] 2:** Claude Code im Planning Mode (ein Modul) → `docs/img/c-app-planning.png`
-- **[SCREENSHOT] 3:** Cline beim Bau von `mock-service` → `docs/img/c-app-cline.png`
+- **Testlauf:** dokumentiert in [TESTLAUF.md](./TESTLAUF.md) (rot→grün, 13 Tests); optional Screenshot → `docs/img/c-app-tests.png`
+- **[SCREENSHOT] 2:** drei laufende Prozesse + Dashboard → siehe [VERTEILUNG.md](./VERTEILUNG.md)
+- **[SCREENSHOT] 3:** Claude Code Planning Mode / Cline (mock-service) → `docs/img/c-app-planning.png`, `docs/img/c-app-cline.png`
 - **Prompts:** je Modul in [`prompts.md`](./prompts.md) eintragen
 
 ## Status
 
-Substanz fertig (sechs Module + Specs + Tests, deploybar); offen sind nur die
-eigenen Prompts, die Werkzeug-Screenshots und der lokale `mvn test`-Nachweis.
+Substanz fertig und **lokal grün getestet** (acht Module, davon drei Prozesse;
+Specs + 13 Tests; verteilt lauffähig — siehe [TESTLAUF.md](./TESTLAUF.md)). Offen:
+eigene Prompts, Werkzeug-Screenshots und der Verteiltheits-Nachweis (Screenshots
+der drei laufenden Prozesse + Dashboard).

@@ -31,19 +31,19 @@ public final class AlertingService {
     /** Feed one status observation for a service. */
     public void tick(String service, Status status) {
         long now = clock.nowMillis();
-        if (status == Status.DOWN) {
-            Long since = downSince.get(service);
-            if (since == null) {
-                downSince.put(service, now);
-                alerted.put(service, false);
-            } else if (!alerted.getOrDefault(service, false) && (now - since) >= alertAfterMs) {
-                sink.fire(service, "DOWN seit " + (now - since) + " ms");
-                alerted.put(service, true);
-            }
-        } else {
+        if (status != Status.DOWN) {
             // recovery or any non-down state resets the outage tracking
             downSince.remove(service);
             alerted.remove(service);
+            return;
+        }
+        // remember when the outage started, then check the debounce window on the
+        // same tick — so a zero (or already-elapsed) window can fire immediately.
+        downSince.putIfAbsent(service, now);
+        long since = downSince.get(service);
+        if (!alerted.getOrDefault(service, false) && (now - since) >= alertAfterMs) {
+            sink.fire(service, "DOWN seit " + (now - since) + " ms");
+            alerted.put(service, true);
         }
     }
 }

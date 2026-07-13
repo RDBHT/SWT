@@ -8,9 +8,9 @@
     <artifactId>monitor-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>scheduler</artifactId>
-  <name>scheduler</name>
-  <description>Periodische Ausführung der Checks; übergibt jedes Ergebnis an einen ResultSink</description>
+  <artifactId>agent</artifactId>
+  <name>agent</name>
+  <description>Verteilter Check-Agent (eigener Prozess): prüft Ziele und sendet Ergebnisse per HTTP an den Collector</description>
 
   <dependencies>
     <dependency>
@@ -19,11 +19,23 @@
     </dependency>
     <dependency>
       <groupId>de.rdbht.swt.monitor</groupId>
-      <artifactId>store</artifactId>
+      <artifactId>scheduler</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
+      <groupId>de.rdbht.swt.monitor</groupId>
+      <artifactId>store</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>de.rdbht.swt.monitor.agent.AgentMain</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

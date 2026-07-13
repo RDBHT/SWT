@@ -1,8 +1,6 @@
 package de.rdbht.swt.monitor.scheduler;
 
-import de.rdbht.swt.monitor.alerting.AlertingService;
 import de.rdbht.swt.monitor.checker.CheckResult;
-import de.rdbht.swt.monitor.store.HistoryStore;
 import de.rdbht.swt.monitor.store.StatusRecord;
 
 import java.time.Instant;
@@ -12,29 +10,29 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Orchestrates one measurement pass: run each check, persist the result and feed
- * the alerting pipeline. {@link #runOnce()} is deterministic and unit-testable;
- * {@link #start(long)} drives it periodically for real operation.
+ * Taktgeber des Messpfads: runs each check and hands the result to a {@link ResultSink}.
+ * The scheduler is deliberately agnostic to <em>what</em> happens with a result — that
+ * decision (store locally vs. send to a collector over the network) lives in the sink,
+ * which is what lets the same scheduler run inside a distributed agent.
+ * {@link #runOnce()} is deterministic and unit-testable; {@link #start(long)} drives it
+ * periodically for real operation.
  */
 public final class Scheduler {
 
     private final List<MonitoredService> services;
-    private final HistoryStore store;
-    private final AlertingService alerting;
+    private final ResultSink sink;
     private ScheduledExecutorService executor;
 
-    public Scheduler(List<MonitoredService> services, HistoryStore store, AlertingService alerting) {
+    public Scheduler(List<MonitoredService> services, ResultSink sink) {
         this.services = services;
-        this.store = store;
-        this.alerting = alerting;
+        this.sink = sink;
     }
 
-    /** One measurement pass over all services. */
+    /** One measurement pass over all services; each result goes to the sink. */
     public void runOnce() {
         for (MonitoredService service : services) {
             CheckResult result = service.check().run(service.target());
-            store.append(new StatusRecord(service.name(), result.status(), result.responseMs(), Instant.now()));
-            alerting.tick(service.name(), result.status());
+            sink.accept(new StatusRecord(service.name(), result.status(), result.responseMs(), Instant.now()));
         }
     }
 

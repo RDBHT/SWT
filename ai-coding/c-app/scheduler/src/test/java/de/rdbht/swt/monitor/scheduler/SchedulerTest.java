@@ -1,13 +1,12 @@
 package de.rdbht.swt.monitor.scheduler;
 
-import de.rdbht.swt.monitor.alerting.AlertingService;
 import de.rdbht.swt.monitor.checker.Check;
 import de.rdbht.swt.monitor.checker.CheckResult;
 import de.rdbht.swt.monitor.checker.Status;
-import de.rdbht.swt.monitor.store.HistoryStore;
-import de.rdbht.swt.monitor.store.InMemoryHistoryStore;
+import de.rdbht.swt.monitor.store.StatusRecord;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,20 +14,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SchedulerTest {
 
     @Test
-    void runOnce_persists_a_record_per_service() {
+    void runOnce_emits_one_result_per_service_to_the_sink() {
         // Stub check: always UP, no real network.
         Check stub = new Check() {
             @Override public String type() { return "STUB"; }
             @Override public CheckResult run(String target) { return new CheckResult(Status.UP, 42, "ok"); }
         };
-        HistoryStore store = new InMemoryHistoryStore();
-        AlertingService alerting = new AlertingService(0, () -> 0L, (service, message) -> { });
+        List<StatusRecord> received = new ArrayList<>();
         Scheduler scheduler = new Scheduler(
-                List.of(new MonitoredService("api", stub, "x")), store, alerting);
+                List.of(new MonitoredService("api", stub, "x")), received::add);
 
         scheduler.runOnce();
 
-        assertEquals(1, store.recent("api", 10).size());
-        assertEquals(Status.UP, store.recent("api", 10).get(0).status());
+        assertEquals(1, received.size());
+        assertEquals(Status.UP, received.get(0).status());
+        assertEquals("api", received.get(0).service());
     }
 }
