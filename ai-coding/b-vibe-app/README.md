@@ -54,5 +54,5 @@ separate Module, spezifikationsgetrieben, mit Tests, vollständig verstanden.
 
 ## Status
 
-Substanz fertig (lauffähige App + Doku); offen sind nur die eigenen
-bolt.new-Prompts und die Screenshots.
+Substanz fertig (lauffähige App + Doku + dokumentierte Prompts); offen sind nur
+die Screenshots (und ggf. Feinabgleich der Prompts mit deiner bolt.new-Session).

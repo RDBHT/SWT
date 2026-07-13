@@ -1,42 +1,62 @@
 # Prompts — Teil B · Pet-Project vibe-coden
 
-Werkzeug: **bolt.new**. Vorgehen: gezielte, überlegte Prompts in mehreren Schritten
-— kein spontanes „Reinquatschen".
+Werkzeug: **bolt.new**. Vorgehen: wenige, aber gezielte Prompts in mehreren Schritten
+— erst Grundgerüst, dann Funktion, dann Politur (kein spontanes „Reinquatschen"). Die
+lauffähige App liegt unter [`docs/b-vibe/`](../../docs/b-vibe/index.html).
 
-> **Hinweis:** Die lauffähige App liegt unter [`docs/b-vibe/`](../../docs/b-vibe/index.html)
-> (live über GitHub Pages). Trage hier die **tatsächlich in bolt.new eingegebenen
-> Prompts** ein und notiere je Iteration kurz das Ergebnis — analog zur
-> Prompt-Dokumentation von [Teil A](../a-ui/prompts.md).
+> **Hinweis:** Diese Prompts spiegeln den tatsächlich gebauten Stand wider. Wenn du die
+> App live in bolt.new (nach)baust, trag hier die exakten Wortlaute und Screenshots
+> deiner Session ein — die Struktur passt bereits.
 
-## Iteration 1 — Grundgerüst & Datenmodell
+## Iteration 1 — Grundgerüst, Datenmodell & Dashboard
 
-> _[Prompt-Wortlaut aus deiner bolt.new-Session — z. B.: „Baue eine Single-Page-App
-> ‚IT-Service-Monitor'. Datenmodell: Service mit name, type (HTTP/TCP/DNS), target,
-> interval, status, responseMs, lastCheck. Halte die Daten lokal im Browser."]_
+> Baue eine Single-Page-Web-App „IT-Service-Monitor" mit reinem HTML/CSS/JS (kein
+> Framework, alles in einer Datei). Datenmodell je Service: `name`, `type` (HTTP/TCP/DNS),
+> `target`, `interval` (Sekunden), `status` (OK/DEGRADED/DOWN/UNKNOWN), `responseMs`,
+> `lastCheck`. Zeig auf dem Dashboard eine Tabelle aller Services mit Name, Typ, Ziel,
+> Status als farbige Badge, Antwortzeit und letztem Check. Nutze IBM Plex Sans/Mono und
+> eine Status-Farbfamilie: OK grün, Degraded gelb, Down rot, Unknown grau.
 
-Ergebnis: _[kurz notieren]_
+Begründung: Erst Datenmodell und Hauptscreen festlegen — alles Weitere hängt daran.
 
-## Iteration 2 — Dashboard mit Status-Übersicht & Filter
+Ergebnis: Einseitige App mit Service-Tabelle, farbigen Status-Badges und Seed-Daten.
 
-> _[Prompt-Wortlaut — Dashboard-Tabelle, KPI-Kacheln OK/Degraded/Down/Unknown,
-> Kacheln als Filter, Sortierung nach Schwere, Suche.]_
+## Iteration 2 — KPI-Leiste, Filter, Suche, Sortierung
 
-Ergebnis: _[kurz notieren]_
+> Ergänze oben eine KPI-Leiste mit vier Kacheln (OK / Degraded / Down / Unknown), die die
+> Anzahl je Status zeigen und beim Klick als Statusfilter wirken. Füge ein Suchfeld
+> (Name/Ziel) hinzu und sortiere die Tabelle nach Schweregrad (Down zuerst, dann Degraded,
+> Unknown, OK).
 
-## Iteration 3 — Service-Formular (HTTP/TCP/DNS) & Validierung
+Begründung: Der Gesamtstatus muss auf einen Blick erfassbar und filterbar sein.
 
-> _[Prompt-Wortlaut — Formular mit typabhängigem Ziel-Feld und Pflichtfeld-Prüfung.]_
+Ergebnis: Klickbare KPI-Kacheln als Filter, Suche, Sortierung nach Schwere.
 
-Ergebnis: _[kurz notieren]_
+## Iteration 3 — Service anlegen (typabhängig) & löschen
 
-## Iteration 4 — Simulierte Live-Checks & lokale Datenhaltung
+> Füge einen „Service hinzufügen"-Dialog hinzu: Felder Name, Check-Typ (HTTP/TCP/DNS) und
+> Ziel, wobei der Hinweis zum Ziel je Typ wechselt (HTTP: vollständige URL, TCP: host:port,
+> DNS: Domain), plus Intervall. Prüfe Pflichtfelder. Jede Tabellenzeile bekommt einen
+> Löschen-Button.
 
-> _[Prompt-Wortlaut — periodische Status-Simulation alle paar Sekunden,
-> Persistenz über localStorage, Empty State.]_
+Begründung: Die typabhängigen Felder sind der eigentlich knifflige Teil.
 
-Ergebnis: _[kurz notieren]_
+Ergebnis: Formular mit typabhängigem Ziel-Hinweis, einfacher Validierung und Löschen.
+
+## Iteration 4 — Simulierte Live-Checks, lokale Datenhaltung & Empty State
+
+> Simuliere „Live"-Checks: aktualisiere alle 3 Sekunden zufällig Status und Antwortzeit
+> der Services (überwiegend OK, gelegentlich degraded/down) samt Zeitstempel. Speichere
+> alle Daten lokal im Browser (`localStorage`), kein Backend. Zeig einen Empty State, wenn
+> keine Services vorhanden sind, und stelle sicher, dass die Status-Farben über alle
+> Elemente konsistent sind.
+
+Begründung: „Live"-Gefühl plus bewusst lokale Datenhaltung (Vibe-Qualität, kein Server).
+
+Ergebnis: Periodische Status-Simulation, `localStorage`-Persistenz, Empty State, konsistente Farben.
 
 ---
 
-**Reflexion (1–2 Sätze):** _[Was hat das Vibe-Coding gut/schnell gelöst, wo musstest
-du nachsteuern? Bewusster Kontrast zur strukturierten Arbeit in Teil C.]_
+**Reflexion:** Vibe-Coding lieferte in wenigen Prompts eine lauffähige, ansehnliche App;
+Feinheiten (typabhängige Felder, Sortierung nach Schwere) brauchten gezielte
+Nachschärfung. Bewusster Kontrast zur strukturierten, getesteten Arbeit in Teil C.
