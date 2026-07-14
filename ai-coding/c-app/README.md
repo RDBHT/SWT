@@ -96,12 +96,11 @@ Jedes Modul entstand step-by-step über ein Spezifikations-MD-File in
 | dashboard-ui | `StatusRendererTest` | HTML je Service |
 | mock-service | `MockServiceTest` | Health-Code setzbar |
 
-## Nachweise (vor dem Push zu ergänzen)
+## Nachweise
 
-- **Testlauf:** dokumentiert in [TESTLAUF.md](./TESTLAUF.md) (rot→grün, 13 Tests); optional Screenshot → `docs/img/c-app-tests.png`
-- **[SCREENSHOT] 2:** drei laufende Prozesse + Dashboard → siehe [VERTEILUNG.md](./VERTEILUNG.md)
-- **[SCREENSHOT] 3:** Claude Code Planning Mode / Cline (mock-service) → `docs/img/c-app-planning.png`, `docs/img/c-app-cline.png`
-- **Prompts:** je Modul in [`prompts.md`](./prompts.md) eintragen
+- **Testlauf:** [TESTLAUF.md](./TESTLAUF.md) — beide `mvn -B test`-Läufe (rot→grün, 13 Tests grün).
+- **Verteiltheit:** [VERTEILUNG.md](./VERTEILUNG.md) — Prozess-Diagramm + Screenshots (drei Prozesse, ingest-Logs, Dashboard).
+- **Prompts:** [prompts.md](./prompts.md) — spezifikationsgetrieben je Modul.
 
 ## Status
 
