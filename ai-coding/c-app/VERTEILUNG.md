@@ -96,8 +96,16 @@ curl "http://localhost:8081/admin?code=500"
 → der nächste Agent-Lauf meldet `DOWN`; nach Ablauf des Fensters feuert der
 Collector einen `ALERT` auf der Konsole.
 
-## Nachweis der Verteiltheit (Screenshots, vor dem Push zu ergänzen)
+## Nachweis der Verteiltheit (lokaler Lauf)
 
-- **[SCREENSHOT] 1:** drei Terminals nebeneinander mit den drei laufenden Prozessen → `docs/img/c-app-3prozesse.png`
-- **[SCREENSHOT] 2:** agent-Log `-> ingest …` **und** collector-Log `<- ingest …` (die Netzwerk-Übergabe) → `docs/img/c-app-ingest.png`
-- **[SCREENSHOT] 3:** Dashboard im Browser (`http://localhost:8080/`) mit den empfangenen Daten → `docs/img/c-app-dashboard.png`
+**Drei laufende Prozesse** (mock-service, collector, agent — je eigener Tab):
+
+![Drei Prozesse](../../docs/img/c-app-3prozesse.png)
+
+**Die Netzwerk-Übergabe** — agent `-> ingest …` und collector `<- ingest …`:
+
+![Agent sendet, Collector empfängt](../../docs/img/c-app-ingest.png)
+
+**Collector-Dashboard** (`http://localhost:8080/`) mit den empfangenen Daten:
+
+![Collector-Dashboard](../../docs/img/c-app-dashboard.png)

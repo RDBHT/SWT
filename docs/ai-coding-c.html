@@ -110,11 +110,26 @@ flowchart LR
 mvn -q -pl mock-service exec:java   # Prozess 1 (:8081)
 mvn -q -pl collector   exec:java    # Prozess 3 (:8080)
 mvn -q -pl agent       exec:java    # Prozess 2</code></pre>
+      <h4>Nachweis (lokaler Lauf)</h4>
+      <figure>
+        <img src="img/c-app-3prozesse.png" alt="Drei laufende Prozesse"
+          style="max-width:100%;border:1px solid var(--pico-muted-border-color);border-radius:6px">
+        <figcaption>Drei getrennte Prozesse: mock-service (:8081), collector (:8080), agent — je eigener Tab.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/c-app-ingest.png" alt="agent sendet, collector empfängt"
+          style="max-width:100%;border:1px solid var(--pico-muted-border-color);border-radius:6px">
+        <figcaption>Die Netzwerk-Übergabe: agent <code>-&gt; ingest …</code> und collector <code>&lt;- ingest …</code>.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/c-app-dashboard.png" alt="Collector-Dashboard"
+          style="max-width:100%;border:1px solid var(--pico-muted-border-color);border-radius:6px">
+        <figcaption>Collector-Dashboard (<code>GET /</code>) mit den über <code>POST /ingest</code> empfangenen Daten.</figcaption>
+      </figure>
       <p>Ausführliche Erläuterung mit Diagramm:
       <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/VERTEILUNG.md">VERTEILUNG.md</a>.</p>
-      <p><em>Offen (PC-Nachweis):</em> Screenshots der drei laufenden Prozesse,
-      der <code>ingest</code>-Logs und des Dashboards; <code>mvn test</code>-Lauf;
-      Claude-Code-/Cline-Screenshots; eigene Prompts.</p>
+      <p><em>Noch offen:</em> Cline-Screenshot (Bau von <code>mock-service</code>); optional
+      Claude-Code-Planning- und <code>mvn test</code>-Screenshot; Prompts an die eigene Session angleichen.</p>
     </section>
 
     <section>
