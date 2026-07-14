@@ -56,5 +56,4 @@ separate Module, spezifikationsgetrieben, mit Tests, vollständig verstanden.
 
 ## Status
 
-Fertig: lauffähige App (live), Doku und dokumentierte Prompts. Kein Screenshot nötig
-(App ist live). Offen höchstens der Feinabgleich der Prompts mit deiner bolt.new-Session.
+**Abgegeben.** Lauffähige App (live), Doku und dokumentierte Prompts.

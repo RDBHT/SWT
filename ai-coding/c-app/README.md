@@ -105,7 +105,6 @@ Jedes Modul entstand step-by-step über ein Spezifikations-MD-File in
 
 ## Status
 
-Substanz fertig und **lokal grün getestet** (acht Module, davon drei Prozesse;
-Specs + 13 Tests; verteilt lauffähig — siehe [TESTLAUF.md](./TESTLAUF.md); Prompts
-dokumentiert in [prompts.md](./prompts.md)). Offen: die Werkzeug-/Verteiltheits-
-Screenshots (drei Prozesse + Dashboard, Cline) — ggf. Prompts an deine Session angleichen.
+**Abgegeben.** Acht Module (davon drei Prozesse), spec-driven, 13 Tests grün
+([TESTLAUF.md](./TESTLAUF.md)), echt verteilt ([VERTEILUNG.md](./VERTEILUNG.md)),
+durchgehend kommentiert; Prompts in [prompts.md](./prompts.md).
