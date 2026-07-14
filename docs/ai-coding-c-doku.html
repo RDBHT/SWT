@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Coding · Teil C — Doku &middot; SWT-Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="container">
+    <hgroup>
+      <h1>SWT-Portfolio</h1>
+      <p>Einsendeaufgaben Softwaretechnik &middot; Berliner Hochschule für Technik (BHT)</p>
+    </hgroup>
+    <nav>
+      <ul>
+        <li><strong>Reiter:</strong></li>
+      </ul>
+      <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="dvc-e1.html">DVC-E1</a></li>
+        <li><a href="req-e1.html">REQ-E1</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="re-tool.html">RE-Tool</a></li>
+        <li><a href="ana-e1.html">ANA-E1</a></li>
+        <li><a href="ddd.html">DDD</a></li>
+        <li><a href="ai-coding.html">AI-Coding</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-a.html">Teil A</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-b.html">Teil B</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c.html">Teil C</a></li>
+        <li class="subtab"><span class="subtab-arrow">&rsaquo;</span><a href="ai-coding-c-doku.html" aria-current="page">Teil C · Doku</a></li>
+        <li><a href="uml-e1.html">UML-E1</a></li>
+        <li><a href="vor-e1.html">VOR-E1</a></li>
+        <li><a href="ref-e1.html">REF-E1</a></li>
+        <li><a href="bui-e1.html">BUI-E1</a></li>
+        <li><a href="tst-e1.html">TST-E1</a></li>
+        <li><a href="met-e1.html">MET-E1</a></li>
+        <li><a href="arc-e1.html">ARC-E1</a></li>
+        <li><a href="arc-e2.html">ARC-E2</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section>
+      <hgroup>
+        <h2>Teil C — Doku: die modulare, verteilte App</h2>
+        <p>Ausführliche Erklärung des IT-Service-Monitors (Teil C) mit Grafiken</p>
+      </hgroup>
+      <p>
+        <a href="ai-coding-c.html">&lsaquo; zur Teil-C-Übersicht</a> &middot;
+        <a href="https://github.com/RDBHT/SWT/tree/main/ai-coding/c-app">Code</a> &middot;
+        <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/VERTEILUNG.md">VERTEILUNG.md</a> &middot;
+        <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/TESTLAUF.md">TESTLAUF.md</a>
+      </p>
+    </section>
+
+    <section>
+      <h3>1 · Grundprinzip</h3>
+      <p>
+        Teil C ist <strong>verteilt</strong> im Sinne der Vorlesung: nicht ein Programm mit
+        Frontend/Controller/Backend in einem Prozess, sondern <strong>drei eigenständige
+        Programme (Prozesse / JVMs), die nur über HTTP miteinander reden</strong> — kein
+        gemeinsamer Speicher. Ein Prozess erledigt eine Aufgabe (Prüfen) und <strong>sendet</strong>
+        die Daten an einen zweiten Prozess, der sie <strong>verarbeitet</strong> (speichern,
+        alarmieren, anzeigen).
+      </p>
+    </section>
+
+    <section>
+      <h3>2 · Überblick: die drei Prozesse</h3>
+      <pre class="mermaid">
+flowchart LR
+    subgraph P2["agent · Prozess 2 (Produzent)"]
+        sched["scheduler + checker<br/><i>prüft periodisch</i>"]
+        client["IngestClient"]
+    end
+    subgraph P1["mock-service · Prozess 1 (Ziel)"]
+        mock["GET /health<br/><i>Code setzbar</i>"]
+    end
+    subgraph P3["collector · Prozess 3 (Verarbeiter)"]
+        ingest["POST /ingest<br/><i>store + alerting</i>"]
+        dash["GET /<br/><i>Dashboard</i>"]
+    end
+    browser(["Browser / Betreiber"])
+    sched -- "HTTP GET /health" --> mock
+    client -- "HTTP POST /ingest<br/>(StatusRecord)" --> ingest
+    browser -- "HTTP GET /" --> dash
+      </pre>
+      <table>
+        <thead><tr><th>Prozess</th><th>Rolle</th><th>Port</th></tr></thead>
+        <tbody>
+          <tr><td><code>mock-service</code></td><td>überwachtes Ziel; <code>/health</code> mit setzbarem Code (Ausfall-Demo)</td><td>8081</td></tr>
+          <tr><td><code>agent</code></td><td><strong>Produzent</strong> — prüft alle 5&nbsp;s, sendet jedes Ergebnis; speichert/bewertet selbst nichts</td><td>—</td></tr>
+          <tr><td><code>collector</code></td><td><strong>Verarbeiter</strong> — empfängt, speichert, alarmiert, zeigt Dashboard</td><td>8080</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>3 · Die acht Module (5 Bibliotheken + 3 Prozesse)</h3>
+      <table>
+        <thead><tr><th>Modul</th><th>Art</th><th>Verantwortung</th></tr></thead>
+        <tbody>
+          <tr><td><code>checker</code></td><td>Lib</td><td>Prüf-Strategien HTTP/TCP/DNS + <code>StatusEvaluator</code> (Code+Zeit → Status)</td></tr>
+          <tr><td><code>store</code></td><td>Lib</td><td><code>StatusRecord</code>, <code>HistoryStore</code>, <code>IngestCodec</code> (Wire-Format)</td></tr>
+          <tr><td><code>alerting</code></td><td>Lib</td><td>Ausfall-Entprellung — genau ein Alarm pro Ausfall</td></tr>
+          <tr><td><code>scheduler</code></td><td>Lib</td><td>Takt; führt Checks aus, übergibt Ergebnis an einen <code>ResultSink</code></td></tr>
+          <tr><td><code>dashboard-ui</code></td><td>Lib</td><td><code>StatusRenderer</code> — erzeugt das Dashboard-HTML</td></tr>
+          <tr><td><code>mock-service</code></td><td><strong>Prozess</strong></td><td>steuerbares Test-Target (mit Cline gebaut)</td></tr>
+          <tr><td><code>agent</code></td><td><strong>Prozess</strong></td><td>prüft + sendet (<code>IngestClient</code>)</td></tr>
+          <tr><td><code>collector</code></td><td><strong>Prozess</strong></td><td>empfängt (<code>POST /ingest</code>) + Dashboard (<code>GET /</code>)</td></tr>
+        </tbody>
+      </table>
+      <p>Modul-Abhängigkeiten (Pfeil = „hängt ab von"):</p>
+      <pre class="mermaid">
+flowchart TD
+    store --> checker
+    alerting --> checker
+    scheduler --> checker
+    scheduler --> store
+    dashboard["dashboard-ui"] --> store
+    agent --> scheduler
+    agent --> store
+    collector --> store
+    collector --> alerting
+    collector --> dashboard
+    mock["mock-service"]
+      </pre>
+    </section>
+
+    <section>
+      <h3>4 · Datenfluss: ein Check von Anfang bis Ende</h3>
+      <pre class="mermaid">
+sequenceDiagram
+    participant S as Scheduler (agent)
+    participant H as HttpCheck (agent)
+    participant M as mock-service
+    participant I as IngestClient (agent)
+    participant C as CollectorServer (collector)
+    participant ST as HistoryStore
+    participant A as AlertingService
+    actor B as Browser
+    S->>H: run(target)
+    H->>M: HTTP GET /health
+    M-->>H: Statuscode + Zeit
+    H-->>S: CheckResult (via StatusEvaluator)
+    S->>I: accept(StatusRecord)
+    I->>C: HTTP POST /ingest (IngestCodec.encode)
+    C->>ST: append(record)
+    C->>A: tick(service, status)
+    C-->>I: 200 OK
+    B->>C: HTTP GET /
+    C->>ST: latestPerService()
+    C-->>B: Dashboard-HTML (StatusRenderer)
+      </pre>
+    </section>
+
+    <section>
+      <h3>5 · Klassenüberblick (Kernklassen)</h3>
+      <pre class="mermaid">
+classDiagram
+    class Check {
+      &lt;&lt;interface&gt;&gt;
+      +run(target) CheckResult
+    }
+    class ResultSink {
+      &lt;&lt;interface&gt;&gt;
+      +accept(record)
+    }
+    class HistoryStore {
+      &lt;&lt;interface&gt;&gt;
+    }
+    Check &lt;|.. HttpCheck
+    HttpCheck --&gt; StatusEvaluator
+    Scheduler --&gt; ResultSink
+    ResultSink &lt;|.. IngestClient
+    IngestClient --&gt; IngestCodec
+    CollectorServer --&gt; HistoryStore
+    CollectorServer --&gt; AlertingService
+    CollectorServer --&gt; IngestCodec
+    HistoryStore &lt;|.. InMemoryHistoryStore
+      </pre>
+      <p><small>Vollständiges Klassendiagramm als PlantUML liegt privat vor; hier die prüfungsrelevanten Kernbeziehungen.</small></p>
+    </section>
+
+    <section>
+      <h3>6 · Die zentrale Naht: <code>ResultSink</code></h3>
+      <p>
+        Der <code>scheduler</code> kennt weder <code>store</code> noch Netzwerk — er übergibt
+        jedes Ergebnis nur an das <code>ResultSink</code>-Interface. <strong>Lokal</strong> wäre
+        der Sink „in den Store schreiben"; <strong>verteilt</strong> ist er der
+        <code>IngestClient</code>, der per HTTP sendet. Dieselbe Naht macht denselben Code lokal
+        <em>oder</em> verteilt lauffähig — <strong>Verteilung ist Konfiguration, kein Umbau</strong>.
+      </p>
+      <pre><code>// scheduler übergibt nur an das Interface — weiß nicht, was passiert:
+sink.accept(new StatusRecord(name, status, ms, Instant.now()));
+
+// im agent IST der Sink der IngestClient → sendet per HTTP:
+class IngestClient implements ResultSink {
+  public void accept(StatusRecord r) { /* HTTP POST /ingest */ }
+}</code></pre>
+    </section>
+
+    <section>
+      <h3>7 · Alerting-Zustandslogik (pro Dienst)</h3>
+      <pre class="mermaid">
+stateDiagram-v2
+    [*] --> OK
+    OK --> Beobachtet: erster DOWN (downSince = jetzt)
+    Beobachtet --> Alarmiert: DOWN länger als Fenster → genau 1 Alarm
+    Alarmiert --> Alarmiert: weiter DOWN (kein zweiter Alarm)
+    Beobachtet --> OK: Erholung (reset)
+    Alarmiert --> OK: Erholung (reset)
+      </pre>
+      <p>
+        Die Zeit kommt über eine injizierte <code>Clock</code> (im Test eine FakeClock →
+        deterministische „Zeitreise"). Genau hier steckte der Fehler, den ein Test fand
+        (Alarm bei Null-Fenster) — Details in
+        <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/TESTLAUF.md">TESTLAUF.md</a>.
+      </p>
+    </section>
+
+    <section>
+      <h3>8 · Nachweis: die drei Prozesse live</h3>
+      <figure>
+        <img src="img/c-app-3prozesse.png" alt="Drei laufende Prozesse"
+          style="max-width:100%;border:1px solid var(--pico-muted-border-color);border-radius:6px">
+        <figcaption>Drei getrennte Prozesse: mock-service (:8081), collector (:8080), agent — je eigener Tab.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/c-app-ingest.png" alt="agent sendet, collector empfängt"
+          style="max-width:100%;border:1px solid var(--pico-muted-border-color);border-radius:6px">
+        <figcaption>Die Netzwerk-Übergabe: agent <code>-&gt; ingest …</code> und collector <code>&lt;- ingest …</code>.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/c-app-dashboard.png" alt="Collector-Dashboard"
+          style="max-width:100%;border:1px solid var(--pico-muted-border-color);border-radius:6px">
+        <figcaption>Collector-Dashboard (<code>GET /</code>) mit den über <code>POST /ingest</code> empfangenen Daten.</figcaption>
+      </figure>
+      <p><small>Warum nur Screenshots und nicht live auf dieser Seite? GitHub Pages ist statisches
+      Hosting und kann keine laufenden Server-Prozesse ausführen — das verteilte System braucht drei
+      laufende JVMs. (Teil A und B sind rein browserseitig und deshalb live.)</small></p>
+    </section>
+
+    <section>
+      <h3>9 · Bauen &amp; verteilt starten</h3>
+      <pre><code>cd ai-coding/c-app
+mvn -B test                         # baut alle Module, 13 Tests grün
+mvn -q -DskipTests install          # einmal installieren
+
+# drei Terminals:
+mvn -q -pl mock-service exec:java   # Prozess 1 (:8081)
+mvn -q -pl collector   exec:java    # Prozess 3 (:8080)
+mvn -q -pl agent       exec:java    # Prozess 2
+
+# Ausfall simulieren:
+curl "http://localhost:8081/admin?code=500"   # → DOWN → nach ~15 s ALERT im collector</code></pre>
+    </section>
+
+    <section>
+      <h3>10 · Prinzipien, Tests, Grenzen</h3>
+      <table>
+        <thead><tr><th>Thema</th><th>Kurz</th></tr></thead>
+        <tbody>
+          <tr><td>Muster</td><td>Strategy (<code>Check</code>, <code>AlertSink</code>), Dependency Injection (<code>Clock</code>, <code>ResultSink</code>, <code>HistoryStore</code>), reiner Kern vs. I/O</td></tr>
+          <tr><td>Tests</td><td>13 grün; ein Test fand einen echten Bug (rot→grün) — <a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/TESTLAUF.md">TESTLAUF.md</a></td></tr>
+          <tr><td>Bewusste Grenzen</td><td>In-Memory-Store (Daten weg bei Neustart), kein Auth/Retry auf <code>/ingest</code> — KISS, dokumentiert</td></tr>
+          <tr><td>Werkzeuge</td><td>Claude Code (CLI) für 7 Module; Cline (IDE-Plugin) für <code>mock-service</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Quellen</h3>
+      <ul>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/README.md">README — Module, Build, verteilt starten</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/VERTEILUNG.md">VERTEILUNG.md — Verteiltheit erklärt</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/blob/main/ai-coding/c-app/TESTLAUF.md">TESTLAUF.md — Testprotokoll (rot→grün)</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/ai-coding/c-app/specs">specs/ — Spezifikation je Modul</a></li>
+        <li><a href="https://github.com/RDBHT/SWT/tree/main/ai-coding/c-app">c-app/ — kommentierter Code</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="https://github.com/RDBHT/SWT">github.com/RDBHT/SWT</a> &middot;
+      Modul Softwaretechnik &middot; VFH/BHT
+    </small>
+  </footer>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <script src="links.js"></script>
+</body>
+</html>
