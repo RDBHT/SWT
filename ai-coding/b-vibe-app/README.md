@@ -40,11 +40,13 @@ zuletzt die simulierten Live-Checks samt lokaler Persistenz. Gearbeitet wurde
 im „Vibe"-Modus — schnelles, lauffähiges Ergebnis hat Vorrang vor sauberer
 Architektur; der gesamte Client steckt bewusst in einer einzigen Datei.
 
-## Nachweise (vor dem Push zu ergänzen)
+## Nachweis
 
-- **[SCREENSHOT] 1:** Dashboard mit Status-Übersicht → `docs/img/b-vibe-dashboard.png`
-- **[SCREENSHOT] 2:** Service-Formular (typabhängige Felder) → `docs/img/b-vibe-form.png`
-- **Prompts:** die tatsächlich in bolt.new eingegebenen Prompts in [`prompts.md`](./prompts.md) eintragen
+Die App ist **live aufrufbar** (Live-Link oben; zusätzlich als iframe im
+[Teil-B-Reiter](https://rdbht.github.io/SWT/ai-coding-b.html) eingebettet) — der
+Reviewer sieht und bedient sie direkt, **Screenshots sind daher nicht nötig**.
+Offen bleibt nur der Feinabgleich der in bolt.new eingegebenen Prompts in
+[`prompts.md`](./prompts.md).
 
 ## Abgrenzung zu Teil C
 
@@ -54,5 +56,5 @@ separate Module, spezifikationsgetrieben, mit Tests, vollständig verstanden.
 
 ## Status
 
-Substanz fertig (lauffähige App + Doku + dokumentierte Prompts); offen sind nur
-die Screenshots (und ggf. Feinabgleich der Prompts mit deiner bolt.new-Session).
+Fertig: lauffähige App (live), Doku und dokumentierte Prompts. Kein Screenshot nötig
+(App ist live). Offen höchstens der Feinabgleich der Prompts mit deiner bolt.new-Session.
